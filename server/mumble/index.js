@@ -1,17 +1,17 @@
 'use strict'
-import { join } from 'path';
-import { connect as _connect } from 'mumble';
-import Queue from './queue';
-import { readFileSync, readdir, stat } from 'fs';
-import Mixer from 'audio-mixer';
-import { contains } from 'underscore';
-import dbconn from '../database';
-import { server, username, password } from '../../config.js';
+import { join } from 'path'
+import { connect as _connect } from 'mumble'
+import Queue from './queue'
+import { readFileSync, readdir, stat } from 'fs'
+import Mixer from 'audio-mixer'
+import { contains } from 'underscore'
+import dbconn from '../database'
+import { server, username, password } from '../../config.js'
 import { h } from 'preact'
 import render from 'preact-render-to-string'
 
-import ytdl from 'ytdl-core';
-import ffmpeg, { ffprobe } from 'fluent-ffmpeg';
+import ytdl from 'ytdl-core'
+import ffmpeg, { ffprobe } from 'fluent-ffmpeg'
 
 let db = {}
 
@@ -77,10 +77,10 @@ class Mumble {
           session: client.user.session,
           actor: client.user.session,
           comment: render(
-          <div>
-            <h1>Welcome to MumbleBot</h1>
-            <p>To request a song, head to <a href='http://rymate.co.uk/mumble/'>http://rymate.co.uk/mumble/</a></p>
-          </div>
+            <div>
+              <h1>Welcome to MumbleBot</h1>
+              <p>To request a song, head to <a href='http://rymate.co.uk/mumble/'>http://rymate.co.uk/mumble/</a></p>
+            </div>
           )
         })
       })
@@ -112,7 +112,7 @@ class Mumble {
   getStatus () {
     var status = {}
     status.playing = playing
-    status.nowPlaying = playingSong.name
+    status.nowPlaying = playingSong.name || playingSong.title
     status.queue = queue.getArray()
 
     return status
@@ -124,7 +124,7 @@ class Mumble {
       message = (
         <div>
           <h1>Now Playing:</h1>
-          <p>{playingSong.name}</p>
+          <p>{playingSong.name || playingSong.title}</p>
           <p>To request a song, head to <a href='http://rymate.co.uk/mumble/'>http://rymate.co.uk/mumble/</a></p>
         </div>
       )
@@ -180,7 +180,7 @@ class Mumble {
 
         const message = render(
           <p>
-            Someone has requested to stop the song: {playingSong.name}<br/>
+            Someone has requested to stop the song: {playingSong.name}<br />
             Use voteyes and voteno to vote! 10 Seconds to vote...
           </p>
         )
@@ -255,7 +255,7 @@ class Mumble {
           this.callVote(done)
         })
         break
-      case 'meme':      
+      case 'meme':
       case 'spooky':
       case 'moan':
         this.playAudioOnKeyWord(message[0].toLowerCase())
@@ -287,7 +287,7 @@ class Mumble {
     }, 2000)
   }
 
-  callVote (filename) {
+  async callVote (filename) {
     if (voteHappening) {
       return
     }
@@ -295,34 +295,23 @@ class Mumble {
     let request
 
     if (!filename.radio) {
-      var path = 'uploads/' + filename.songid
-      db.find({path: path}).toArray((err, docs) => {
+      request = await new Promise((resolve, reject) => db.find({ path: filename.path }).toArray((err, docs) => {
         if (err) {
           console.log(err)
-          return
+          return reject(err)
         }
 
         var file = docs[0]
-        console.log(file)
+        console.log('file gotten', file)
         if (file == null) {
-          return
+          return reject(new Error('File not found'))
         }
 
-        file.name = file.originalname
-        if (file.metadata != null) {
-          if (file.metadata.title) {
-            if (typeof file.metadata.artist === 'string' || file.metadata.artist instanceof String) {
-              file.name = file.metadata.title + ' - ' + file.metadata.artist
-            } else if (file.metadata.artist) {
-              file.name = file.metadata.title + ' - ' + file.metadata.artist.name
-            }
-          }
-        }
-
+        file.name = file.title
         file.name = escapeHtml(file.name)
 
-        request = file
-      })
+        resolve(file)
+      }))
     } else {
       request = filename
     }
@@ -330,10 +319,9 @@ class Mumble {
     const type = filename.radio ? 'station' : 'song'
 
     client.user.channel.sendMessage(render(
-      <p>Someone has requested the following {type}: {request.name} <br/>Use voteyes and voteno to vote! 10 Seconds to vote...</p>
+      <p>Someone has requested the following {type}: {request.name || request.title} <br />Use voteyes and voteno to vote! 10 Seconds to vote...</p>
     ))
     this.handleVote(() => this.play(request))
-
   }
 
   handleVote (callback) {

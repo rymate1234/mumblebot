@@ -60,7 +60,6 @@ router.get('/playlists', function (req, res, next) {
   })
 })
 
-
 router.get('/radio', (req, res) => {
   const stations = fs.createReadStream('stations.json')
   res.type('json')
@@ -140,7 +139,7 @@ router.post('/request', function (req, res, next) {
       body = JSON.parse(body.json)
     }
 
-    thread.send({action: 'request', payload: body})
+    thread.send({ action: 'request', payload: body })
     res.status(200)
     res.send('Success')
   } else {

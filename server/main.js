@@ -11,8 +11,8 @@ import render from 'preact-render-to-string'
 import path from 'path'
 import { ServerStyleSheet } from 'styled-components'
 
-import memoize from 'promise-memoize'
 import api from './api'
+import { json, text, urlencoded } from 'body-parser'
 
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 3000
@@ -20,6 +20,9 @@ const port = process.env.PORT || 3000
 const app = express()
 
 app.use(compression())
+app.use(json())
+app.use(text())
+app.use(urlencoded({ extended: false }))
 app.use(express.static(path.resolve(__dirname, '../dist')))
 app.use(express.static(path.resolve(__dirname, '../static')))
 app.set('view engine', 'hbs')
