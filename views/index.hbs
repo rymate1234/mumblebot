@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>MumbleBot</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#002984">
+
+  <link rel="icon" type="image/png" href="/images/icons/icon-512x512.png" />
+  
+  <script>
+    // navigator.serviceWorker.register('worker.js', {
+    //   scope: '/'
+    // });
+  </script> {{{styleTags}}}
+</head>
+
+<body>
+  <div id='app'>{{{html}}}</div>
+
+  <script>window.__backend_data__ = {{{ storeData }}}</script>
+  <script>
+    if (typeof Promise === 'undefined' || typeof fetch === 'undefined') {
+      document.getElementById('app').innerHTML = "<h1>Please upgrade to a modern browser</h1><p>We recommend the latest version of Mozilla Firefox, Microsoft Edge or Chrome</p>"
+    } else {
+      var script = document.createElement('script')
+      script.src = '/index.js'
+      document.body.appendChild(script)
+    }
+  </script>
+</body>
+
+</html>

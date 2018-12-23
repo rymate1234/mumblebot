@@ -1,0 +1,9 @@
+{
+  "name": "Mini Radio",
+  "short_name": "Mini Radio",
+  "theme_color": "#002984",
+  "background_color": "#002984",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/"
+}

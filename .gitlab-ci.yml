@@ -1,0 +1,28 @@
+image: node:latest
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - test
+  - deploy
+
+test_lint:
+  stage: test
+  script:
+  - yarn
+  - yarn run lint
+  tags:
+  - docker
+
+deploy_mumblebot:
+  stage: deploy
+  script: 
+  - whoami
+  - docker build . -t mumblebot:latest
+  - docker kill mumblebot
+  - docker rm mumblebot
+# - docker run -d -p 2048:2048 --name mumblebot mumblebot:latest
+  tags:
+  - deploy

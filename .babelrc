@@ -1,0 +1,28 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "node": true
+        }
+      }
+    ],
+    "preact"
+  ],
+  "plugins": [
+    "transform-object-rest-spread",
+    [
+      "module-resolver",
+      {
+        "root": [
+          "."
+        ],
+        "alias": {
+          "react": "preact-compat",
+          "react-dom": "preact-compat"
+        }
+      }
+    ]
+  ]
+}
