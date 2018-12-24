@@ -12,6 +12,7 @@ import render from 'preact-render-to-string'
 
 import ytdl from 'ytdl-core'
 import ffmpeg, { ffprobe } from 'fluent-ffmpeg'
+import normaliseSong from '../../shared/util/normalise-song'
 
 let db = {}
 
@@ -184,7 +185,7 @@ class Mumble {
             Use voteyes and voteno to vote! 10 Seconds to vote...
           </p>
         )
-        client.user.channel.sendMessage()
+        client.user.channel.sendMessage(message)
         this.handleVote(() => this.stopSong())
         break
       case 'volume':
@@ -372,7 +373,7 @@ class Mumble {
           console.log('Finished')
         })
 
-        playingSong.name = filename.name
+        playingSong.name = filename.name || filename.title
         this.setPlaying()
 
         playingSong.input = this.mixer.input({
@@ -397,7 +398,7 @@ class Mumble {
       })
 
       this.currentFile.pipe(playingSong.input, { end: true })
-      playingSong.name = filename.name
+      playingSong.name = filename.name || filename.title
       this.setPlaying()
     }
   }
@@ -554,18 +555,20 @@ class Mumble {
                 details.originalname = url
                 details.path = 'uploads/' + info.video_id
 
+                details = normaliseSong(details)
+
                 db.insertOne(details, function (err, docs) {
                   if (!err) {
                     console.log('Finished processing')
 
-                    if (request) this.callVote({songid: info.video_id})
+                    if (request) this.callVote({ path: details.path })
                   }
                 })
               })
             save.save('./uploads/' + info.video_id)
           } else if (request) {
             console.log('file exist, requests')
-            this.callVote({songid: info.video_id})
+            this.callVote({ path: docs[0].path })
           } else {
             console.log('file exist')
           }

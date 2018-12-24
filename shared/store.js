@@ -5,7 +5,6 @@ import devtools from 'unistore/devtools'
 import sorts from './sorts'
 import persistStore from 'unissist'
 import localStorageAdapter from 'unissist/integrations/localStorageAdapter'
-import fetch from 'isomorphic-fetch'
 
 const isClient = typeof window !== 'undefined'
 
@@ -87,7 +86,6 @@ let actions = store => ({
     return { ...state, ...data }
   },
 
-  
   toggleTheme (state) {
     console.log('toggled it')
     store.setState({

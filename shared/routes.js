@@ -1,6 +1,7 @@
 import list from './list'
-import about from './about'
 import fetch from 'isomorphic-fetch'
+import Songs from './Songs'
+import fecha from 'fecha'
 
 const isClient = typeof window !== 'undefined'
 const prefix = isClient ? '' : 'http://127.0.0.1:3000'
@@ -20,8 +21,13 @@ const getStats = async () => {
 const getSongs = async () => {
   try {
     const songsReq = await fetch(prefix + '/api/music')
-    const list = await songsReq.json()
+    const songs = await songsReq.json()
     const stats = await getStats()
+
+    const list = songs.map(song => ({
+      ...song,
+      info: `Uploaded on ${fecha.format(new Date(song.date), 'YYYY-MM-DD HH:mm:ss')}`
+    }))
 
     return {
       pageData: { list },
@@ -37,15 +43,11 @@ const getSongs = async () => {
 export default {
   '/': {
     name: 'Home',
-    component: list,
+    component: Songs,
     getData: getSongs
   },
   '/radio': {
     name: 'Radio',
     component: list
-  },
-  '/about': {
-    name: 'About',
-    component: about
   }
 }

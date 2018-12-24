@@ -1,8 +1,6 @@
 import { h, Component } from 'preact'
 import fetch from 'isomorphic-fetch'
-import { Button as LinkButton } from '../components'
-
-const Button = LinkButton.withComponent('button')
+import { FormButton } from '../components'
 
 export default class QueueButton extends Component {
   async requestSong (e) {
@@ -23,7 +21,7 @@ export default class QueueButton extends Component {
     return (
       <form method='post' action='/api/request' onSubmit={(e) => this.requestSong(e)}>
         <input type='hidden' name='json' id='json' value={JSON.stringify(props.data)} />
-        <Button type='submit'>Queue</Button>
+        <FormButton primary type='submit'>Queue</FormButton>
       </form>
     )
   }

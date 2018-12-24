@@ -25,7 +25,7 @@ dbconn(function (err, data) {
   playlistsDb = data.collection('playlists')
 })
 
-const thread = spawn('server/mumble/index.js')
+const thread = spawn('dist/mumble/mumble.js')
 thread.send()
 
 const router = Router()

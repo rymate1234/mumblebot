@@ -1,4 +1,4 @@
-export default song => {
+export default function normaliseSong (song) {
   const { filename, originalname, path, date } = song
   let title = ''
   if (song.metadata && song.metadata.title) {

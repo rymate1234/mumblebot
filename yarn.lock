@@ -3666,6 +3666,11 @@ fbjs@^0.8.16, fbjs@^0.8.5:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.18"
 
+fecha@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/fecha/-/fecha-3.0.2.tgz#fb3adb02762ab6dd27f7d5419f2f6c21a4229cd7"
+  integrity sha512-oJK6YbKtmz1uvuDsUHOmo9X2HKmYAcRWtzW2yrCzOJRUfyGUEu/8cDymBdedgEnkdJiTpNyPogWqfTuYffU4yA==
+
 figures@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-2.0.0.tgz#3ab1a2d2a62c8bfb431a0c94cb797a2fce27c962"

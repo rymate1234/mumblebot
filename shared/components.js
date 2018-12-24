@@ -25,8 +25,7 @@ injectGlobal`
   }
 
   .list {
-    max-height: calc(100vh - 68px);
-    height: calc(100vh - 68px);
+    flex: 1 1 auto;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -149,6 +148,11 @@ export const Wrapper = styled.div`
 
 export const Link = styled.a`
   color: ${state => state.theme.link};
+  ${props => props.padding && css`
+    display: inline-block;
+    padding: 5px;
+  `}
+
 `
 
 export const Sidebar = styled.div`
@@ -183,6 +187,7 @@ export const HeaderTitle = styled.a`
   align-items: center;
   text-overflow: ellipsis;
   padding: 0 2rem;
+  font-weight: bold;
   text-decoration: none;
   color: #fff;
 `
@@ -202,9 +207,8 @@ export const HeaderLink = styled.a`
 `
 
 export const Container = styled.main`
-  flex: 0 auto calc(100vh - 72px);
+  height: calc(100vh - 48px);
   padding: 10px;
-  overflow: hidden;
 `
 
 export const Station = styled(Grid)`
@@ -254,8 +258,8 @@ export const Station = styled(Grid)`
 
 export const Button = styled.a`
   transition: all 0.2s ease; 
-  color: ${props => props.theme.foreground};
-  background-color: ${props => props.theme.button.default};
+  color: ${props => props.theme.button.text};
+  background-color: ${props => props.primary ? props.theme.button.default : props.theme.button.secondary};
   border: none;
   border-radius: 45px;
   padding: 16px;
@@ -270,6 +274,9 @@ export const Button = styled.a`
     color: #fff;
   }
 `
+
+export const FormButton = Button.withComponent('button')
+
 export const Card = styled.div`
   padding: 5px 20px;
   color: #fff !important;
@@ -306,12 +313,18 @@ export const Card = styled.div`
 `
 
 export const Label = styled.label`
+  width: 100%;
   display: block;
-  font-weight: bold;
+  line-height: 31px;
+  padding-left: 5px;
+  height: 31px;
+  color: ${props => props.theme.foreground};
+  border: 1px solid ${props => props.theme.selected};
 `
 
 export const Input = styled.input`
   padding: 5px;
+  max-height: 31px;
   display: ${props => props.newline ? 'block' : 'inline'};
   width: ${props => props.width || '100%'};
   margin-bottom: 20px;
@@ -321,38 +334,50 @@ export const Input = styled.input`
   &[type='checkbox'] {
     width: auto;
   }
+  &[type='submit'] {
+    width: auto;
+    color: ${props => props.theme.button.text};
+    background-color: ${props => props.theme.button.default};  
+  }
+  &[type="file"] {
+    display: none;
+  }
+`
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: row;
 `
 
 export const Themed = ({ darkTheme, muted, children }) => {
   const theme = darkTheme ? {
-    header: 'rgb(45, 48, 114)',
-    sidebar: 'rgb(52, 62, 155)',
+    header: '#343a40',
+    sidebar: '#343a40',
     background: '#222',
     foreground: '#fff',
     foregroundLight: '#aaa',
     button: {
-      default: '#ffffff44',
+      default: '#007bff',
+      text: '#fff',
+      secondary: '#343a40',
       hover: '#ffffff77'
     },
     selected: '#4b4d64',
     link: 'hotpink'
   } : {
-    header: '#1A237E',
-    sidebar: '#32408f',
+    header: '#343a40',
+    sidebar: '#343a40',
     background: '#eee',
     foreground: '#000',
     foregroundLight: '#555',
     button: {
-      default: '#ffffffcc',
+      default: '#007bff',
+      text: '#fff',
+      secondary: '#343a40',
       hover: '#00000044'
     },
     selected: '#C5CAE9',
     link: '#3F51B5'
-  }
-
-  if (darkTheme && muted) {
-    theme.sidebar = 'rgb(56, 59, 78)'
-    theme.header = 'rgb(45, 47, 67)'
   }
 
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>

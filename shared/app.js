@@ -21,14 +21,11 @@ class App extends Component {
     this.setState({ sidebarVisible: !this.state.sidebarVisible })
   }
 
-  handleKeys (ev) {
-    document.getElementById('search').focus()
-  }
-
   render (props, state) {
+    const { playing, queue, nowPlaying } = props.mumblebotData.status
     return (
       <Themed muted={props.settings.muted} darkTheme={props.settings.darkTheme}>
-        <Wrapper tabIndex={0} onKeyDown={() => this.handleKeys()} row visible={state.sidebarVisible}>
+        <Wrapper tabIndex={0} row visible={state.sidebarVisible}>
           <Sidebar>
             <Card>
               <p>Search songs....</p>
@@ -38,28 +35,32 @@ class App extends Component {
                 Use Dark Theme
                 <Input id='theme' name='theme' type='checkbox' checked={props.settings.darkTheme} onChange={props.toggleTheme} />
               </label>
-
-              {props.settings.darkTheme && (
-                <label for='muted'>
-                  Muted Colours <Input id='muted' name='muted' type='checkbox' checked={props.settings.muted} onChange={props.toggleMuted} />
-                </label>
-              )}
             </Card>
             <Card expand>
-              <p>Playing</p>
+              {playing && (
+                <div>
+                  <p><strong>Now Playing:</strong></p>
+                  <p>{nowPlaying}</p>
+                </div>
+              )}
+              {queue.length > 0 && (
+                <div>
+                  <p><strong>Queued</strong></p>
+                  {queue.map(item => <p>{item.title || item.name}</p>)}
+                </div>
+              )}
             </Card>
             <Card>
-              <Player station={props.station || {}} />
+              <Player station={props.preview || {}} />
             </Card>
           </Sidebar>
           <Wrapper>
             <Header>
               <HeaderLink onClick={this.toggleSidebar} sidebarLink>Sidebar</HeaderLink>
               <HeaderTitle href='/'>
-                <span>MumbleBot</span>
-                <small></small>
+                MumbleBot
               </HeaderTitle>
-              <HeaderLink href='/about'>About</HeaderLink>
+              <HeaderLink href='/radio'>Radio</HeaderLink>
             </Header>
             <Container>
               <Router routes={routes} base={props.route} notFound={NotFound} />
@@ -71,4 +72,4 @@ class App extends Component {
   }
 }
 
-export default connect('station,data,settings,savedStations,filter', actions)(App)
+export default connect('preview,pageData,settings,mumblebotData', actions)(App)

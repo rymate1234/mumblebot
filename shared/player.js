@@ -83,7 +83,7 @@ class Player extends Component {
         </Cell>
       </Grid>
     ) : (
-      <p>Nothing playing yet</p>
+      <p>Nothing being previewed</p>
     )
   }
 }

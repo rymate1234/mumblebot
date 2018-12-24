@@ -1,7 +1,7 @@
 import { h, Component } from 'preact'
 import { connect } from 'unistore/preact'
 import VirtualList from 'preact-virtual-list'
-import StationRow from './song-row'
+import StationRow from './components/SongRow'
 import { actions } from './store'
 
 class List extends Component {

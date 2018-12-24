@@ -40,7 +40,7 @@ class Router extends Component {
 
   render (props, state) {
     let Current = state.currentComponent
-      return (
+    return (
       <Current params={state.params} path={state.path} router={this.router} />
     )
   }
