@@ -1,4 +1,6 @@
-import { h, Component } from 'preact'
+import { h } from 'preact'
+import { PureComponent } from 'react'
+
 import { Wrapper, Header, Container, Card, HeaderTitle, HeaderLink, Input, Sidebar, Themed } from './components'
 import { connect } from 'unistore/preact'
 import { actions } from './store'
@@ -7,7 +9,7 @@ import Router from './router'
 import NotFound from './not-found'
 import routes from './routes'
 
-class App extends Component {
+class App extends PureComponent {
   constructor () {
     super()
     this.state = {
@@ -63,7 +65,7 @@ class App extends Component {
               <HeaderLink href='/radio'>Radio</HeaderLink>
             </Header>
             <Container>
-              <Router routes={routes} base={props.route} notFound={NotFound} />
+              <Router routes={routes} base={props.route} notFound={NotFound} setPageData={props.setPageData} />
             </Container>
           </Wrapper>
         </Wrapper>
@@ -72,4 +74,4 @@ class App extends Component {
   }
 }
 
-export default connect('preview,pageData,settings,mumblebotData', actions)(App)
+export default connect('preview,settings,mumblebotData', actions)(App)

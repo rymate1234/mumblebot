@@ -1,6 +1,6 @@
 import { h, Component } from 'preact'
 import List from './list'
-import { Wrapper, Input, Form, Link, Label } from './components'
+import { Wrapper, Input, Link, Label, FormWrap } from './components'
 
 class Songs extends Component {
   constructor () {
@@ -29,22 +29,26 @@ class Songs extends Component {
             </Link>
           </div>
           {state.form === 'upload' && (
-            <Form method='post' action='api/upload' onSubmit={() => { }} enctype='multipart/form-data'>
-              <Label>
-                <span>{state.selectedFilename || 'Click to choose file'}</span>
-                <Input name='fileInput' id='fileInput' type='file' onChange={this.handleFile} />
-              </Label>
-              <Input type='submit' value='Upload' />
-            </Form>
+            <form method='post' action='api/upload' onSubmit={() => { }} enctype='multipart/form-data'>
+              <FormWrap>
+                <Label>
+                  <span>{state.selectedFilename || 'Click to choose file'}</span>
+                  <Input name='fileInput' id='fileInput' type='file' onChange={this.handleFile} />
+                </Label>
+                <Input type='submit' value='Upload' />
+              </FormWrap>
+            </form>
           )}
           {state.form === 'youtube' && (
-            <Form method='post' action='api/youtube' onSubmit={() => { }}>
-              <Input name='song' id='yturl' type='url' placeholder='Paste a youtube URL' />
-              <Input type='submit' value='Upload' />
-            </Form>
+            <form method='post' action='api/youtube' onSubmit={() => { }}>
+              <FormWrap>
+                <Input name='song' id='yturl' type='url' placeholder='Paste a youtube URL' />
+                <Input type='submit' value='Upload' />
+              </FormWrap>
+            </form>
           )}
         </div >
-        <List />
+        <List {...props} />
       </Wrapper>
     )
   }

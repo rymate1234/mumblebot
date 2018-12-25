@@ -117,7 +117,6 @@ router.get('/file/:id', function (req, res) {
 
 router.post('/upload', multer({ dest: './uploads/' }).single('fileInput'), function (req, res, next) {
   var details = req.file
-  console.log(details)
   details.date = new Date()
 
   var data = fs.readFileSync(details.path)

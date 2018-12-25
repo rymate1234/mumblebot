@@ -153,6 +153,13 @@ export const Link = styled.a`
     padding: 5px;
   `}
 
+  ${props => props.title && css`
+    text-decoration: none;
+    color: ${state => state.theme.foreground};
+    &::before {
+      content: "🔗 ";
+    }
+  `}
 `
 
 export const Sidebar = styled.div`
@@ -209,6 +216,7 @@ export const HeaderLink = styled.a`
 export const Container = styled.main`
   height: calc(100vh - 48px);
   padding: 10px;
+  display: flex;
 `
 
 export const Station = styled(Grid)`
@@ -249,6 +257,15 @@ export const Station = styled(Grid)`
     align-self: center;
     display: flex;
     align-items: center;
+  }
+
+  p {
+    padding: 0;
+    margin: 0;
+  }
+
+  hr {
+    display: none;
   }
 
   audio {
@@ -317,6 +334,7 @@ export const Label = styled.label`
   display: block;
   line-height: 31px;
   padding-left: 5px;
+  font-size: 13.3333px;
   height: 31px;
   color: ${props => props.theme.foreground};
   border: 1px solid ${props => props.theme.selected};
@@ -324,7 +342,7 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   padding: 5px;
-  max-height: 31px;
+  height: 31px;
   display: ${props => props.newline ? 'block' : 'inline'};
   width: ${props => props.width || '100%'};
   margin-bottom: 20px;
@@ -344,7 +362,7 @@ export const Input = styled.input`
   }
 `
 
-export const Form = styled.form`
+export const FormWrap = styled.div`
   display: flex;
   flex-direction: row;
 `

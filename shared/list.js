@@ -15,10 +15,15 @@ class List extends Component {
     return <StationRow item={channel} key={`${channel._id}-${key}`} />
   }
 
-  render (props, state) {
+  render (props) {
+    let viewAll = props.path.includes('all')
     let channels = props.pageData.list
-    return (
-      <VirtualList overscan={30} class='list' data={channels} rowHeight={56} renderRow={this.renderRow} />
+    return !viewAll ? (
+      <VirtualList overscan={30} class='list' data={channels} rowHeight={56} renderRow={this.renderRow} sync />
+    ) : (
+      <div class='list'>
+        {channels.map(this.renderRow)}
+      </div>
     )
   }
 }

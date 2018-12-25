@@ -1,9 +1,8 @@
-import { h, Component } from 'preact'
-import Navaid from 'navaid'
-import { connect } from 'unistore/preact'
-import { actions } from './store'
+import { h } from 'preact'
+import { PureComponent } from 'react'
 
-class Router extends Component {
+import Navaid from 'navaid'
+class Router extends PureComponent {
   constructor (props) {
     super(props)
 
@@ -23,6 +22,9 @@ class Router extends Component {
 
     Object.entries(this.props.routes).forEach(([ route, info ]) => {
       this.router.on(route, async params => {
+        if (this.state.path === route) {
+          return
+        }
         if (info.getData && isClient) {
           const data = await info.getData()
           this.props.setPageData(data)
@@ -46,4 +48,4 @@ class Router extends Component {
   }
 }
 
-export default connect('preview', actions)(Router)
+export default Router

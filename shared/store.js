@@ -2,7 +2,6 @@ import createStore from 'unistore'
 import { Provider } from 'unistore/preact'
 import { h } from 'preact'
 import devtools from 'unistore/devtools'
-import sorts from './sorts'
 import persistStore from 'unissist'
 import localStorageAdapter from 'unissist/integrations/localStorageAdapter'
 
