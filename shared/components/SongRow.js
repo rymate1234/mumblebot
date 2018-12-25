@@ -9,7 +9,7 @@ const SongLink = ({ item }) => {
   const isLink = item.website || (item.originalname && item.originalname.startsWith('http'))
   const Component = isLink ? Link : 'strong'
 
-  return <Component title href={item.website || item.originalname}>{item.title}</Component>
+  return <Component target='_blank' title href={item.website || item.originalname}>{item.title}</Component>
 }
 
 const SongRow = ({ item, preview, playLocal }) => (

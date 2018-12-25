@@ -103,15 +103,6 @@ let actions = store => ({
       }
     })
   },
-  setSort ({ data, settings, filter }, sort, sortData) {
-    store.setState({
-      sortedChannels: filterChannels(sorts[sort](data.channels, sortData), filter),
-      settings: Object.assign(settings, {
-        sort,
-        sortData
-      })
-    })
-  },
   setFilter (state, e) {
     const { target: { value } } = e
     const filtered = filterChannels(state.data.channels, value)

@@ -8,6 +8,7 @@ class Router extends PureComponent {
 
     this.state = {
       params: {},
+      loadedInitial: false,
       currentComponent: 'div'
     }
   }
@@ -25,11 +26,21 @@ class Router extends PureComponent {
         if (this.state.path === route) {
           return
         }
+
+        const state = { path: route, params, currentComponent: info.component }
+
+        if (!this.state.loadedInitial) {
+          this.setState({ ...state, loadedInitial: true })
+        }
+
         if (info.getData && isClient) {
           const data = await info.getData()
           this.props.setPageData(data)
         }
-        this.setState({ path: route, params, currentComponent: info.component })
+
+        if (this.state.loadedInitial) {
+          this.setState(state)
+        }
       })
     })
 

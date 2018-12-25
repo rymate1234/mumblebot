@@ -351,6 +351,7 @@ export const Input = styled.input`
   border: 1px solid ${props => props.theme.selected};
   &[type='checkbox'] {
     width: auto;
+    height: auto;
   }
   &[type='submit'] {
     width: auto;
