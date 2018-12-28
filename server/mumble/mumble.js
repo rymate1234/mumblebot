@@ -521,8 +521,8 @@ class Mumble {
   }
 
   uploadYoutube (url, request) {
-    if (!url.startsWith('http')) return
     console.log(url)
+    if (!url.startsWith('http')) return
     try {
       var youtube = ytdl(url, {filter: 'audioonly'})
       youtube.on('info', (info, format) => {

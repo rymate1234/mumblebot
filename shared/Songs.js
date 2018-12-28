@@ -1,6 +1,7 @@
 import { h, Component } from 'preact'
 import List from './list'
 import { Wrapper, Input, Link, Label, FormWrap } from './components'
+import YoutubeForm from './components/YoutubeForm'
 
 class Songs extends Component {
   constructor () {
@@ -40,12 +41,7 @@ class Songs extends Component {
             </form>
           )}
           {state.form === 'youtube' && (
-            <form method='post' action='api/youtube' onSubmit={() => { }}>
-              <FormWrap>
-                <Input name='song' id='yturl' type='url' placeholder='Paste a youtube URL' />
-                <Input type='submit' value='Upload' />
-              </FormWrap>
-            </form>
+            <YoutubeForm />
           )}
         </div >
         <List {...props} />

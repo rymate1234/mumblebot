@@ -150,7 +150,7 @@ router.post('/request', function (req, res, next) {
 
 router.post('/youtube', function (req, res, next) {
   console.log(req.body)
-  var url = req.body.songid ? req.body.songid : req.body.yturl
+  var url = req.body.song ? req.body.song : req.body.yturl
   thread.send({ action: 'youtube', payload: url })
   res.send('Success')
 })
