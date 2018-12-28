@@ -5,7 +5,9 @@ import fecha from 'fecha'
 import fastSort from 'fast-sort'
 
 const isClient = typeof window !== 'undefined'
-const prefix = isClient ? '' : 'http://127.0.0.1:3000'
+const port = process.env.PORT || 3000
+
+const prefix = isClient ? '' : 'http://127.0.0.1:' + port
 
 const getStats = async () => {
   try {
