@@ -1,5 +1,5 @@
 import { h } from 'preact'
-import { Station, Button, Link } from '../components'
+import { Station, Link } from '../components'
 import { connect } from 'unistore/preact'
 import { actions } from '../store'
 import { Cell } from 'styled-css-grid'
@@ -18,7 +18,7 @@ const SongRow = ({ item, preview, playLocal }) => (
     <Cell className='title'><SongLink item={item} /></Cell>
     <Cell className='info' top={2}><p>{item.info}</p></Cell>
     <Cell left={2} height={2}><QueueButton data={item}>Queue</QueueButton></Cell>
-    <Cell left={3} height={2}><Button href={item.src || '/api/file/' + item.filename} onClick={() => playLocal(item)}>Preview</Button></Cell>
+    { /* <Cell left={3} height={2}><Button href={item.src || '/api/file/' + item.filename} onClick={() => playLocal(item)}>Preview</Button></Cell> */ }
   </Station>
 )
 

@@ -1,20 +1,15 @@
 import { h, Component } from 'preact'
 import List from './list'
-import { Wrapper, Input, Link, Label, FormWrap } from './components'
+import { Wrapper, Link } from './components'
 import YoutubeForm from './components/YoutubeForm'
+import UploadForm from './components/UploadForm'
 
 class Songs extends Component {
   constructor () {
     super()
     this.state = {
-      form: 'upload',
-      selectedFilename: ''
+      form: 'upload'
     }
-    this.handleFile = this.handleFile.bind(this)
-  }
-
-  handleFile (event) {
-    this.setState({ selectedFilename: event.target.files[0].name })
   }
 
   render (props, state) {
@@ -30,15 +25,7 @@ class Songs extends Component {
             </Link>
           </div>
           {state.form === 'upload' && (
-            <form method='post' action='api/upload' onSubmit={() => { }} enctype='multipart/form-data'>
-              <FormWrap>
-                <Label>
-                  <span>{state.selectedFilename || 'Click to choose file'}</span>
-                  <Input name='fileInput' id='fileInput' type='file' onChange={this.handleFile} />
-                </Label>
-                <Input type='submit' value='Upload' />
-              </FormWrap>
-            </form>
+            <UploadForm />
           )}
           {state.form === 'youtube' && (
             <YoutubeForm />

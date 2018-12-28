@@ -12,6 +12,7 @@ const defaultState = Object.assign({
   pageData: {},
   mumblebotData: {},
   preview: {},
+  filtered: [],
   settings: {
     darkTheme: true
   }
@@ -61,11 +62,9 @@ const filterChannels = (channels, filter) => channels.filter(item => !filter || 
 const filterItem = (item, filter) => {
   let matched = false
   for (const word of filter.split(' ')) {
-    if (item.name.toLowerCase().includes(word)) {
+    if (item.title.toLowerCase().includes(word)) {
       matched = true
-    } else if (item.location.name.toLowerCase().includes(word)) {
-      matched = true
-    } else if (item.location.country.toLowerCase().includes(word)) {
+    } else if (item.info.toLowerCase().includes(word)) {
       matched = true
     } else {
       matched = false
@@ -105,10 +104,10 @@ let actions = store => ({
   },
   setFilter (state, e) {
     const { target: { value } } = e
-    const filtered = filterChannels(state.data.channels, value)
+    const filtered = filterChannels(state.pageData.list, value)
 
     store.setState({
-      sortedChannels: filtered,
+      filtered: (value && filtered.length) ? filtered : [],
       filter: value
     })
   }

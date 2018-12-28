@@ -17,7 +17,7 @@ class List extends Component {
 
   render (props) {
     let viewAll = props.path.includes('all')
-    let channels = props.pageData.list
+    let channels = props.filtered.length ? props.filtered : props.pageData.list
     return !viewAll ? (
       <VirtualList overscanCount={30} class='list' data={channels} rowHeight={56} renderRow={this.renderRow} />
     ) : (
@@ -28,4 +28,4 @@ class List extends Component {
   }
 }
 
-export default connect('pageData', actions)(List)
+export default connect('pageData,filtered', actions)(List)

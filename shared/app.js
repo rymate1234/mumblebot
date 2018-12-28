@@ -17,6 +17,22 @@ class App extends PureComponent {
     }
 
     this.toggleSidebar = this.toggleSidebar.bind(this)
+    this.handleKey = this.handleKey.bind(this)
+  }
+
+  componentDidMount () {
+    window.addEventListener('keydown', this.handleKey)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('keydown', this.handleKey)
+  }
+
+  handleKey (e) {
+    if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)) {
+      e.preventDefault()
+      this.search.getDOMNode().focus()
+    }
   }
 
   toggleSidebar () {
@@ -24,7 +40,8 @@ class App extends PureComponent {
   }
 
   render (props, state) {
-    const { playing, queue, nowPlaying } = props.mumblebotData.status
+    const { status, title } = props.mumblebotData
+    const { playing, queue, nowPlaying } = status
     return (
       <Themed muted={props.settings.muted} darkTheme={props.settings.darkTheme}>
         <Wrapper tabIndex={0} row visible={state.sidebarVisible}>
@@ -60,7 +77,7 @@ class App extends PureComponent {
             <Header>
               <HeaderLink onClick={this.toggleSidebar} sidebarLink>Sidebar</HeaderLink>
               <HeaderTitle href='/'>
-                MumbleBot
+                {title}
               </HeaderTitle>
               <HeaderLink href='/radio'>Radio</HeaderLink>
             </Header>
@@ -74,4 +91,4 @@ class App extends PureComponent {
   }
 }
 
-export default connect('preview,settings,mumblebotData', actions)(App)
+export default connect('filter,settings,mumblebotData', actions)(App)
