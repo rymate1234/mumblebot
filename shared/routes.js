@@ -29,6 +29,7 @@ const getSongs = async () => {
 
     const list = songs.map(song => ({
       ...song,
+      src: '/api/file/' + song.filename,
       info: `Uploaded on ${fecha.format(new Date(song.date), 'YYYY-MM-DD HH:mm:ss')}`
     }))
 

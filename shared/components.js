@@ -37,6 +37,7 @@ injectGlobal`
   input[type=range] {
     /*removes default webkit styles*/
     -webkit-appearance: none;
+    width: 100%;
     
     /*fix for FF unable to apply focus style bug */
     border: 1px solid white;

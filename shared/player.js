@@ -61,24 +61,22 @@ class Player extends Component {
 
   render (props, state) {
     if (this.audio) this.audio.volume = state.volume / 100
-    return Object.keys(props.station).length > 0 ? (
-      <Grid rows={'auto auto auto'} columns={1} gap='2px'>
-        <Cell className='title'>{props.station.name}</Cell>
-        <Cell className='location' top={2}>{props.station.location.name}, {props.station.location.country}</Cell>
+    return Object.keys(props.preview).length > 0 ? (
+      <Grid rows={'auto auto auto'} columns={'2fr 70px'} gap='2px'>
+        <Cell className='title' width={2}>{props.preview.title}</Cell>
+        <Cell className='location' top={2} width={2}>{props.preview.info}</Cell>
+
+        <audio src={props.preview.src} ref={audio => { this.audio = audio }} autoPlay volume={state.volume}
+          onPlay={() => this.setPlaying()} onPause={() => this.setPaused()} />
 
         <Cell top={3}>
-          <audio src={props.station.src} ref={audio => { this.audio = audio }} autoPlay volume={state.volume}
-            onPlay={() => this.setPlaying()} onPause={() => this.setPaused()} />
-        </Cell>
-
-        <Cell top={4} middle>
           <label>
             Volume
           </label>
           <input type='range' min='0' max='100' onChange={linkState(this, 'volume')} value={state.volume} class='slider' />
         </Cell>
 
-        <Cell top={4} left={2} center middle>
+        <Cell top={3} left={2} center middle>
           <Button onClick={() => this.togglePlay()}>{state.playing ? 'Pause' : 'Play'}</Button>
         </Cell>
       </Grid>

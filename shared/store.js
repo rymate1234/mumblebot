@@ -76,8 +76,9 @@ const filterItem = (item, filter) => {
 }
 
 let actions = store => ({
-  setPreview (state, station) {
-    return Object.assign(state, { station })
+  setPreview (state, { e, item }) {
+    if (e) e.preventDefault()
+    return Object.assign(state, { preview: item })
   },
 
   setPageData (state, data) {

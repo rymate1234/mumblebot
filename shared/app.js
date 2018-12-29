@@ -70,7 +70,7 @@ class App extends PureComponent {
               )}
             </Card>
             <Card>
-              <Player station={props.preview || {}} />
+              <Player preview={props.preview || {}} />
             </Card>
           </Sidebar>
           <Wrapper>
@@ -91,4 +91,4 @@ class App extends PureComponent {
   }
 }
 
-export default connect('filter,settings,mumblebotData', actions)(App)
+export default connect('filter,settings,mumblebotData,preview', actions)(App)
