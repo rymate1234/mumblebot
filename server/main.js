@@ -4,7 +4,7 @@ import express from 'express'
 import compression from 'compression'
 import { ServerStore } from '../shared/store'
 import App from '../shared/app'
-import routes from '../shared/routes'
+import routes, { getStats } from '../shared/routes'
 import { h } from 'preact'
 
 import render from 'preact-render-to-string'
@@ -33,13 +33,14 @@ app.use('/api', api)
 
 const init = async route => {
   const current = routes[route]
-  if (!current || !current.getData) return
 
-  let data = {}
-  try {
-    data = await current.getData()
-  } catch (e) {
-    console.log(e)
+  let data = { mumblebotData: await getStats() }
+  if (current && current.getData) {
+    try {
+      data = await current.getData()
+    } catch (e) {
+      console.log(e)
+    }
   }
   const store = ServerStore({
     children: <App route={route} />,

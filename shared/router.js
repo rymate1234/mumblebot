@@ -16,7 +16,7 @@ class Router extends PureComponent {
   componentWillMount () {
     const base = this.props.base || '/'
     this.router = new Navaid('/', () => {
-      this.setState({ currentComponent: this.props.notFound })
+      this.setState({ currentComponent: this.props.notFound, loadedInitial: true })
     })
 
     const isClient = typeof window !== 'undefined'
@@ -31,14 +31,9 @@ class Router extends PureComponent {
 
         if (!this.state.loadedInitial) {
           this.setState({ ...state, loadedInitial: true })
-        }
-
-        if (info.getData && isClient) {
+        } else if (info.getData && isClient) {
           const data = await info.getData()
           this.props.setPageData(data)
-        }
-
-        if (this.state.loadedInitial) {
           this.setState(state)
         }
       })

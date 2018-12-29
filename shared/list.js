@@ -19,7 +19,7 @@ class List extends Component {
     let viewAll = props.path.includes('all')
     let channels = props.filtered.length ? props.filtered : props.pageData.list
     return !viewAll ? (
-      <VirtualList overscanCount={30} class='list' data={channels} rowHeight={56} renderRow={this.renderRow} />
+      <VirtualList overscanCount={20} class='list' data={channels} rowHeight={56} renderRow={this.renderRow} />
     ) : (
       <div class='list'>
         {channels.map(this.renderRow)}

@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000
 
 const prefix = isClient ? '' : 'http://127.0.0.1:' + port
 
-const getStats = async () => {
+export const getStats = async () => {
   try {
     const stats = await fetch(prefix + '/api/stats')
     const data = await stats.json()

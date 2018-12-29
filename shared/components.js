@@ -158,6 +158,7 @@ export const Link = styled.a`
     text-decoration: none;
     color: ${state => state.theme.foreground};
     &::before {
+      font-size: 12px;
       content: "🔗 ";
     }
   `}
