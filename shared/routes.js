@@ -54,8 +54,9 @@ const getStations = async () => {
     data.places.forEach(element => {
       element.channels.forEach(channelIndex => {
         const channel = data.channels[channelIndex]
-        channel.location = element
-        channel.location.country = data.countries[element.countryIndex]
+        const location = element
+        const country = data.countries[element.countryIndex]
+        channel.info = `${location.name}, ${country}`
         channels.push(channel)
       })
     })
@@ -63,8 +64,7 @@ const getStations = async () => {
     let list = channels.map(channel => ({
       ...channel,
       title: channel.name,
-      radio: true,
-      info: `${channel.location.name}, ${channel.location.country}`
+      radio: true
     }))
 
     list = fastSort(list).asc('name')
