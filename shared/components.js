@@ -156,6 +156,7 @@ export const Link = styled.a`
 
   ${props => props.title && css`
     text-decoration: none;
+    font-size: 16px;
     color: ${state => state.theme.foreground};
     &::before {
       font-size: 12px;
@@ -222,6 +223,7 @@ export const Container = styled.main`
 `
 
 export const Station = styled(Grid)`
+  max-height: 56px;
   min-height: 56px;
   margin: 0 auto;
   max-width: 100%;
@@ -240,6 +242,7 @@ export const Station = styled(Grid)`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 16px;
     align-self: center;
     display: flex;
     align-items: center;
@@ -314,6 +317,7 @@ export const Card = styled.div`
 
   .title {
     font-weight: bold;
+    font-size: 16px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
