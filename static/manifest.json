@@ -1,6 +1,6 @@
 {
-  "name": "Mini Radio",
-  "short_name": "Mini Radio",
+  "name": "MumbleBot",
+  "short_name": "MumbleBot",
   "theme_color": "#002984",
   "background_color": "#002984",
   "display": "standalone",

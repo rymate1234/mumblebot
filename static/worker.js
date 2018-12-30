@@ -2,7 +2,7 @@
 var CACHE = 'cache-and-update'
 var resources = [
   '/',
-  '/stations',
+  '/radio',
   '/index.js'
 ]
 // On install, cache some resources.

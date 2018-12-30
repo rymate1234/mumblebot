@@ -66,7 +66,7 @@ const getStations = async () => {
       radio: true
     }))
 
-    list = list.sort((a, b) => a.title > b.title)
+    list = list.sort((a, b) => a.title !== b.title ? a.title < b.title ? -1 : 1 : 0)
 
     return {
       pageData: { list },

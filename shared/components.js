@@ -6,6 +6,7 @@ injectGlobal`
   * {
     box-sizing: border-box;
     transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+    -webkit-text-size-adjust: none;
   }
   html, body {
     margin: 0;
