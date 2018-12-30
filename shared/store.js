@@ -2,8 +2,7 @@ import createStore from 'unistore'
 import { Provider } from 'unistore/preact'
 import { h } from 'preact'
 import devtools from 'unistore/devtools'
-import persistStore from 'unissist'
-import localStorageAdapter from 'unissist/integrations/localStorageAdapter'
+import Cookies from 'universal-cookie'
 
 const isClient = typeof window !== 'undefined'
 
@@ -18,26 +17,26 @@ const defaultState = Object.assign({
   }
 }, isClient ? window.__backend_data__ : {})
 
-const combineState = state => Object.assign(defaultState, {
-  savedStations: state.savedStations || [],
-  settings: state.settings
-})
+let cookies = {}
 
-const config = {
-  version: 1,
-  debounceTime: 100,
-  hydration: combineState,
-  map: combineState
+const getSettings = () => {
+  let settings = cookies.get('settings')
+  if (!settings) {
+    settings = defaultState.settings
+    cookies.set('settings', settings)
+  }
+  return settings
 }
 
 const ClientStore = ({ children }) => {
+  cookies = new Cookies()
+
+  const settings = getSettings()
+  const state = { ...defaultState, settings }
+
   const store = process.env.NODE_ENV === 'production'
-    ? createStore(defaultState)
-    : devtools(createStore(defaultState))
-
-  const adapter = localStorageAdapter()
-
-  persistStore(store, adapter, config)
+    ? createStore(state)
+    : devtools(createStore(state))
 
   return (
     <Provider store={store}>
@@ -46,8 +45,11 @@ const ClientStore = ({ children }) => {
   )
 }
 
-const ServerStore = ({ children, data }) => {
-  const store = createStore({ ...defaultState, ...data })
+const ServerStore = ({ children, data, req }) => {
+  cookies = new Cookies(req.headers.cookie)
+
+  const settings = getSettings()
+  const store = createStore({ ...defaultState, ...data, settings })
 
   const serverStore = (
     <Provider store={store}>
@@ -86,23 +88,14 @@ let actions = store => ({
   },
 
   toggleTheme (state) {
+    const settings = {
+      darkTheme: !state.settings.darkTheme
+    }
+    cookies.set('settings', settings)
     console.log('toggled it')
-    store.setState({
-      settings: {
-        darkTheme: !state.settings.darkTheme,
-        muted: state.settings.muted
-      }
-    })
+    store.setState({ settings })
   },
-  toggleMuted (state) {
-    console.log('muted it')
-    store.setState({
-      settings: {
-        darkTheme: state.settings.darkTheme,
-        muted: !state.settings.muted
-      }
-    })
-  },
+
   setFilter (state, e) {
     const { target: { value } } = e
     const filtered = filterChannels(state.pageData.list, value)

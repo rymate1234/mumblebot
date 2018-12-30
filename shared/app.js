@@ -43,7 +43,7 @@ class App extends PureComponent {
     const { status, title } = props.mumblebotData
     const { playing, queue, nowPlaying } = status
     return (
-      <Themed muted={props.settings.muted} darkTheme={props.settings.darkTheme}>
+      <Themed darkTheme={props.settings.darkTheme}>
         <Wrapper tabIndex={0} row visible={state.sidebarVisible}>
           <Sidebar>
             <Card>

@@ -31,8 +31,8 @@ app.set('views', path.resolve(__dirname, '../views'))
 // Import API Routes
 app.use('/api', api)
 
-const init = async route => {
-  const current = routes[route]
+const init = async req => {
+  const current = routes[req.url]
 
   let data = { mumblebotData: await getStats() }
   if (current && current.getData) {
@@ -43,8 +43,9 @@ const init = async route => {
     }
   }
   const store = ServerStore({
-    children: <App route={route} />,
-    data
+    children: <App route={req.url} />,
+    data,
+    req
   })
 
   return store
@@ -52,7 +53,7 @@ const init = async route => {
 
 // on each request, render and return a component:
 app.get('/*', async (req, res, next) => {
-  const store = await init(req.url)
+  const store = await init(req)
   if (!store) return next()
   const sheet = new ServerStyleSheet()
   const html = render(sheet.collectStyles(store.serverStore))
