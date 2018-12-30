@@ -59,7 +59,13 @@ app.get('/*', async (req, res, next) => {
   const html = render(sheet.collectStyles(store.serverStore))
   const styleTags = sheet.getStyleTags()
 
-  const storeData = JSON.stringify(store.data)
+  const data = store.data
+
+  if (data.pageData && data.pageData.list) {
+    data.pageData.list = data.pageData.list.slice(0, 100)
+  }
+
+  const storeData = JSON.stringify(data)
 
   res.render('index', { html, styleTags, storeData })
 })

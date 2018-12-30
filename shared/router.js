@@ -31,7 +31,9 @@ class Router extends PureComponent {
 
         if (!this.state.loadedInitial) {
           this.setState({ ...state, loadedInitial: true })
-        } else if (info.getData && isClient) {
+        }
+
+        if (info.getData && isClient) {
           const data = await info.getData()
           this.props.setPageData(data)
           this.setState(state)

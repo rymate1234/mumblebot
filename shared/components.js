@@ -383,7 +383,7 @@ export const Themed = ({ darkTheme, muted, children }) => {
     foreground: '#fff',
     foregroundLight: '#aaa',
     button: {
-      default: '#007bff',
+      default: '#0062cc',
       text: '#fff',
       secondary: '#343a40',
       hover: '#ffffff77'
@@ -397,7 +397,7 @@ export const Themed = ({ darkTheme, muted, children }) => {
     foreground: '#000',
     foregroundLight: '#555',
     button: {
-      default: '#007bff',
+      default: '#0062cc',
       text: '#fff',
       secondary: '#343a40',
       hover: '#00000044'

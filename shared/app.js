@@ -47,7 +47,9 @@ class App extends PureComponent {
         <Wrapper tabIndex={0} row visible={state.sidebarVisible}>
           <Sidebar>
             <Card>
-              <p>Search songs....</p>
+              <label for='search'>
+                <p>Search songs....</p>
+              </label>
               <Input id='search' value={props.filter} ref={(input) => { this.search = input }} onInput={props.setFilter} />
 
               <label for='theme'>
@@ -58,7 +60,7 @@ class App extends PureComponent {
             <Card expand>
               {playing && (
                 <div>
-                  <p><strong>Now Playing:</strong></p>
+                  <p><strong>Now Playing</strong></p>
                   <p>{nowPlaying}</p>
                 </div>
               )}

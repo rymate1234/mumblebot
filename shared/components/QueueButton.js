@@ -20,7 +20,7 @@ export default class QueueButton extends Component {
   render (props) {
     return (
       <form method='post' action='/api/request' onSubmit={(e) => this.requestSong(e)}>
-        <input type='hidden' name='json' id='json' value={JSON.stringify(props.data)} />
+        <input type='hidden' name='json' value={JSON.stringify(props.data)} />
         <FormButton primary type='submit'>Queue</FormButton>
       </form>
     )
