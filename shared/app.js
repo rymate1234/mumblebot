@@ -83,9 +83,7 @@ class App extends PureComponent {
               </HeaderTitle>
               <HeaderLink href='/radio'>Radio</HeaderLink>
             </Header>
-            <Container>
-              <Router routes={routes} base={props.route} notFound={NotFound} setPageData={props.setPageData} />
-            </Container>
+            <Router routes={routes} base={props.route} notFound={NotFound} setPageData={props.setPageData} />
           </Wrapper>
         </Wrapper>
       </Themed>

@@ -2,6 +2,10 @@ import { h } from 'preact'
 import { PureComponent } from 'react'
 
 import Navaid from 'navaid'
+import { Container, Center } from './components'
+import { WanderingCubes } from 'styled-spinkit'
+import { withTheme } from 'styled-components'
+
 class Router extends PureComponent {
   constructor (props) {
     super(props)
@@ -30,13 +34,15 @@ class Router extends PureComponent {
         const state = { path: route, params, currentComponent: info.component }
 
         if (!this.state.loadedInitial) {
-          this.setState({ ...state, loadedInitial: true })
+          this.setState(state)
         }
 
         if (info.getData && isClient) {
+          this.setState({ loading: this.state.loadedInitial })
           const data = await info.getData()
           this.props.setPageData(data)
-          this.setState(state)
+          this.setState({ ...state, loadedInitial: true })
+          this.setState({ loading: false })
         }
       })
     })
@@ -51,9 +57,16 @@ class Router extends PureComponent {
   render (props, state) {
     let Current = state.currentComponent
     return (
-      <Current params={state.params} path={state.path} router={this.router} />
+      <Container>
+        {state.loading &&
+          <Center>
+            <WanderingCubes color={props.theme.foreground} size={100} />
+          </Center>
+        }
+        <Current params={state.params} path={state.path} router={this.router} />
+      </Container>
     )
   }
 }
 
-export default Router
+export default withTheme(Router)

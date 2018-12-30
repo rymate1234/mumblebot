@@ -223,6 +223,14 @@ export const Container = styled.main`
   display: flex;
 `
 
+export const Center = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -100px;
+`
+
 export const Station = styled(Grid)`
   max-height: 56px;
   min-height: 56px;
