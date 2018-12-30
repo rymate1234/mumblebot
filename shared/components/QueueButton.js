@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-unfetch'
 import { FormButton } from '../components'
 
 export default class QueueButton extends Component {

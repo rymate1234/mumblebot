@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-unfetch'
 import { FormWrap, Input, Label } from '../components'
 
 export default class UploadForm extends Component {

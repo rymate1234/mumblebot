@@ -1,8 +1,6 @@
 import list from './list'
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-unfetch'
 import Songs from './Songs'
-import fecha from 'fecha'
-import fastSort from 'fast-sort'
 
 const isClient = typeof window !== 'undefined'
 const port = process.env.PORT || 3000
@@ -27,10 +25,11 @@ const getSongs = async () => {
     const songs = await songsReq.json()
     const stats = await getStats()
 
+    const format = date => date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
     const list = songs.map(song => ({
       ...song,
       src: '/api/file/' + song.filename,
-      info: `Uploaded on ${fecha.format(new Date(song.date), 'YYYY-MM-DD HH:mm:ss')}`
+      info: `Uploaded on ${format(new Date(song.date))}`
     }))
 
     return {
@@ -67,7 +66,7 @@ const getStations = async () => {
       radio: true
     }))
 
-    list = fastSort(list).asc('name')
+    list = list.sort((a, b) => a.title > b.title)
 
     return {
       pageData: { list },

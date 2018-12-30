@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-unfetch'
 import { promisify } from 'util'
 import fs from 'fs'
 
