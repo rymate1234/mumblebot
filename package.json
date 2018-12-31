@@ -60,7 +60,6 @@
     "@babel/register": "^7.0.0",
     "babel-node-modules": "^0.0.1",
     "babel-plugin-module-resolver": "^3.1.1",
-    "babel-plugin-styled-components": "^1.10.0",
     "babel-preset-preact": "https://github.com/tomasdev/babel-preset-preact.git#patch-1",
     "cross-env": "^5.2.0",
     "eslint": "5.11.1",

@@ -122,6 +122,7 @@ export const Grid = styled.div`
   grid-template-columns: ${({ columns = 12 }) => frGetter(columns)};
   grid-gap: ${gap};
 `
+
 export const Cell = styled.div`
   height: 100%;
   min-width: 0;
