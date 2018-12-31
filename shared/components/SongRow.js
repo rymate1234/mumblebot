@@ -1,8 +1,7 @@
 import { h } from 'preact'
-import { Station, Button, Link } from '../components'
+import { Station, Button, Link, Cell } from '../components'
 import { connect } from 'unistore/preact'
 import { actions } from '../store'
-import { Cell } from 'styled-css-grid'
 import QueueButton from './QueueButton'
 
 const SongLink = ({ item }) => {

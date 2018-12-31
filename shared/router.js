@@ -3,7 +3,6 @@ import { PureComponent } from 'react'
 
 import Navaid from 'navaid'
 import { Container, Center } from './components'
-import { WanderingCubes } from 'styled-spinkit'
 import { withTheme } from 'styled-components'
 
 class Router extends PureComponent {
@@ -60,7 +59,7 @@ class Router extends PureComponent {
       <Container>
         {state.loading &&
           <Center>
-            <WanderingCubes color={props.theme.foreground} size={100} />
+            <img src='https://images.rymate.co.uk/images/3SddFB8.gif' />
           </Center>
         }
         <Current params={state.params} path={state.path} router={this.router} />

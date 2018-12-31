@@ -14,14 +14,15 @@
     "client": "cross-env BABEL_ENV=client parcel watch client/index.js",
     "server": "cross-env BABEL_ENV=server parcel watch  --target node ./server/main.js ./server/mumble/mumble.js"
   },
+  "browserslist": ">1%, not ie 11, not op_mini all",
   "alias": {
     "react": "preact-compat",
     "react-dom": "preact-compat"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "audio-metadata": "^0.3.0",
     "audio-mixer": "https://github.com/notthetup/audio-mixer.git",
-    "babel-polyfill": "^6.26.0",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
     "express": "^4.16.4",
@@ -45,8 +46,6 @@
     "react-keydown": "^1.9.7",
     "regenerator-runtime": "^0.13.1",
     "styled-components": "^3.4.2",
-    "styled-css-grid": "^0.11.0",
-    "styled-spinkit": "^0.4.0",
     "threads": "^0.12.0",
     "underscore": "^1.9.1",
     "unistore": "^3.1.0",
@@ -54,15 +53,15 @@
     "ytdl-core": "^0.28.3"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
     "babel-node-modules": "^0.0.1",
     "babel-plugin-module-resolver": "^3.1.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-preact": "^1.1.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.26.0",
+    "babel-plugin-styled-components": "^1.10.0",
+    "babel-preset-preact": "https://github.com/tomasdev/babel-preset-preact.git#patch-1",
     "cross-env": "^5.2.0",
     "eslint": "5.11.1",
     "eslint-config-standard": "^12.0.0",

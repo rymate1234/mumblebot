@@ -1,7 +1,6 @@
 /* global Windows */
 import { h, Component } from 'preact'
-import { Button } from './components'
-import { Grid, Cell } from 'styled-css-grid'
+import { Button, Grid, Cell } from './components'
 import linkState from 'linkstate'
 
 class Player extends Component {
