@@ -1,4 +1,5 @@
 import './preactPatch'
+import 'isomorphic-unfetch'
 
 import express from 'express'
 import compression from 'compression'

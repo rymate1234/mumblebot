@@ -1,11 +1,11 @@
 import { h, Component } from 'preact'
-import fetch from 'isomorphic-unfetch'
 import { FormWrap, Input } from '../components'
 
 export default class YoutubeForm extends Component {
   async addYoutube (e) {
     e.preventDefault()
     this.setState({ state: 'Loading...' })
+    // eslint-disable-next-line no-undef
     const req = await fetch('/api/youtube', {
       method: 'POST',
       headers: {

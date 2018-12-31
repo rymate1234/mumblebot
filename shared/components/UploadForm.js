@@ -1,5 +1,4 @@
 import { h, Component } from 'preact'
-import fetch from 'isomorphic-unfetch'
 import { FormWrap, Input, Label } from '../components'
 
 export default class UploadForm extends Component {
@@ -18,6 +17,7 @@ export default class UploadForm extends Component {
     const formData = new FormData()
     formData.append('fileInput', this.state.file)
 
+    // eslint-disable-next-line no-undef
     const req = await fetch('/api/upload', {
       method: 'POST',
       body: formData

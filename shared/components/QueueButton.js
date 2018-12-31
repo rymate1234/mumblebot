@@ -1,10 +1,10 @@
 import { h, Component } from 'preact'
-import fetch from 'isomorphic-unfetch'
 import { FormButton } from '../components'
 
 export default class QueueButton extends Component {
   async requestSong (e) {
     e.preventDefault()
+    // eslint-disable-next-line no-undef
     const req = await fetch('/api/request', {
       method: 'POST',
       headers: {

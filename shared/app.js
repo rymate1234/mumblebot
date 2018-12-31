@@ -1,7 +1,7 @@
 import { h } from 'preact'
 import { PureComponent } from 'react'
 
-import { Wrapper, Header, Container, Card, HeaderTitle, HeaderLink, Input, Sidebar, Themed } from './components'
+import { Wrapper, Header, Card, HeaderTitle, HeaderLink, Input, Sidebar, Themed } from './components'
 import { connect } from 'unistore/preact'
 import { actions } from './store'
 import Player from './player'

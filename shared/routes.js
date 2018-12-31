@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 import list from './list'
-import fetch from 'isomorphic-unfetch'
 import Songs from './Songs'
 
 const isClient = typeof window !== 'undefined'
