@@ -24,8 +24,6 @@
         [
           "@babel/preset-env",
           {
-            "modules": false,
-            "useBuiltIns": "usage",
             "targets": {
               "browsers": [
                 "> 1%",
