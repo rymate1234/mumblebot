@@ -1,7 +1,8 @@
 import { h } from 'preact'
 import { PureComponent } from 'react'
 
-import Navaid from 'navaid'
+// this saddens me
+import Navaid from 'navaid/dist/navaid'
 import { Container, Center } from './components'
 import { withTheme } from 'styled-components'
 
