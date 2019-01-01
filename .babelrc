@@ -24,7 +24,7 @@
         [
           "@babel/preset-env",
           {
-            "targets": "> 1%, not dead, ie9",
+            "targets": "> 1%, not dead, ie 9",
             "modules": false,
             "useBuiltIns": "entry",
             "forceAllTransforms": true,
