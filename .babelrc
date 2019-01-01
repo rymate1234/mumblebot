@@ -17,22 +17,5 @@
         }
       }
     ]
-  ],
-  "env": {
-    "legacy": {
-      "presets": [
-        [
-          "@babel/preset-env",
-          {
-            "targets": "> 1%, not dead, ie 9",
-            "modules": false,
-            "useBuiltIns": "usage",
-            "forceAllTransforms": true,
-            "ignoreBrowserslistConfig": true
-          }
-        ],
-      ],
-      "plugins": ["@babel/plugin-transform-runtime"]
-    }
-  }
+  ]
 }

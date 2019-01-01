@@ -7,7 +7,6 @@
     "get-stations": "node ./util/get-stations.js",
     "build": "npm-run-all --parallel build:*",
     "build:client": "cross-env BABEL_ENV=client parcel build --detailed-report --experimental-scope-hoisting ./client/index.js",
-    "build:legacy": "cross-env BABEL_ENV=legacy parcel build --detailed-report ./client/legacy.js",
     "build:server": "cross-env BABEL_ENV=server parcel build --detailed-report --target node  ./server/main.js ./server/mumble/mumble.js",
     "dev": "npm-run-all --parallel client server start",
     "lint": "eslint . --fix",
@@ -22,7 +21,6 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@babel/runtime": "^7.2.0",
     "audio-metadata": "^0.3.0",
     "audio-mixer": "https://github.com/notthetup/audio-mixer.git",
     "body-parser": "^1.18.3",
@@ -58,7 +56,6 @@
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.2.3",
-    "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
     "@babel/register": "^7.0.0",
     "babel-node-modules": "^0.0.1",
