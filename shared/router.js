@@ -2,7 +2,7 @@ import { h } from 'preact'
 import { PureComponent } from 'react'
 
 // this saddens me
-import Navaid from 'navaid/dist/navaid'
+import Navaid from 'navaid/dist/navaid.umd'
 import { Container, Center } from './components'
 import { withTheme } from 'styled-components'
 
