@@ -25,8 +25,9 @@
           "@babel/preset-env",
           {
             "modules": false,
-            "useBuiltIns": "usage",
-            "forceAllTransforms": true
+            "useBuiltIns": "entry",
+            "forceAllTransforms": true,
+            "ignoreBrowserslistConfig": true
           }
         ],
       ]
