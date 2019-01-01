@@ -31,7 +31,8 @@
             "ignoreBrowserslistConfig": true
           }
         ],
-      ]
+      ],
+      "plugins": ["@babel/plugin-transform-runtime"]
     }
   }
 }
