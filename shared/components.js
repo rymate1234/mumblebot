@@ -34,6 +34,8 @@ export const Link = styled.a`
     display: inline-block;
     padding: 5px;
   `}
+  
+  background-color: ${props => props.selected ? state.theme.selected : ''}
 
   ${props => props.title && css`
     text-decoration: none;
