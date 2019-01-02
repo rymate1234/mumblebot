@@ -35,7 +35,7 @@ export const Link = styled.a`
     padding: 5px;
   `}
   
-  background-color: ${props => props.selected ? state.theme.selected : ''};
+  background-color: ${(props, state) => props.selected ? state.theme.selected : ''};
 
   ${props => props.title && css`
     text-decoration: none;
