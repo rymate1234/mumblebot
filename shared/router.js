@@ -1,19 +1,13 @@
-import { h } from 'preact'
-import { PureComponent } from 'react'
+import { h, Component } from 'preact'
 
 import Navaid from 'navaid'
 import { Container, Center } from './components'
-import { withTheme } from 'styled-components'
 
-class Router extends PureComponent {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      params: {},
-      loadedInitial: false,
-      currentComponent: 'div'
-    }
+class Router extends Component {
+  state = {
+    params: {},
+    loadedInitial: false,
+    currentComponent: 'div'
   }
 
   componentWillMount () {
@@ -40,8 +34,7 @@ class Router extends PureComponent {
           this.setState({ loading: this.state.loadedInitial })
           const data = await info.getData()
           this.props.setPageData(data)
-          this.setState({ ...state, loadedInitial: true })
-          this.setState({ loading: false })
+          this.setState({ ...state, loadedInitial: true, loading: false })
         }
       })
     })
@@ -68,4 +61,4 @@ class Router extends PureComponent {
   }
 }
 
-export default withTheme(Router)
+export default Router

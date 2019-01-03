@@ -4,13 +4,9 @@ import { Button, Grid, Cell } from './components'
 import linkState from 'linkstate'
 
 class Player extends Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      volume: 100,
-      playing: false
-    }
+  state = {
+    volume: 100,
+    playing: false
   }
 
   componentDidMount () {

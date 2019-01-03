@@ -1,11 +1,13 @@
-import { h, Component } from 'preact'
+import { h } from 'preact'
 import List from './list'
 import { Wrapper } from './components'
 import Forms from './components/Forms'
 
-export default (props) => (
+const Songs = (props) => (
   <Wrapper>
     <Forms />
     <List {...props} />
   </Wrapper>
 )
+
+export default Songs

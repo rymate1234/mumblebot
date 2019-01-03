@@ -4,7 +4,6 @@ import { connect as _connect } from 'mumble'
 import Queue from './queue'
 import { readFileSync, readdir, stat } from 'fs'
 import Mixer from 'audio-mixer'
-import { contains } from 'underscore'
 import dbconn from '../database'
 import { server, username, password } from '../../config.js'
 import { h } from 'preact'
@@ -14,52 +13,41 @@ import ytdl from 'ytdl-core'
 import ffmpeg, { ffprobe } from 'fluent-ffmpeg'
 import normaliseSong from '../../shared/util/normalise-song'
 
-let db = {}
-
-dbconn(function (err, data) {
-  if (err !== null) {
-    return
-  }
-
-  db = data.collection('songs')
-})
-
-var connected
-
-var options = {
+const options = {
   key: readFileSync('key.pem'),
   cert: readFileSync('cert.pem')
 }
 
-var client
-
-var CURRENT_VOL = 0.125
-
-var playing
-
-var queue = new Queue()
-var playingSong = {}
-
-var yesVotes = []
-var noVotes = []
-var voteHappening = false
-
-var sessions = {}
+const DEFAULT_VOL = 0.125
 
 class Mumble {
-  constructor () {
-    console.log('Connecting')
-    this.currentFile = {}
-    this.inputStream = {}
+  currentFile = {}
+  inputStream = {}
 
-    this.mixer = new Mixer({
-      channels: 2,
-      sampleRate: 44100
-    })
-    this.onUpdate = function () {}
-  }
+  mixer = new Mixer({
+    channels: 2,
+    sampleRate: 44100
+  })
+
+  playingSong = {}
+  yesVotes = []
+  noVotes = []
+  queue = new Queue()
+  voteHappening = false
+  currentVolume = DEFAULT_VOL
+  db = {}
 
   connect () {
+    dbconn((err, data) => {
+      if (err !== null) {
+        return
+      }
+
+      this.db = data.collection('songs')
+    })
+
+    console.log('Connecting')
+
     _connect(server, options, (error, connection) => {
       if (error) {
         throw new Error(error)
@@ -68,15 +56,15 @@ class Mumble {
       console.log('Connected')
 
       connection.authenticate(username, password)
-      client = connection
+      this.client = connection
 
       connection.on('initialized', () => {
         console.log('Connection initialized')
-        client.user.channel.sendMessage('...aaaaaand we\'re back!')
-        client.user.channel.sendMessage('Loaded MumbleBot!')
-        client.connection.sendMessage('UserState', {
-          session: client.user.session,
-          actor: client.user.session,
+        this.sendMessage('...aaaaaand we\'re back!')
+        this.sendMessage('Loaded MumbleBot!')
+        this.client.connection.sendMessage('UserState', {
+          session: this.client.user.session,
+          actor: this.client.user.session,
           comment: render(
             <div>
               <h1>Welcome to MumbleBot</h1>
@@ -86,46 +74,40 @@ class Mumble {
         })
       })
 
-      this.inputStream = client.inputStream({
+      this.inputStream = this.client.inputStream({
         channels: 2,
         sampleRate: 44100,
-        gain: CURRENT_VOL
+        gain: this.currentVolume
       })
       this.mixer.pipe(this.inputStream)
 
-      // Collect user information
-      connection.on('userState', function (state) {
-        sessions[state.session] = state
-      })
-
       // On text message...
-      connection.on('textMessage', (data) => {
-        console.log(data.actor)
-        var user = sessions[data.actor]
-        console.log(new Date() + ' - ' + user.name + ': ', data.message)
-        this.handleMessage(data)
+      connection.on('message', (message, user) => {
+        console.log(`${new Date()} <${user.name}|${user.hash}> ${message}`)
+        this.handleMessage(message, user)
       })
 
-      connected = true
+      this.connected = true
     })
   }
 
   getStatus () {
     var status = {}
-    status.playing = playing
-    status.nowPlaying = playingSong.name || playingSong.title
-    status.queue = queue.getArray()
+    status.playing = this.playing
+    status.nowPlaying = this.playingSong.name || this.playingSong.title
+    status.queue = this.queue.getArray()
+    status.users = this.client.users().map(user => user.name)
 
     return status
   }
 
   setComment () {
     var message
-    if (playingSong !== '') {
+    if (this.playingSong) {
       message = (
         <div>
           <h1>Now Playing:</h1>
-          <p>{playingSong.name || playingSong.title}</p>
+          <p>{this.playingSong.name || this.playingSong.title}</p>
           <p>To request a song, head to <a href='http://rymate.co.uk/mumble/'>http://rymate.co.uk/mumble/</a></p>
         </div>
       )
@@ -138,93 +120,113 @@ class Mumble {
       )
     }
 
-    client.connection.sendMessage('UserState', {
-      session: client.user.session,
-      actor: client.user.session,
+    this.client.connection.sendMessage('UserState', {
+      session: this.client.user.session,
+      actor: this.client.user.session,
       comment: render(message)
     })
-    this.onUpdate()
   }
 
-  voteHappening () {
-    return voteHappening
+  sendMessage (message) {
+    this.client.user.channel.sendMessage(message)
   }
 
-  handleMessage (data) {
-    var regex = /(<([^>]+)>)/ig
-    var message = data.message.replace(regex, '').split(' ')
-    console.log(data.actor)
+  handleMessage (message, user) {
+    const regex = /(<([^>]+)>)/ig
+    message = message.replace(regex, '').split(' ')
     switch (message[0].toLowerCase()) {
       case 'voteyes':
       case 'yes':
       case 'y':
-        if (contains(yesVotes, data.actor) || contains(noVotes, data.actor)) {
-          client.user.channel.sendMessage("You've already voted!")
+        if (this.yesVotes.includes(user.hash)) {
+          this.sendMessage("You've already voted!")
         } else {
-          yesVotes.push(data.actor)
+          if (this.noVotes.includes(user.hash)) {
+            this.sendMessage('Changing your vote from no to yes!')
+            this.noVotes = this.noVotes.filter(hash => hash === user.hash)
+          }
+          this.yesVotes.push(user.hash)
         }
         break
       case 'voteno':
       case 'no':
       case 'n':
-        if (contains(noVotes, data.actor) || contains(yesVotes, data.actor)) {
-          client.user.channel.sendMessage("You've already voted!")
+        if (this.noVotes.includes(user.hash)) {
+          this.sendMessage("You've already voted!")
         } else {
-          noVotes.push(data.actor)
+          if (this.yesVotes.includes(user.hash)) {
+            this.sendMessage('Changing your vote from no to yes!')
+            this.yesVotes = this.yesVotes.filter(hash => hash === user.hash)
+          }
+          this.noVotes.push(user.hash)
         }
         break
       case 'stopsong':
       case 'stop':
-        if (voteHappening) {
+        if (this.voteHappening) {
           return
         }
 
-        const message = render(
+        const voteMessage = render(
           <p>
-            Someone has requested to stop the song: {playingSong.name}<br />
+            Someone has requested to stop the song: {this.playingSong.name}<br />
             Use voteyes and voteno to vote! 10 Seconds to vote...
           </p>
         )
-        client.user.channel.sendMessage(message)
+        this.sendMessage(voteMessage)
         this.handleVote(() => this.stopSong())
         break
       case 'volume':
       case 'vol':
         if (this.inputStream == null) {
-          client.user.channel.sendMessage('Nothing is playing currently!')
+          this.sendMessage('Nothing is playing currently!')
         } else if (message.length > 2) {
-          client.user.channel.sendMessage('Invalid Volume Command!')
+          this.sendMessage('Invalid Volume Command!')
         } else if (message.length === 1) {
-          client.user.channel.sendMessage('Volume is currently ' + CURRENT_VOL * 4)
+          this.sendMessage('Volume is currently ' + this.currentVolume * 4)
         } else {
-          if (voteHappening) {
+          if (this.voteHappening) {
             return
           }
           var volume = message[1]
 
           if (volume > 1 || volume < 0) {
-            client.rootChannel.sendMessage('Volume must be between 0 and 1!')
+            this.sendMessage('Volume must be between 0 and 1!')
             break
           }
 
           volume = volume / 4
 
-          client.user.channel.sendMessage('Calling a vote to change volume. <br>Use voteyes and voteno to vote! 10 Seconds to vote...')
+          const voteMessage = render(
+            <p>
+              Calling a vote to change volume to {message[1]}<br />
+              Use voteyes and voteno to vote! 10 Seconds to vote...
+            </p>
+          )
+
+          this.sendMessage(voteMessage)
           this.handleVote(() => {
             this.inputStream.gain = volume
-            CURRENT_VOL = volume
+            this.currentVolume = volume
           })
         }
         break
       case 'purge':
-        if (voteHappening) {
+        if (this.voteHappening) {
           return
         }
 
-        client.user.channel.sendMessage('Someone has requested to purge the list of songs <br>Use voteyes and voteno to vote! 10 Seconds to vote...')
+        const purgeMessage = render(
+          <p>
+            Calling a vote to purge the queue of songs<br />
+            Use voteyes and voteno to vote! 10 Seconds to vote...
+          </p>
+        )
+
+        this.sendMessage(purgeMessage)
         this.handleVote(() => {
           this.stopSong()
-          queue = new Queue()
+          this.queue = new Queue()
         })
         break
       case 'yt':
@@ -233,26 +235,26 @@ class Mumble {
       case 'playyoutube':
         var request = message[0].startsWith('p')
         if (message.length < 2) {
-          client.user.channel.sendMessage('Invalid ' + message[0] + ' command!')
+          this.sendMessage('Invalid ' + message[0] + ' command!')
         } else {
           var filter = /(<([^>]+)>)/ig
 
           message.shift()
           var result = message.join(' ').replace(filter, '')
 
-          client.user.channel.sendMessage('Adding ' + result)
+          this.sendMessage('Adding ' + result)
           this.uploadYoutube(result, request)
         }
         break
       case 'idk':
-        db.find().sort({ date: -1 }).toArray((err, docs) => {
+        this.db.find().sort({ date: -1 }).toArray((err, docs) => {
           if (err) {
             console.log(err)
             return
           }
           var picked = Math.floor(Math.random() * docs.length) + 1
           var songs = docs[picked]
-          var done = { 'songid': songs.filename }
+          var done = { 'path': songs.path }
           this.callVote(done)
         })
         break
@@ -275,28 +277,28 @@ class Mumble {
       return
     }
 
-    playing = false
-    playingSong.name = ''
-    playingSong.input.destroy()
+    this.playing = false
+    this.playingSong.name = ''
+    this.playingSong.input.destroy()
     this.setComment()
 
     this.currentFile.kill()
     this.currentFile = {}
 
     setTimeout(() => {
-      if (queue.getLength() !== 0) this.play(queue.dequeue())
+      if (this.queue.getLength() !== 0) this.play(this.Errorqueue.dequeue())
     }, 2000)
   }
 
   async callVote (filename) {
-    if (voteHappening) {
+    if (this.voteHappening) {
       return
     }
     console.log(filename)
     let request
 
     if (!filename.radio) {
-      request = await new Promise((resolve, reject) => db.find({ path: filename.path }).toArray((err, docs) => {
+      request = await new Promise((resolve, reject) => this.db.find({ path: filename.path }).toArray((err, docs) => {
         if (err) {
           console.log(err)
           return reject(err)
@@ -319,46 +321,50 @@ class Mumble {
 
     const type = filename.radio ? 'station' : 'song'
 
-    client.user.channel.sendMessage(render(
-      <p>Someone has requested the following {type}: {request.name || request.title} <br />Use voteyes and voteno to vote! 10 Seconds to vote...</p>
+    this.sendMessage(render(
+      <p>
+        Someone has requested the following {type}: {request.name || request.title}
+        <br />
+        Use voteyes and voteno to vote! 10 Seconds to vote...
+      </p>
     ))
     this.handleVote(() => this.play(request))
   }
 
   handleVote (callback) {
-    if (voteHappening) {
+    if (this.voteHappening) {
       return
     }
 
-    yesVotes = []
-    noVotes = []
-    voteHappening = true
+    this.yesVotes = []
+    this.noVotes = []
+    this.voteHappening = true
     setTimeout(() => {
-      if (yesVotes.length > noVotes.length) {
-        client.user.channel.sendMessage('Vote success! Yes Votes: ' + yesVotes.length + ' - No Votes: ' + noVotes.length)
-        this.onUpdate()
+      if (this.yesVotes.length > this.noVotes.length) {
+        this.sendMessage('Vote success! Yes Votes: ' + this.yesVotes.length + ' - No Votes: ' + this.noVotes.length)
         callback()
-      } else if (yesVotes.length < noVotes.length) {
-        client.user.channel.sendMessage('Vote failed! Yes Votes: ' + yesVotes.length + ' - No Votes: ' + noVotes.length)
-      } else if ((yesVotes.length === 0) && (noVotes.length === 0)) {
-        client.user.channel.sendMessage('No-one cared! Passing vote anyway...')
-        this.onUpdate()
+      } else if (this.yesVotes.length < this.noVotes.length) {
+        this.sendMessage('Vote failed! Yes Votes: ' + this.yesVotes.length + ' - No Votes: ' + this.noVotes.length)
+      } else if ((this.yesVotes.length === 0) && (this.noVotes.length === 0)) {
+        this.sendMessage('No-one cared! Passing vote anyway...')
         callback()
       } else {
-        client.user.channel.sendMessage('Vote failed! Yes Votes: ' + yesVotes.length + ' - No Votes: ' + noVotes.length)
+        this.sendMessage('Vote failed! Yes Votes: ' + this.yesVotes.length + ' - No Votes: ' + this.noVotes.length)
       }
 
-      voteHappening = false
+      this.voteHappening = false
+      this.yesVotes = []
+      this.noVotes = []
     }, 10000)
   }
 
   play (filename) {
-    if (!connected) {
+    if (!this.connected) {
       return
     }
 
-    if (playing) {
-      queue.enqueue(filename)
+    if (this.playing) {
+      this.queue.enqueue(filename)
       return
     }
 
@@ -368,37 +374,36 @@ class Mumble {
           console.log(err)
           return
         }
-        console.dir(metadata.streams)
         this.currentFile = this.getFfmpegInstance(filename.src.replace(';', ''), () => {
           console.log('Finished')
         })
 
-        playingSong.name = filename.name || filename.title
+        this.playingSong.name = filename.name || filename.title
         this.setPlaying()
 
-        playingSong.input = this.mixer.input({
+        this.playingSong.input = this.mixer.input({
           channels: 2,
           sampleRate: 44100
         })
 
-        this.currentFile.pipe(playingSong.input, { end: false })
+        this.currentFile.pipe(this.playingSong.input, { end: false })
       })
     } else {
       this.currentFile = this.getFfmpegInstance(filename.path, () => {
-        playing = false
-        if (queue.getLength() !== 0) {
+        this.playing = false
+        if (this.queue.getLength() !== 0) {
           console.log('ended')
-          this.play(queue.dequeue())
+          this.play(this.queue.dequeue())
         }
       })
 
-      playingSong.input = this.mixer.input({
+      this.playingSong.input = this.mixer.input({
         channels: 2,
         sampleRate: 44100
       })
 
-      this.currentFile.pipe(playingSong.input, { end: true })
-      playingSong.name = filename.name || filename.title
+      this.currentFile.pipe(this.playingSong.input, { end: true })
+      this.playingSong.name = filename.name || filename.title
       this.setPlaying()
     }
   }
@@ -417,10 +422,15 @@ class Mumble {
   }
 
   setPlaying () {
-    client.user.channel.sendMessage('Now playing: ' + playingSong.name)
-    client.user.channel.sendMessage('To call a vote to stop it, type stopsong in chat.')
+    const message = (
+      <p>
+        Now Playing:  {this.playingSong.name}<br />
+        To call a vote to stop it, type stopsong in chat.
+      </p>
+    )
+    this.sendMessage(render(message))
     this.setComment()
-    playing = true
+    this.playing = true
   }
 
   playAudioOnKeyWord (keyWord) {
@@ -524,9 +534,9 @@ class Mumble {
     console.log(url)
     if (!url.startsWith('http')) return
     try {
-      var youtube = ytdl(url, {filter: 'audioonly'})
-      youtube.on('info', (info, format) => {
-        db.find({path: 'uploads/' + info.video_id}).toArray((err, docs) => {
+      var youtube = ytdl(url, { filter: 'audioonly' })
+      youtube.on('info', info => {
+        this.db.find({ path: 'uploads/' + info.video_id }).toArray((err, docs) => {
           if (err) {
             console.log(err)
             return
@@ -557,7 +567,7 @@ class Mumble {
 
                 details = normaliseSong(details)
 
-                db.insertOne(details, function (err, docs) {
+                this.db.insertOne(details, function (err, docs) {
                   if (!err) {
                     console.log('Finished processing')
 
@@ -609,7 +619,7 @@ module.exports = function (input, done) {
   if (input.action === 'status') {
     return done(mumbleClient.getStatus())
   } else if (input.action === 'request') {
-    if (mumbleClient.voteHappening()) {
+    if (mumbleClient.voteHappening) {
       return done()
     }
     console.log(input.payload)

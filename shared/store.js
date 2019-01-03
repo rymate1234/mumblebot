@@ -19,6 +19,11 @@ const defaultState = Object.assign({
 
 let cookies = {}
 
+const dataToReset = {
+  filter: '',
+  filtered: []
+}
+
 const getSettings = () => {
   let settings = cookies.get('settings')
   if (!settings) {
@@ -84,7 +89,7 @@ let actions = store => ({
   },
 
   setPageData (state, data) {
-    return { ...state, ...data }
+    return { ...state, ...data, ...dataToReset }
   },
 
   toggleTheme (state) {
