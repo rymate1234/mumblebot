@@ -20,7 +20,7 @@ const options = {
 
 const DEFAULT_VOL = 0.125
 
-class Mumble {
+export class Mumble {
   currentFile = {}
   inputStream = {}
 
@@ -83,7 +83,9 @@ class Mumble {
 
       // On text message...
       connection.on('message', (message, user) => {
-        console.log(`${new Date()} <${user.name}|${user.hash}> ${message}`)
+        const format = date => `${date.getDate()}/${(date.getMonth() + 1)}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
+
+        console.log(`${format(new Date())} <${user.name}> ${message}`)
         this.handleMessage(message, user)
       })
 
@@ -456,23 +458,6 @@ class Mumble {
       default:
         console.log('Opps.. playAudioOnKeyWord has failed.. blame pavel')
     }
-
-    this.meme = true
-
-    var memeInput = this.mixer.input({
-      channels: 2,
-      sampleRate: 44100
-    })
-
-    memeFile.stream(memeInput)
-  }
-
-  playMeme () {
-    if (this.meme) return
-
-    var memeFile = this.getFfmpegInstance('assets/spicymeme.mp3', () => {
-      this.meme = false
-    })
 
     this.meme = true
 
