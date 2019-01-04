@@ -1,6 +1,7 @@
 import BaseCommand from "./BaseCommand"
 import { User } from "mumble";
 import { render } from "preact-render-to-string";
+import { h } from 'preact'
 
 class PurgeCommand extends BaseCommand {
   private commands = ['purge']

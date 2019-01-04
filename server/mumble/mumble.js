@@ -1,8 +1,7 @@
 'use strict'
-import { join } from 'path'
 import { connect as _connect } from 'mumble'
 import Queue from './queue'
-import { readFileSync, readdir, stat } from 'fs'
+import { readFileSync } from 'fs'
 import Mixer from 'audio-mixer'
 import dbconn from '../database'
 import { server, username, password } from '../../config.js'
@@ -12,6 +11,15 @@ import render from 'preact-render-to-string'
 import ytdl from 'ytdl-core'
 import ffmpeg, { ffprobe } from 'fluent-ffmpeg'
 import normaliseSong from '../../shared/util/normalise-song'
+import BbcCommand from './commands/BbcCommand'
+import MemeCommand from './commands/MemeCommand'
+import NoCommand from './commands/NoCommand'
+import PurgeCommand from './commands/PurgeCommand'
+import RandomSongCommand from './commands/RandomSongCommand'
+import StopCommand from './commands/StopCommand'
+import VolumeCommand from './commands/VolumeCommand'
+import YesCommand from './commands/YesCommand'
+import YoutubeCommand from './commands/YoutubeCommand'
 
 const options = {
   key: readFileSync('key.pem'),
@@ -36,6 +44,20 @@ export class Mumble {
   voteHappening = false
   currentVolume = DEFAULT_VOL
   db = {}
+  commands = []
+
+  constructor () {
+    this.commands.push(new YesCommand(this))
+    this.commands.push(new NoCommand(this))
+    this.commands.push(new YoutubeCommand(this))
+    this.commands.push(new PurgeCommand(this))
+    this.commands.push(new StopCommand(this))
+    this.commands.push(new VolumeCommand(this))
+    this.commands.push(new RandomSongCommand(this))
+
+    this.commands.push(new BbcCommand(this))
+    this.commands.push(new MemeCommand(this))
+  }
 
   connect () {
     dbconn((err, data) => {
@@ -129,152 +151,21 @@ export class Mumble {
     })
   }
 
-  sendMessage (message) {
+  sendMessage = (message) => {
     this.client.user.channel.sendMessage(message)
   }
 
   handleMessage (message, user) {
     const regex = /(<([^>]+)>)/ig
     message = message.replace(regex, '').split(' ')
-    switch (message[0].toLowerCase()) {
-      case 'voteyes':
-      case 'yes':
-      case 'y':
-        if (this.yesVotes.includes(user.hash)) {
-          this.sendMessage("You've already voted!")
-        } else {
-          if (this.noVotes.includes(user.hash)) {
-            this.sendMessage('Changing your vote from no to yes!')
-            this.noVotes = this.noVotes.filter(hash => hash === user.hash)
-          }
-          this.yesVotes.push(user.hash)
-        }
-        break
-      case 'voteno':
-      case 'no':
-      case 'n':
-        if (this.noVotes.includes(user.hash)) {
-          this.sendMessage("You've already voted!")
-        } else {
-          if (this.yesVotes.includes(user.hash)) {
-            this.sendMessage('Changing your vote from no to yes!')
-            this.yesVotes = this.yesVotes.filter(hash => hash === user.hash)
-          }
-          this.noVotes.push(user.hash)
-        }
-        break
-      case 'stopsong':
-      case 'stop':
-        if (this.voteHappening) {
-          return
-        }
+    const command = this.commands.find(c => c.shouldExecute(message))
 
-        const voteMessage = render(
-          <p>
-            Someone has requested to stop the song: {this.playingSong.name}<br />
-            Use voteyes and voteno to vote! 10 Seconds to vote...
-          </p>
-        )
-        this.sendMessage(voteMessage)
-        this.handleVote(() => this.stopSong())
-        break
-      case 'volume':
-      case 'vol':
-        if (this.inputStream == null) {
-          this.sendMessage('Nothing is playing currently!')
-        } else if (message.length > 2) {
-          this.sendMessage('Invalid Volume Command!')
-        } else if (message.length === 1) {
-          this.sendMessage('Volume is currently ' + this.currentVolume * 4)
-        } else {
-          if (this.voteHappening) {
-            return
-          }
-          var volume = message[1]
-
-          if (volume > 1 || volume < 0) {
-            this.sendMessage('Volume must be between 0 and 1!')
-            break
-          }
-
-          volume = volume / 4
-
-          const voteMessage = render(
-            <p>
-              Calling a vote to change volume to {message[1]}<br />
-              Use voteyes and voteno to vote! 10 Seconds to vote...
-            </p>
-          )
-
-          this.sendMessage(voteMessage)
-          this.handleVote(() => {
-            this.inputStream.gain = volume
-            this.currentVolume = volume
-          })
-        }
-        break
-      case 'purge':
-        if (this.voteHappening) {
-          return
-        }
-
-        const purgeMessage = render(
-          <p>
-            Calling a vote to purge the queue of songs<br />
-            Use voteyes and voteno to vote! 10 Seconds to vote...
-          </p>
-        )
-
-        this.sendMessage(purgeMessage)
-        this.handleVote(() => {
-          this.stopSong()
-          this.queue = new Queue()
-        })
-        break
-      case 'yt':
-      case 'pyt':
-      case 'youtube':
-      case 'playyoutube':
-        var request = message[0].startsWith('p')
-        if (message.length < 2) {
-          this.sendMessage('Invalid ' + message[0] + ' command!')
-        } else {
-          var filter = /(<([^>]+)>)/ig
-
-          message.shift()
-          var result = message.join(' ').replace(filter, '')
-
-          this.sendMessage('Adding ' + result)
-          this.uploadYoutube(result, request)
-        }
-        break
-      case 'idk':
-        this.db.find().sort({ date: -1 }).toArray((err, docs) => {
-          if (err) {
-            console.log(err)
-            return
-          }
-          var picked = Math.floor(Math.random() * docs.length) + 1
-          var songs = docs[picked]
-          var done = { 'path': songs.path }
-          this.callVote(done)
-        })
-        break
-      case 'meme':
-      case 'spooky':
-      case 'moan':
-        this.playAudioOnKeyWord(message[0].toLowerCase())
-        break
-      case 'beeb':
-        this.playRandBbc()
-        break
-
-      default:
-        break
+    if (command) {
+      command.execute(message, user)
     }
   }
 
-  stopSong () {
+  stopSong = () => {
     if (typeof this.inputStream.close === 'undefined') {
       return
     }
@@ -292,7 +183,7 @@ export class Mumble {
     }, 2000)
   }
 
-  async callVote (filename) {
+  callVote = async filename => {
     if (this.voteHappening) {
       return
     }
@@ -333,7 +224,7 @@ export class Mumble {
     this.handleVote(() => this.play(request))
   }
 
-  handleVote (callback) {
+  handleVote = (callback) => {
     if (this.voteHappening) {
       return
     }
@@ -435,87 +326,7 @@ export class Mumble {
     this.playing = true
   }
 
-  playAudioOnKeyWord (keyWord) {
-    if (this.meme) return
-
-    var memeFile
-    switch (keyWord.toLowerCase()) {
-      case 'meme':
-        memeFile = this.getFfmpegInstance('assets/spicymeme.mp3', () => {
-          this.meme = false
-        })
-        break
-      case 'spooky':
-        memeFile = this.getFfmpegInstance('assets/spooky.mp3', () => {
-          this.meme = false
-        })
-        break
-      case 'moan':
-        memeFile = this.getFfmpegInstance('assets/moan.wav', () => {
-          this.meme = false
-        })
-        break
-      default:
-        console.log('Opps.. playAudioOnKeyWord has failed.. blame pavel')
-    }
-
-    this.meme = true
-
-    var memeInput = this.mixer.input({
-      channels: 2,
-      sampleRate: 44100
-    })
-
-    memeFile.stream(memeInput)
-  }
-
-  playRandBbc () {
-    if (this.bbc) return
-    this.randomFile('bbc/', (err, file) => {
-      if (err) return
-
-      var memeFile = this.getFfmpegInstance('bbc/' + file, () => {
-        this.bbc = false
-      })
-      this.bbc = true
-
-      var memeInput = this.mixer.input({
-        channels: 2,
-        sampleRate: 44100
-      })
-
-      memeFile.stream(memeInput)
-    })
-  }
-
-  randomFile (dir, callback) {
-    readdir(dir, (err, files) => {
-      if (err) return callback(err)
-
-      function checkRandom () {
-        if (!files.length) {
-          // callback with an empty string to indicate there are no files
-          return callback(null, undefined)
-        }
-        const randomIndex = Math.floor(Math.random() * files.length)
-        const file = files[randomIndex]
-        stat(join(dir, file), (err, stats) => {
-          if (err) return callback(err)
-          if (stats.isFile()) {
-            return callback(null, file)
-          }
-          // remove this file from the array because for some reason it's not a file
-          files.splice(randomIndex, 1)
-
-          // try another random one
-          checkRandom()
-        })
-      }
-      checkRandom()
-    })
-  }
-
-  uploadYoutube (url, request) {
+  uploadYoutube = (url, request) => {
     console.log(url)
     if (!url.startsWith('http')) return
     try {

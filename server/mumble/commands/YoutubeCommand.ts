@@ -5,7 +5,7 @@ class YoutubeCommand extends BaseCommand {
   private commands = ['yt', 'pyt', 'youtube', 'playyoutube']
 
   shouldExecute(message: string[]): Boolean {
-    return this.mumble.voteHappening && this.commands.includes(message[0])
+    return !this.mumble.voteHappening && this.commands.includes(message[0])
   }
   
   execute(message: string[], user: User): void {

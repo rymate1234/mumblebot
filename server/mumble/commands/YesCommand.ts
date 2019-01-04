@@ -14,7 +14,7 @@ class YesCommand extends BaseCommand {
     } else {
       if (this.mumble.noVotes.includes(user.hash)) {
         this.sendMessage('Changing your vote from no to yes!')
-        this.mumble.noVotes = this.mumble.noVotes.filter(hash => hash === user.hash)
+        this.mumble.noVotes = this.mumble.noVotes.filter(hash => hash !== user.hash)
       }
       this.mumble.yesVotes.push(user.hash)
     }
