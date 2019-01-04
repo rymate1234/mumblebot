@@ -1,15 +1,15 @@
 'use strict'
-import { connect as _connect } from 'mumble'
+import { connect as _connect, Connection, InputStream } from 'mumble'
 import Queue from './queue'
 import { readFileSync } from 'fs'
 import Mixer from 'audio-mixer'
 import dbconn from '../database'
 import { server, username, password } from '../../config.js'
 import { h } from 'preact'
-import render from 'preact-render-to-string'
+import { render } from 'preact-render-to-string'
 
 import ytdl from 'ytdl-core'
-import ffmpeg, { ffprobe } from 'fluent-ffmpeg'
+import ffmpeg from 'fluent-ffmpeg'
 import normaliseSong from '../../shared/util/normalise-song'
 import BbcCommand from './commands/BbcCommand'
 import MemeCommand from './commands/MemeCommand'
@@ -20,31 +20,37 @@ import StopCommand from './commands/StopCommand'
 import VolumeCommand from './commands/VolumeCommand'
 import YesCommand from './commands/YesCommand'
 import YoutubeCommand from './commands/YoutubeCommand'
+import BaseCommand from './commands/BaseCommand';
+import { Collection, MongoClient } from 'mongodb';
+import { ffprobe } from 'fluent-ffmpeg/lib/fluent-ffmpeg';
 
 const options = {
-  key: readFileSync('key.pem'),
-  cert: readFileSync('cert.pem')
+  key: readFileSync('key.pem').toString(),
+  cert: readFileSync('cert.pem').toString()
 }
 
 const DEFAULT_VOL = 0.125
 
 export class Mumble {
-  currentFile = {}
-  inputStream = {}
+  currentFile: ffmpeg
+  inputStream: InputStream
 
-  mixer = new Mixer({
+  mixer: any = new Mixer({
     channels: 2,
     sampleRate: 44100
   })
 
-  playingSong = {}
-  yesVotes = []
-  noVotes = []
+  playingSong: any = {}
+  yesVotes: string[] = []
+  noVotes: string[] = []
   queue = new Queue()
   voteHappening = false
   currentVolume = DEFAULT_VOL
-  db = {}
-  commands = []
+  db: Collection = {}
+  commands: BaseCommand[] = []
+  client: Connection
+  connected: boolean;
+  playing: boolean;
 
   constructor () {
     this.commands.push(new YesCommand(this))
@@ -60,7 +66,7 @@ export class Mumble {
   }
 
   connect () {
-    dbconn((err, data) => {
+    dbconn((err: any, data: MongoClient) => {
       if (err !== null) {
         return
       }
@@ -72,7 +78,7 @@ export class Mumble {
 
     _connect(server, options, (error, connection) => {
       if (error) {
-        throw new Error(error)
+        throw error
       }
 
       console.log('Connected')
@@ -84,6 +90,7 @@ export class Mumble {
         console.log('Connection initialized')
         this.sendMessage('...aaaaaand we\'re back!')
         this.sendMessage('Loaded MumbleBot!')
+        // @ts-ignore because the types for the mumble lib are incomplete
         this.client.connection.sendMessage('UserState', {
           session: this.client.user.session,
           actor: this.client.user.session,
@@ -96,6 +103,7 @@ export class Mumble {
         })
       })
 
+      // @ts-ignore because the types for the mumble lib are incomplete
       this.inputStream = this.client.inputStream({
         channels: 2,
         sampleRate: 44100,
@@ -105,7 +113,7 @@ export class Mumble {
 
       // On text message...
       connection.on('message', (message, user) => {
-        const format = date => `${date.getDate()}/${(date.getMonth() + 1)}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
+        const format = (date: Date) => `${date.getDate()}/${(date.getMonth() + 1)}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
 
         console.log(`${format(new Date())} <${user.name}> ${message}`)
         this.handleMessage(message, user)
@@ -116,7 +124,7 @@ export class Mumble {
   }
 
   getStatus () {
-    var status = {}
+    var status: any = {}
     status.playing = this.playing
     status.nowPlaying = this.playingSong.name || this.playingSong.title
     status.queue = this.queue.getArray()
@@ -144,6 +152,7 @@ export class Mumble {
       )
     }
 
+    // @ts-ignore because the types for the mumble lib are incomplete
     this.client.connection.sendMessage('UserState', {
       session: this.client.user.session,
       actor: this.client.user.session,
@@ -179,7 +188,7 @@ export class Mumble {
     this.currentFile = {}
 
     setTimeout(() => {
-      if (this.queue.getLength() !== 0) this.play(this.Errorqueue.dequeue())
+      if (this.queue.getLength() !== 0) this.play(this.queue.dequeue())
     }, 2000)
   }
 
@@ -301,7 +310,7 @@ export class Mumble {
     }
   }
 
-  getFfmpegInstance (filename, callback) {
+  getFfmpegInstance (filename, callback): ffmpeg {
     return ffmpeg(filename)
       .audioChannels(2)
       .renice(5)
@@ -347,8 +356,8 @@ export class Mumble {
                 console.log('Cannot process video: ' + err.message)
               })
               .on('end', () => {
-                var details = {}
-                var metadata = {}
+                let details: any = {}
+                const metadata: any = {}
 
                 metadata.title = info.title
                 metadata.artist = info.author

@@ -8,7 +8,7 @@ class MemeCommand extends BaseCommand {
   private currentFile: string
   private memeFile: any;
 
-  shouldExecute(message: string[]): Boolean {
+  shouldExecute(message: string[]): boolean {
     const files = fs.readdirSync(this.assetsFolder)
     const index = files.findIndex((f, i, o) => {
       if (f.includes(message[0])) {

@@ -5,7 +5,7 @@ import { render } from "preact-render-to-string";
 class StopCommand extends BaseCommand {
   private commands = ['stopsong', 'stop']
 
-  shouldExecute(message: string[]): Boolean {
+  shouldExecute(message: string[]): boolean {
     return !this.mumble.voteHappening && this.commands.includes(message[0])
   }
   

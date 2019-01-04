@@ -4,7 +4,7 @@ import { User } from 'mumble'
 class RandomSongCommand extends BaseCommand {
   private commands = ['random', 'idk']
 
-  shouldExecute(message: string[]): Boolean {
+  shouldExecute(message: string[]): boolean {
     return !this.mumble.voteHappening && this.commands.includes(message[0])
   }
 

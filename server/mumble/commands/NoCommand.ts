@@ -4,7 +4,7 @@ import { User } from "mumble";
 class NoCommand extends BaseCommand {
   private commands = ['voteno', 'no', 'n']
 
-  shouldExecute(message: string[]): Boolean {
+  shouldExecute(message: string[]): boolean {
     return this.mumble.voteHappening && this.commands.includes(message[0])
   }
   

@@ -6,7 +6,7 @@ import { h } from 'preact'
 class PurgeCommand extends BaseCommand {
   private commands = ['purge']
 
-  shouldExecute(message: string[]): Boolean {
+  shouldExecute(message: string[]): boolean {
     return !this.mumble.voteHappening && this.commands.includes(message[0])
   }
   

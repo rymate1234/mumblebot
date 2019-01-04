@@ -7,7 +7,7 @@ class BbcCommand extends BaseCommand {
   private bbc: boolean;
   private commands = ['beeb', 'bbc']
 
-  shouldExecute(message: string[]): Boolean {
+  shouldExecute(message: string[]): boolean {
     return !this.bbc && this.commands.includes(message[0])
   }
 

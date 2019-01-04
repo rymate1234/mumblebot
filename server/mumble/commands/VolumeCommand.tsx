@@ -6,7 +6,7 @@ import { h } from 'preact'
 class VolumeCommand extends BaseCommand {
   private commands = ['volume', 'vol']
 
-  shouldExecute(message: string[]): Boolean {
+  shouldExecute(message: string[]): boolean {
     return !this.mumble.voteHappening && this.commands.includes(message[0])
   }
 

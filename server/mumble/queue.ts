@@ -13,7 +13,7 @@ class Queue<T> {
     return this.queue.length - this.offset
   }
 
-  isEmpty(): Boolean {
+  isEmpty(): boolean {
     return this.queue.length === 0
   }
 
