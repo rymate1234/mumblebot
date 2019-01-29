@@ -1,8 +1,6 @@
 /* eslint-disable */
 var CACHE = 'cache-and-update'
 var resources = [
-  '/',
-  '/radio',
   '/index.js'
 ]
 // On install, cache some resources.
@@ -16,7 +14,7 @@ self.addEventListener('install', function (evt) {
 // On fetch, use cache but update the entry with the latest contents
 // from the server.
 self.addEventListener('fetch', function (evt) {
-  if (evt.request.url.includes(self.location.hostname)) {
+  if (evt.request.url.includes(self.location.hostname) && evt.request.url.contains('index.js')) {
     console.log('The service worker is serving the asset.')
     // You can use `respondWith()` to answer immediately, without waiting for the
     // network response to reach the service worker...
