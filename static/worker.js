@@ -6,10 +6,13 @@ var CACHE = 'network-or-cache';
 
 // On install, cache some resources.
 self.addEventListener('install', function (evt) {
-  caches.keys().then(function(names) {
-    for (let name of names) caches.delete(name);
-  });
-
+  evt.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(cacheNames.map(function(cacheName) {
+        return caches.delete(cacheName);
+      }));
+    })
+  );
   console.log('The service worker is being installed.')
   evt.waitUntil(precache());
 })
