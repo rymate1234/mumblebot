@@ -5,14 +5,9 @@ var resources = [
 ]
 // On install, cache some resources.
 self.addEventListener('install', function (evt) {
-
-  navigator.serviceWorker.getRegistrations().then(
-    function(registrations) {
-      for(let registration of registrations) {  
-          registration.unregister();
-      }
-    }
-  );
+  caches.keys().then(function(names) {
+    for (let name of names) caches.delete(name);
+  });
 
   console.log('The service worker is being installed.')
   // Ask the service worker to keep installing until the returning promise
