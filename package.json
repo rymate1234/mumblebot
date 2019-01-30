@@ -6,8 +6,8 @@
   "scripts": {
     "get-stations": "node ./util/get-stations.js",
     "build": "npm-run-all --parallel build:*",
-    "build:client": "cross-env BABEL_ENV=client parcel build --detailed-report --experimental-scope-hoisting ./client/index.js",
-    "build:server": "cross-env BABEL_ENV=server parcel build --detailed-report --target node  ./server/main.js ./server/mumble/mumble.tsx",
+    "build:client": "cross-env BABEL_ENV=client parcel build --detailed-report  --cache-dir .cache/client --target browser --experimental-scope-hoisting ./client/index.js",
+    "build:server": "cross-env BABEL_ENV=server parcel build --detailed-report  --cache-dir .cache/server --target node  ./server/main.js ./server/mumble/mumble.tsx",
     "dev": "npm-run-all --parallel client server start",
     "lint": "eslint . --fix",
     "start": "cross-env BABEL_ENV=server nodemon --ignore server/ --ignore stations.json --ignore client/ ./dist/main.js",
