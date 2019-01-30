@@ -156,6 +156,8 @@ export class Mumble {
       )
     }
 
+    this.sendToMaster({ type: 'update-stats' })
+
     // @ts-ignore because the types for the mumble lib are incomplete
     this.client.connection.sendMessage('UserState', {
       session: this.client.user.session,
@@ -271,6 +273,7 @@ export class Mumble {
 
     if (this.playing) {
       this.queue.enqueue(filename)
+      this.sendToMaster({ type: 'update-stats' })
       return
     }
 
@@ -376,9 +379,10 @@ export class Mumble {
 
                 details = normaliseSong(details)
 
-                this.db.insertOne(details, function (err, docs) {
+                this.db.insertOne(details, (err, docs) => {
                   if (!err) {
                     console.log('Finished processing')
+                    this.sendToMaster({ type: 'add-song', song: docs })
 
                     if (request) this.callVote({ path: details.path })
                   }

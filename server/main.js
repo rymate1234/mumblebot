@@ -30,9 +30,11 @@ app.use(express.static(path.resolve(__dirname, '../dist')))
 app.use(express.static(path.resolve(__dirname, '../static')))
 app.set('view engine', 'hbs')
 app.set('views', path.resolve(__dirname, '../views'))
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 // Import API Routes
-app.use('/api', api)
+app.use('/api', api(io))
 
 const init = async req => {
   const current = routes[req.url]
@@ -73,5 +75,6 @@ app.get('/*', async (req, res, next) => {
   res.render('index', { html, styleTags, storeData })
 })
 
-app.listen(port, host)
-console.log('Server listening on ' + host + ':' + port) // eslint-disable-line no-console
+http.listen(3000, function() {
+  console.log('listening on *:3000');
+});

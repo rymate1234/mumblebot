@@ -8,7 +8,7 @@ import Player from './player'
 import Router from './router'
 import NotFound from './not-found'
 import routes from './routes'
-import { getStats, getSocket } from './api'
+import { getSocket } from './api'
 
 class App extends PureComponent {
   constructor () {
@@ -24,6 +24,11 @@ class App extends PureComponent {
   componentDidMount () {
     window.addEventListener('keydown', this.handleKey)
     this.socket = getSocket()
+
+    this.socket.on('stats', stats => {
+      console.log(stats)
+      this.props.setPageData({ mumblebotData: stats })
+    })
   }
 
   componentWillUnmount () {

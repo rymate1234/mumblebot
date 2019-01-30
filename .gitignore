@@ -8,3 +8,4 @@ uploads
 *.pem
 assets
 bbc
+config.js
