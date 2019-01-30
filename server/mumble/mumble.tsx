@@ -31,6 +31,8 @@ const options = {
 
 const DEFAULT_VOL = 0.125
 
+type InfoCallback = (n: any) => void;
+
 export class Mumble {
   currentFile: ffmpeg
   inputStream: InputStream
@@ -51,8 +53,10 @@ export class Mumble {
   client: Connection
   connected: boolean;
   playing: boolean;
+  sendToMaster: InfoCallback;
 
-  constructor () {
+  constructor (send: InfoCallback) {
+    this.sendToMaster = send
     this.commands.push(new YesCommand(this))
     this.commands.push(new NoCommand(this))
     this.commands.push(new YoutubeCommand(this))
@@ -411,9 +415,9 @@ function escapeHtml (string) {
 }
 
 let mumbleClient = null
-module.exports = function (input, done) {
+module.exports = function (input, done, send) {
   if (mumbleClient === null) {
-    mumbleClient = new Mumble()
+    mumbleClient = new Mumble(send)
     mumbleClient.connect()
   }
 

@@ -27,6 +27,9 @@ dbconn(function (err, data) {
 
 const thread = spawn('dist/mumble/mumble.js')
 thread.send()
+.on('progress', function(progress) {
+  console.log(`Progress: ${progress}%`);
+})
 
 const router = Router()
 schedule.scheduleJob('0 * * * *', getStations)

@@ -1,3 +1,4 @@
+import 'source-map-support/register' // map that source!
 import './preactPatch'
 import 'isomorphic-unfetch'
 
@@ -5,7 +6,8 @@ import express from 'express'
 import compression from 'compression'
 import { ServerStore } from '../shared/store'
 import App from '../shared/app'
-import routes, { getStats } from '../shared/routes'
+import routes from '../shared/routes'
+import { getStats } from '../shared/api'
 import { h } from 'preact'
 
 import render from 'preact-render-to-string'

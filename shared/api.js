@@ -1,7 +1,13 @@
+import socketIOClient from "socket.io-client"
+
 const isClient = typeof window !== 'undefined'
 const port = process.env.PORT || 3000
 
 const prefix = isClient ? '' : 'http://127.0.0.1:' + port
+
+export const getSocket = () => {
+  return socketIOClient();
+}
 
 export const getStats = async () => {
   try {
