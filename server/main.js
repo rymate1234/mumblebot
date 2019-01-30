@@ -75,6 +75,6 @@ app.get('/*', async (req, res, next) => {
   res.render('index', { html, styleTags, storeData })
 })
 
-http.listen(3000, function() {
+http.listen(PORT, function() {
   console.log('listening on *:3000');
 });
