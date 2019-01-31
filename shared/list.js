@@ -26,7 +26,7 @@ class List extends Component {
       <VirtualList overscanCount={12} class='list' data={state.channels} rowHeight={56} renderRow={this.renderRow} sync />
     ) : (
       <div class='list'>
-        {channels.map(this.renderRow)}
+        {state.channels.map(this.renderRow)}
       </div>
     )
   }
