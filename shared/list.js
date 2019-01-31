@@ -5,21 +5,25 @@ import SongRow from './components/SongRow'
 import { actions } from './store'
 
 class List extends Component {
-  constructor () {
-    super()
-
-    this.renderRow = this.renderRow.bind(this)
+  state = {
+    channels: this.props.filtered.length ? this.props.filtered : this.props.pageData.list
   }
 
-  renderRow (channel, key) {
-    return <SongRow item={channel} key={`${channel._id}-${key}`} />
+  renderRow = (channel, key) => {
+    return <SongRow item={channel} />
   }
 
-  render (props) {
+  componentWillReceiveProps(props) {
+    console.log('new props', props.pageData.list[0])
+    this.setState({ channels: props.filtered.length ? props.filtered : props.pageData.list })
+    this.forceUpdate(); // argh
+  }
+
+  render (props, state) {
+    console.log('rendering')
     let viewAll = props.path.includes('all')
-    let channels = props.filtered.length ? props.filtered : props.pageData.list
     return !viewAll ? (
-      <VirtualList overscanCount={20} class='list' data={channels} rowHeight={56} renderRow={this.renderRow} />
+      <VirtualList overscanCount={0} class='list' data={state.channels} rowHeight={56} renderRow={this.renderRow} sync />
     ) : (
       <div class='list'>
         {channels.map(this.renderRow)}

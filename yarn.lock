@@ -1572,10 +1572,10 @@ babel-node-modules@^0.0.1:
   dependencies:
     babel-register "^6.24.0"
 
-babel-plugin-module-resolver@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-module-resolver/-/babel-plugin-module-resolver-3.1.1.tgz#881cf67e3d4b8400d5eaaefc1be44d2dc1fe404f"
-  integrity sha512-1Q77Al4ydp6nYApJ7sQ2fmgz30WuQgJZegIYuyOdbdpxenB/bSezQ3hDPsumIXGlUS4vUIv+EwFjzzXZNWtARw==
+babel-plugin-module-resolver@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/babel-plugin-module-resolver/-/babel-plugin-module-resolver-3.1.3.tgz#5a1c148bf528d20907ed508b70ae3c4762e78c8d"
+  integrity sha512-QRfA8b2H7l9uSElLwS0rHoPhjPhgpncKUvrn42tJpdCoJ3IS6J+m4mp5FtnRoXHry3ZYJ2SMLLG/REikQA6tjg==
   dependencies:
     find-babel-config "^1.1.0"
     glob "^7.1.2"
@@ -5267,10 +5267,10 @@ moment-timezone@^0.5.23:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
   integrity sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=
 
-mongodb-core@3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.1.9.tgz#c31ee407bf932b0149eaed775c17ee09974e4ca3"
-  integrity sha512-MJpciDABXMchrZphh3vMcqu8hkNf/Mi+Gk6btOimVg1XMxLXh87j6FAvRm+KmwD1A9fpu3qRQYcbQe4egj23og==
+mongodb-core@3.1.11:
+  version "3.1.11"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.1.11.tgz#b253038dbb4d7329f3d1c2ee5400bb0c9221fde5"
+  integrity sha512-rD2US2s5qk/ckbiiGFHeu+yKYDXdJ1G87F6CG3YdaZpzdOm5zpoAZd/EKbPmFO6cQZ+XVXBXBJ660sSI0gc6qg==
   dependencies:
     bson "^1.1.0"
     require_optional "^1.0.1"
@@ -5278,12 +5278,12 @@ mongodb-core@3.1.9:
   optionalDependencies:
     saslprep "^1.0.0"
 
-mongodb@^3.1.10:
-  version "3.1.10"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.1.10.tgz#45ad9b74ea376f4122d0881b75e5489b9e504ed7"
-  integrity sha512-Uml42GeFxhTGQVml1XQ4cD0o/rp7J2ROy0fdYUcVitoE7vFqEhKH4TYVqRDpQr/bXtCJVxJdNQC1ntRxNREkPQ==
+mongodb@^3.1.13:
+  version "3.1.13"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.1.13.tgz#f8cdcbb36ad7a08b570bd1271c8525753f75f9f4"
+  integrity sha512-sz2dhvBZQWf3LRNDhbd30KHVzdjZx9IKC0L+kSZ/gzYquCF5zPOgGqRz6sSCqYZtKP2ekB4nfLxhGtzGHnIKxA==
   dependencies:
-    mongodb-core "3.1.9"
+    mongodb-core "3.1.11"
     safe-buffer "^5.1.2"
 
 ms@2.0.0:
@@ -8120,10 +8120,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.2.2.tgz#fe8101c46aa123f8353523ebdcf5730c2ae493e5"
-  integrity sha512-VCj5UiSyHBjwfYacmDuc/NOk4QQixbE+Wn7MFJuS0nRuPQbof132Pw4u53dm264O8LPc2MVsc7RJNml5szurkg==
+typescript@^3.2.4:
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.2.4.tgz#c585cb952912263d915b462726ce244ba510ef3d"
+  integrity sha512-0RNDbSdEokBeEAkgNbxJ+BLwSManFy9TeXz8uW+48j/xhEXv1ePME60olyzw2XzUqUBNAYFeJadIqAgNqIACwg==
 
 ua-parser-js@^0.7.18:
   version "0.7.18"
@@ -8220,10 +8220,10 @@ unique-string@^1.0.0:
   dependencies:
     crypto-random-string "^1.0.0"
 
-unistore@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/unistore/-/unistore-3.1.0.tgz#38ba40ba43e6d0cb89e842b6216469736c93dd34"
-  integrity sha512-odZJeaB7ZDu8pDLOIhUeB5ttcPL6ANtPCua/+rdO31XL++03/zfw6WoQz/tuyqzRhZezCEHT97aV0GJx4dvl6g==
+unistore@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/unistore/-/unistore-3.2.1.tgz#26e316c834e39b83b2a301a65f78138f43975a0b"
+  integrity sha512-102VTsu5dcoADsz+NdBE55JeFh1YYLvrEzLenwE+nu3lFWSVZj2MpvXLkBqrx/YTk+L3kzMG5UwHkHoj/9VcaQ==
 
 universal-cookie@^3.0.7:
   version "3.0.7"
@@ -8579,10 +8579,10 @@ yeast@0.1.2:
   resolved "https://registry.yarnpkg.com/yeast/-/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
   integrity sha1-AI4G2AlDIMNy28L47XagymyKxBk=
 
-ytdl-core@^0.28.3:
-  version "0.28.3"
-  resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-0.28.3.tgz#3daa3e7c0779298dfce3cd2bc17a1727094ea096"
-  integrity sha512-PbUEY7viwO6mJjsZN3vpnjNfpB747rNva3YbOJ9iTM9MtDt2CFcZov4K3Agf22pt/EuPc4zKnk/97K7TeS04yw==
+ytdl-core@^0.29.1:
+  version "0.29.1"
+  resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-0.29.1.tgz#2d7a1505d47a34a02551639a8d4092af959c4902"
+  integrity sha512-J/TW3rupqE6y+TczHTTFjuwf23tweA9fasmnbU/5yYH0O2IRFLcwgHbbvEPt3t8mtXWGX207+TWH7uuJpB1FKQ==
   dependencies:
     html-entities "^1.1.3"
     m3u8stream "^0.6.2"

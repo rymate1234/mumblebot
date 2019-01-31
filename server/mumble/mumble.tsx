@@ -132,7 +132,7 @@ export class Mumble {
     status.playing = this.playing
     status.nowPlaying = this.playingSong.name || this.playingSong.title
     status.queue = this.queue.getArray()
-    status.users = this.client.users().map(user => user.name)
+    status.users = this.client && this.client.users().map(user => user.name)
 
     return status
   }
@@ -379,10 +379,10 @@ export class Mumble {
 
                 details = normaliseSong(details)
 
-                this.db.insertOne(details, (err, docs) => {
+                this.db.insertOne(details, (err, result) => {
                   if (!err) {
                     console.log('Finished processing')
-                    this.sendToMaster({ type: 'add-song', song: docs })
+                    this.sendToMaster({ type: 'add-song', song: result.ops[0] })
 
                     if (request) this.callVote({ path: details.path })
                   }

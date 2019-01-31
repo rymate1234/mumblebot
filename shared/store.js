@@ -3,6 +3,7 @@ import { Provider } from 'unistore/preact'
 import { h } from 'preact'
 import devtools from 'unistore/devtools'
 import Cookies from 'universal-cookie'
+import { mapSong } from './api'
 
 const isClient = typeof window !== 'undefined'
 
@@ -14,7 +15,8 @@ const defaultState = Object.assign({
   filtered: [],
   settings: {
     darkTheme: true
-  }
+  },
+  updates: 0
 }, isClient ? window.__backend_data__ : {})
 
 let cookies = {}
@@ -89,7 +91,17 @@ let actions = store => ({
   },
 
   setPageData (state, data) {
+    state.updates++
     return { ...state, ...data, ...dataToReset }
+  },
+
+  addSong (state, data) {
+    if (state.router.name === 'Stations') return 
+    state.pageData.list.unshift(mapSong(data))
+    state.updates++
+    const filtered = filterChannels(state.pageData.list, state.filter)
+
+    return Object.assign(state, { filtered })
   },
 
   toggleTheme (state) {

@@ -23,7 +23,7 @@ export default class UploadForm extends Component {
       body: formData
     })
     const content = await req.text()
-    this.setState({ state: content })
+    this.setState({ state: req.ok ? 'Success' : 'Failed' })
   }
 
   handleFile (event) {

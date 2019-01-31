@@ -26,8 +26,11 @@ class App extends PureComponent {
     this.socket = getSocket()
 
     this.socket.on('stats', stats => {
-      console.log(stats)
       this.props.setPageData({ mumblebotData: stats })
+    })
+
+    this.socket.on('addSong', song => {
+      this.props.addSong(song)
     })
   }
 

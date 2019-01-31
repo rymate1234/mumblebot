@@ -20,6 +20,13 @@ export const getStats = async () => {
   }
   return {}
 }
+const format = date => date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+
+export const mapSong = song => ({
+  ...song,
+  src: '/api/file/' + song.filename,
+  info: `Uploaded on ${format(new Date(song.date))}`
+})
 
 export const getSongs = async () => {
   try {
@@ -27,12 +34,7 @@ export const getSongs = async () => {
     const songs = await songsReq.json()
     const stats = await getStats()
 
-    const format = date => date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
-    const list = songs.map(song => ({
-      ...song,
-      src: '/api/file/' + song.filename,
-      info: `Uploaded on ${format(new Date(song.date))}`
-    }))
+    const list = songs.map(mapSong)
 
     return {
       pageData: { list },

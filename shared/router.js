@@ -33,7 +33,7 @@ class Router extends Component {
         if (info.getData && isClient) {
           this.setState({ loading: this.state.loadedInitial })
           const data = await info.getData()
-          this.props.setPageData(data)
+          this.props.setPageData({ ...data, router: { path: route, name: info.name } })
           this.setState({ ...state, loadedInitial: true, loading: false })
         }
       })

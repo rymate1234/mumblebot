@@ -36,11 +36,13 @@ export default io => {
     let sent = false
     console.log(progress);
     if (progress.type == 'update-stats') {
-      thread.send({action: 'status'}).on('message', (status) => {
+      thread.send({ action: 'status'}).on('message', (status) => {
         if (!sent) {
           io.emit('stats', { title: config.name, status });
         }
       })
+    } else if (progress.type === 'add-song') {
+      io.emit('addSong', progress.song)
     }
   })
 
@@ -142,9 +144,15 @@ export default io => {
       details.metadata = null
     }
 
-    songsDb.insert(normaliseSong(details))
+    songsDb.insert(normaliseSong(details), (err, result) => {
+      if (err) {
+        console.log(err)
+        return res.status(500).send(err)
+      }
+      io.emit('addSong', result.ops[0])
+    })
 
-    res.redirect('/')
+    res.status(200).redirect('/')
   })
 
   router.post('/request', function (req, res, next) {
