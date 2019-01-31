@@ -346,7 +346,7 @@ export class Mumble {
     console.log(url)
     if (!url.startsWith('http')) return
     try {
-      var youtube = ytdl(url, { filter: 'audioonly' })
+      var youtube = ytdl(url)
       youtube.on('info', info => {
         this.db.find({ path: 'uploads/' + info.video_id }).toArray((err, docs) => {
           if (err) {
