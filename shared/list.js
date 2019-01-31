@@ -23,7 +23,7 @@ class List extends Component {
     console.log('rendering')
     let viewAll = props.path.includes('all')
     return !viewAll ? (
-      <VirtualList overscanCount={0} class='list' data={state.channels} rowHeight={56} renderRow={this.renderRow} sync />
+      <VirtualList overscanCount={12} class='list' data={state.channels} rowHeight={56} renderRow={this.renderRow} sync />
     ) : (
       <div class='list'>
         {channels.map(this.renderRow)}
