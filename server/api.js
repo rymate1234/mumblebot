@@ -3,7 +3,7 @@ import dbconn from './database'
 import { spawn } from 'threads'
 
 import multer from 'multer'
-import audioMetaData from 'audio-metadata'
+import { parseBuffer } from 'music-metadata'
 import fs from 'fs'
 
 import schedule from 'node-schedule'
@@ -133,13 +133,13 @@ export default io => {
     readStream.pipe(res)
   })
 
-  router.post('/upload', multer({ dest: './uploads/' }).single('fileInput'), function (req, res, next) {
+  router.post('/upload', multer({ dest: './uploads/' }).single('fileInput'), async (req, res, next) => {
     var details = req.file
     details.date = new Date()
 
     var data = fs.readFileSync(details.path)
-    var metadata = audioMetaData.id3v2(data)
-    details.metadata = metadata
+    var metadata = await parseBuffer(data)
+    details.metadata = metadata.common
     if (details.metadata === {}) {
       details.metadata = null
     }
