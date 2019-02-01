@@ -1460,11 +1460,6 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.1.tgz#ae2d5a729477f289d60dd7f96a6314a22dd6c22a"
   integrity sha1-ri1acpR38onWDdf5amMUoi3Wwio=
 
-audio-metadata@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/audio-metadata/-/audio-metadata-0.3.0.tgz#7d554031f0c244ee296231a1a55e00ff788d6ceb"
-  integrity sha1-fVVAMfDCRO4pYjGhpV4A/3iNbOs=
-
 "audio-mixer@https://github.com/notthetup/audio-mixer.git":
   version "0.0.1"
   resolved "https://github.com/notthetup/audio-mixer.git#9fce47058338de3e6634b4069e4cd77cd8e3480d"
@@ -1717,6 +1712,13 @@ base@^0.11.1:
     isobject "^3.0.1"
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
+
+basic-auth@~2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/basic-auth/-/basic-auth-2.0.1.tgz#b998279bf47ce38344b4f3cf916d4679bbf51e3a"
+  integrity sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
+  dependencies:
+    safe-buffer "5.1.2"
 
 better-assert@~1.0.0:
   version "1.0.2"
@@ -5290,6 +5292,17 @@ mongodb@^3.1.13:
   dependencies:
     mongodb-core "3.1.11"
     safe-buffer "^5.1.2"
+
+morgan@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.9.1.tgz#0a8d16734a1d9afbc824b99df87e738e58e2da59"
+  integrity sha512-HQStPIV4y3afTiCYVxirakhlCfGkI161c76kKFca7Fk1JusM//Qeo1ej2XaMniiNeaZklMVrh3vTtIzpzwbpmA==
+  dependencies:
+    basic-auth "~2.0.0"
+    debug "2.6.9"
+    depd "~1.1.2"
+    on-finished "~2.3.0"
+    on-headers "~1.0.1"
 
 ms@2.0.0:
   version "2.0.0"
