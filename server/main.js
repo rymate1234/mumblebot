@@ -16,7 +16,10 @@ import { ServerStyleSheet } from 'styled-components'
 
 import api from './api'
 import { json, text, urlencoded } from 'body-parser'
+import morgan from 'morgan'
 
+// create "middleware"
+var logger = morgan('combined')
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 3000
 
@@ -30,6 +33,7 @@ app.use(express.static(path.resolve(__dirname, '../dist')))
 app.use(express.static(path.resolve(__dirname, '../static')))
 app.set('view engine', 'hbs')
 app.set('views', path.resolve(__dirname, '../views'))
+app.use(logger)
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
