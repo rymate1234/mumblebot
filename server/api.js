@@ -34,7 +34,6 @@ export default io => {
   thread.send()
   .on('progress', function(progress) {
     let sent = false
-    console.log(progress);
     if (progress.type == 'update-stats') {
       thread.send({ action: 'status'}).on('message', (status) => {
         if (!sent) {
@@ -173,7 +172,6 @@ export default io => {
   })
 
   router.post('/youtube', function (req, res, next) {
-    console.log(req.body)
     var url = req.body.song ? req.body.song : req.body.yturl
     thread.send({ action: 'youtube', payload: url })
     res.send('Success')
