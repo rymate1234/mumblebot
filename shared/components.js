@@ -148,6 +148,10 @@ export const Station = styled(Grid)`
   align-items: center;
   text-overflow: ellipsis;
 
+  &:hover {
+    background: ${props => props.theme.backgroundHover};
+  }
+
   ${props => props.highlighted && css`
     background: ${props => props.theme.selected};
   `}
@@ -294,6 +298,7 @@ export const Themed = ({ darkTheme, children }) => {
     header: '#343a40',
     sidebar: '#343a40',
     background: '#222',
+    backgroundHover: '#444',
     foreground: '#fff',
     foregroundLight: '#aaa',
     button: {
@@ -308,6 +313,7 @@ export const Themed = ({ darkTheme, children }) => {
     header: '#343a40',
     sidebar: '#343a40',
     background: '#eee',
+    backgroundHover: '#ccc',
     foreground: '#000',
     foregroundLight: '#555',
     button: {
