@@ -439,6 +439,9 @@ module.exports = function (input, done, send) {
     mumbleClient.callVote(input.payload)
   } else if (input.action === 'youtube') {
     mumbleClient.uploadYoutube(input.payload, false)
+  } else if (input.action === 'stopsong')
+  {
+    
   }
   done('Success')
 }

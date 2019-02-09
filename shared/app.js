@@ -1,7 +1,7 @@
 import { h } from 'preact'
 import { PureComponent } from 'react'
 
-import { Wrapper, Header, Card, HeaderTitle, HeaderLink, Input, Sidebar, Themed } from './components'
+import { Wrapper, Header, Card, HeaderTitle, HeaderLink, Input, Sidebar, Themed, Cell, FormButton, Button } from './components'
 import { connect } from 'unistore/preact'
 import { actions } from './store'
 import Player from './player'
@@ -49,6 +49,21 @@ class App extends PureComponent {
     this.setState({ sidebarVisible: !this.state.sidebarVisible })
   }
 
+  async stopSong(e){
+    e.preventDefault()
+   
+    const req = await fetch('/api/stop', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: ''
+    })
+    const content = await req.text()
+    console.log(content)
+  }
+
   render (props, state) {
     const { status, title } = props.mumblebotData
     const { playing, queue, nowPlaying } = status
@@ -83,6 +98,9 @@ class App extends PureComponent {
             </Card>
             <Card>
               <Player preview={props.preview || {}} />
+            </Card>
+            <Card>
+              <Button primary onClick={(e) => this.stopSong(e)}>Stop Song</Button>
             </Card>
           </Sidebar>
           <Wrapper>

@@ -177,5 +177,12 @@ export default io => {
     res.send('Success')
   })
 
+  router.post('/stop',function(req,res,next){
+    var body = req.body
+    thread.send({action: 'stopsong'})
+    res.send('Success')
+  })
+
+
   return router
 }
