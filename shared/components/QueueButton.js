@@ -1,9 +1,12 @@
 import { h, Component } from 'preact'
 import { FormButton } from '../components'
+import { connect } from 'unistore/preact'
+import { actions } from '../store'
 
-export default class QueueButton extends Component {
+class QueueButton extends Component {
   async requestSong (e) {
     e.preventDefault()
+    this.props.setQueueActive(false);
     // eslint-disable-next-line no-undef
     const req = await fetch('/api/request', {
       method: 'POST',
@@ -15,14 +18,17 @@ export default class QueueButton extends Component {
     })
     const content = await req.text()
     console.log(content)
+    setTimeout(() => this.props.setQueueActive(true), 10000);
   }
 
   render (props) {
     return (
       <form method='post' action='/api/request' onSubmit={(e) => this.requestSong(e)}>
         <input type='hidden' name='json' value={JSON.stringify(props.data)} />
-        <FormButton primary type='submit'>Queue</FormButton>
+        <FormButton primary type='submit' disabled={!this.props.queueButtonsActive}>Queue</FormButton>
       </form>
     )
   }
 }
+
+export default connect('queueButtonsActive', actions)(QueueButton)

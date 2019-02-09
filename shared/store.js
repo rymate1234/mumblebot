@@ -16,7 +16,8 @@ const defaultState = Object.assign({
   settings: {
     darkTheme: true
   },
-  updates: 0
+  updates: 0,
+  queueButtonsActive : true
 }, isClient ? window.__backend_data__ : {})
 
 let cookies = {}
@@ -121,6 +122,12 @@ let actions = store => ({
       filtered: (value && filtered.length) ? filtered : [],
       filter: value
     })
+  },
+  setQueueActive (state,data)
+  { 
+    store.setState({
+        queueButtonsActive : data
+      })
   }
 })
 

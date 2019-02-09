@@ -214,6 +214,11 @@ export const Button = styled.a`
     background-color: ${props => props.theme.button.hover};
     color: #fff;
   }
+
+  &:disabled
+  {
+    background-color : #D3D3D3;
+  }
 `
 
 export const FormButton = Button.withComponent('button')
