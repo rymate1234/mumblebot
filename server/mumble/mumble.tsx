@@ -441,7 +441,7 @@ module.exports = function (input, done, send) {
     mumbleClient.uploadYoutube(input.payload, false)
   } else if (input.action === 'stopsong')
   {
-    
+    mumbleClient.StopCommand.execute();
   }
   done('Success')
 }
