@@ -17,7 +17,7 @@ const defaultState = Object.assign({
     darkTheme: true
   },
   updates: 0,
-  queueButtonsActive : true
+  queueButtonsActive: true
 }, isClient ? window.__backend_data__ : {})
 
 let cookies = {}
@@ -97,7 +97,7 @@ let actions = store => ({
   },
 
   addSong (state, data) {
-    if (state.router.name === 'Stations') return 
+    if (state.router.name === 'Stations') return
     state.pageData.list.unshift(mapSong(data))
     state.updates++
     const filtered = filterChannels(state.pageData.list, state.filter)
@@ -123,11 +123,10 @@ let actions = store => ({
       filter: value
     })
   },
-  setQueueActive (state,data)
-  { 
+  setQueueActive (state, data) {
     store.setState({
-        queueButtonsActive : data
-      })
+      queueButtonsActive: data
+    })
   }
 })
 

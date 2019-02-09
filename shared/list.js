@@ -13,10 +13,10 @@ class List extends Component {
     return <SongRow item={channel} />
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     console.log('new props', props.pageData.list[0])
     this.setState({ channels: props.filtered.length ? props.filtered : props.pageData.list })
-    this.forceUpdate(); // argh
+    this.forceUpdate() // argh
   }
 
   render (props, state) {

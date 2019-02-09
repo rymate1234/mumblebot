@@ -1,7 +1,6 @@
 /* global Windows */
 import { h, Component } from 'preact'
-import { Button, Grid, Cell } from './components'
-import linkState from 'linkstate'
+import { Grid, Cell } from './components'
 
 class Player extends Component {
   state = {

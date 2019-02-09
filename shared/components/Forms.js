@@ -7,13 +7,13 @@ export default class Forms extends Component {
   state = {
     form: 'upload'
   }
-  render(props, state) {
+  render (props, state) {
     return (
       <div>
         <div>
           <Link padding selected={state.form === 'upload'} onClick={() => this.setState({ form: 'upload' })}>
             Upload
-            </Link>
+          </Link>
           <Link padding selected={state.form === 'youtube'} onClick={() => this.setState({ form: 'youtube' })}>
             YouTube
           </Link>

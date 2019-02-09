@@ -6,7 +6,7 @@ import { actions } from '../store'
 class QueueButton extends Component {
   async requestSong (e) {
     e.preventDefault()
-    this.props.setQueueActive(false);
+    this.props.setQueueActive(false)
     // eslint-disable-next-line no-undef
     const req = await fetch('/api/request', {
       method: 'POST',
@@ -18,7 +18,7 @@ class QueueButton extends Component {
     })
     const content = await req.text()
     console.log(content)
-    setTimeout(() => this.props.setQueueActive(true), 10000);
+    setTimeout(() => this.props.setQueueActive(true), 10000)
   }
 
   render (props) {

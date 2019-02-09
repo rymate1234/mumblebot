@@ -22,7 +22,6 @@ export default class UploadForm extends Component {
       method: 'POST',
       body: formData
     })
-    const content = await req.text()
     this.setState({ state: req.ok ? 'Success' : 'Failed' })
   }
 

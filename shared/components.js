@@ -101,7 +101,7 @@ export const HeaderLink = styled.a`
 `
 
 export const Container = styled.main`
-  height: calc(100vh - ${props => props.preview ? '86px' : '48px' });
+  height: calc(100vh - ${props => props.preview ? '86px' : '48px'});
   padding: 10px;
   display: flex;
 `

@@ -17,4 +17,4 @@ Promise.all(urls.map(async element => {
     body: JSON.stringify({ song: test })
   })
   return req.text()
-})).then(i => console.log(i)).catch(console.log);
+})).then(i => console.log(i)).catch(console.log)
