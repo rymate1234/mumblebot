@@ -11,8 +11,8 @@ import routes from './routes'
 import { getSocket } from './api'
 
 class App extends PureComponent {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
       sidebarVisible: false
     }
@@ -93,7 +93,7 @@ class App extends PureComponent {
               </HeaderTitle>
               <HeaderLink href='/radio'>Radio</HeaderLink>
             </Header>
-            <Router routes={routes} base={props.route} notFound={NotFound} setPageData={props.setPageData} />
+            <Router preview={Object.keys(props.preview).length > 0} routes={routes} base={props.route} notFound={NotFound} setPageData={props.setPageData} />
           </Wrapper>
         </Wrapper>
       </Themed>

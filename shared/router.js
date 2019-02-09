@@ -49,7 +49,7 @@ class Router extends Component {
   render (props, state) {
     let Current = state.currentComponent
     return (
-      <Container>
+      <Container preview={props.preview}>
         {state.loading &&
           <Center>
             <img src='https://images.rymate.co.uk/images/3SddFB8.gif' />

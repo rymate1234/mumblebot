@@ -2,7 +2,6 @@ import { h } from 'preact'
 import styled, { css, ThemeProvider } from 'styled-components'
 
 export const Wrapper = styled.div`
-  height: 100%;
   transition: all 0.2s ease-in-out;
   max-height: 100vh;
   background: ${state => state.theme.background};
@@ -102,7 +101,7 @@ export const HeaderLink = styled.a`
 `
 
 export const Container = styled.main`
-  height: calc(100vh - 48px);
+  height: calc(100vh - ${props => props.preview ? '86px' : '48px' });
   padding: 10px;
   display: flex;
 `
@@ -128,6 +127,7 @@ export const Grid = styled.div`
 `
 
 export const Cell = styled.div`
+  flex: 1 1 auto;
   height: 100%;
   min-width: 0;
   ${({ left }) => left && `grid-column-start: ${left}`};

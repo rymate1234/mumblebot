@@ -61,19 +61,8 @@ class Player extends Component {
         <Cell className='title' width={2}>{props.preview.title}</Cell>
         <Cell className='location' top={2} width={2}>{props.preview.info}</Cell>
 
-        <audio src={props.preview.src} ref={audio => { this.audio = audio }} autoPlay volume={state.volume}
-          onPlay={() => this.setPlaying()} onPause={() => this.setPaused()} />
-
-        <Cell top={3}>
-          <label>
-            Volume
-          </label>
-          <input type='range' min='0' max='100' onChange={linkState(this, 'volume')} value={state.volume} class='slider' />
-        </Cell>
-
-        <Cell top={3} left={2} center middle>
-          <Button onClick={() => this.togglePlay()}>{state.playing ? 'Pause' : 'Play'}</Button>
-        </Cell>
+        <audio id='audio' src={props.preview.src} ref={audio => { this.audio = audio }} autoPlay volume={state.volume}
+          onPlay={() => this.setPlaying()} onPause={() => this.setPaused()} controls />
       </Grid>
     ) : (
       <p>Nothing being previewed</p>
