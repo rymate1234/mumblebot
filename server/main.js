@@ -34,8 +34,8 @@ app.use(express.static(path.resolve(__dirname, '../static')))
 app.set('view engine', 'hbs')
 app.set('views', path.resolve(__dirname, '../views'))
 app.use(logger)
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
 
 // Import API Routes
 app.use('/api', api(io))
@@ -79,6 +79,6 @@ app.get('/*', async (req, res, next) => {
   res.render('index', { html, styleTags, storeData })
 })
 
-http.listen(port, function() {
-  console.log('listening on *:3000');
-});
+http.listen(port, host, function () {
+  console.log('listening on *:3000')
+})

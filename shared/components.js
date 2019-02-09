@@ -101,7 +101,7 @@ export const HeaderLink = styled.a`
 `
 
 export const Container = styled.main`
-  height: calc(100vh - ${props => props.preview ? '86px' : '48px' });
+  height: calc(100vh - ${props => props.preview ? '86px' : '48px'});
   padding: 10px;
   display: flex;
 `
@@ -215,9 +215,8 @@ export const Button = styled.a`
     color: #fff;
   }
 
-  &:disabled
-  {
-    background-color : #D3D3D3;
+  &:disabled {
+    background-color: ${props => props.theme.backgroundHover};
   }
 `
 

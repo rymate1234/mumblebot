@@ -27,23 +27,23 @@ dbconn(function (err, data) {
 
 export default io => {
   io.on('connection', (socket) => {
-    console.log('a user connected');
-  });
-  
+    console.log('a user connected')
+  })
+
   const thread = spawn('dist/mumble/mumble.js')
   thread.send()
-  .on('progress', function(progress) {
-    let sent = false
-    if (progress.type == 'update-stats') {
-      thread.send({ action: 'status'}).on('message', (status) => {
-        if (!sent) {
-          io.emit('stats', { title: config.name, status });
-        }
-      })
-    } else if (progress.type === 'add-song') {
-      io.emit('addSong', progress.song)
-    }
-  })
+    .on('progress', function (progress) {
+      let sent = false
+      if (progress.type === 'update-stats') {
+        thread.send({ action: 'status' }).on('message', (status) => {
+          if (!sent) {
+            io.emit('stats', { title: config.name, status })
+          }
+        })
+      } else if (progress.type === 'add-song') {
+        io.emit('addSong', progress.song)
+      }
+    })
 
   const router = Router()
   schedule.scheduleJob('0 * * * *', getStations)
@@ -54,7 +54,7 @@ export default io => {
     songsDb.find().sort({ date: -1 }).toArray(function (err, docs) {
       if (!sent) {
         if (err) {
-          res.json({failed: true, error: err})
+          res.json({ failed: true, error: err })
         } else {
           res.json(docs)
         }
@@ -68,7 +68,7 @@ export default io => {
     playlistsDb.find().sort({ date: -1 }).toArray(function (err, docs) {
       if (!sent) {
         if (err) {
-          res.json({failed: true, error: err})
+          res.json({ failed: true, error: err })
         } else {
           res.json(docs)
         }
@@ -86,10 +86,10 @@ export default io => {
 
   router.get('/stats', function (req, res, next) {
     let sent = false
-    thread.send({action: 'status'})
+    thread.send({ action: 'status' })
       .on('message', (status) => {
         if (!sent) {
-          res.json({'title': config.name, 'status': status})
+          res.json({ 'title': config.name, 'status': status })
           sent = true
         }
       })
