@@ -100,7 +100,9 @@ class App extends PureComponent {
               <Player preview={props.preview || {}} />
             </Card>
             <Card>
-              <Button primary onClick={(e) => this.stopSong(e)}>Stop Song</Button>
+              {playing && (
+                <Button primary onClick={(e) => this.stopSong(e)}>Stop Song</Button>
+              )}
             </Card>
           </Sidebar>
           <Wrapper>
