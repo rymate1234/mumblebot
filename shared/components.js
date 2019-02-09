@@ -215,9 +215,8 @@ export const Button = styled.a`
     color: #fff;
   }
 
-  &:disabled
-  {
-    background-color : #D3D3D3;
+  &:disabled {
+    background-color: ${props => props.theme.backgroundHover};
   }
 `
 
