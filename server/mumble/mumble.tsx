@@ -248,6 +248,8 @@ export class Mumble {
     this.yesVotes = []
     this.noVotes = []
     this.voteHappening = true
+    this.sendToMaster({ type: 'update-stats' })
+ 
     setTimeout(() => {
       if (this.yesVotes.length > this.noVotes.length) {
         this.sendMessage('Vote success! Yes Votes: ' + this.yesVotes.length + ' - No Votes: ' + this.noVotes.length)
