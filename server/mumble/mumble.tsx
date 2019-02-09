@@ -133,6 +133,7 @@ export class Mumble {
     status.nowPlaying = this.playingSong.name || this.playingSong.title
     status.queue = this.queue.getArray()
     status.users = this.client && this.client.users().map(user => user.name)
+    status.voteHappening = this.voteHappening
 
     return status
   }
@@ -285,6 +286,8 @@ export class Mumble {
         }
         this.currentFile = this.getFfmpegInstance(filename.src.replace(';', ''), () => {
           console.log('Finished')
+          this.playingSong.name = ''
+          this.sendToMaster({ type: 'update-stats' })
         })
 
         this.playingSong.name = filename.name || filename.title
@@ -302,6 +305,8 @@ export class Mumble {
         this.playing = false
         if (this.queue.getLength() !== 0) {
           console.log('ended')
+          this.playingSong.name = ''
+          this.sendToMaster({ type: 'update-stats' })
           this.play(this.queue.dequeue())
         }
       })
