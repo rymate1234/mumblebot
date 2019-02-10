@@ -30,7 +30,7 @@ export default io => {
     console.log('a user connected')
   })
 
-  const thread = spawn('dist/mumble/mumble.js')
+  const thread = spawn('dist/mumble/index.js')
   thread.send()
     .on('progress', function (progress) {
       let sent = false
@@ -177,9 +177,8 @@ export default io => {
     res.send('Success')
   })
 
-  router.post('/stop',function(req,res,next){
-    var body = req.body
-    thread.send({action: 'stopsong'})
+  router.post('/stop', function (req, res, next) {
+    thread.send({ action: 'stopsong' })
     res.send('Success')
   })
 

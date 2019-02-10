@@ -1,7 +1,7 @@
 import { h } from 'preact'
 import { PureComponent } from 'react'
 
-import { Wrapper, Header, Card, HeaderTitle, HeaderLink, Input, Sidebar, Themed, Cell, FormButton, Button } from './components'
+import { Wrapper, Header, Card, HeaderTitle, HeaderLink, Input, Sidebar, Themed, Button } from './components'
 import { connect } from 'unistore/preact'
 import { actions } from './store'
 import Player from './player'
@@ -9,6 +9,7 @@ import Router from './router'
 import NotFound from './not-found'
 import routes from './routes'
 import { getSocket } from './api'
+import fetch from 'isomorphic-unfetch'
 
 class App extends PureComponent {
   constructor (props) {
@@ -49,9 +50,9 @@ class App extends PureComponent {
     this.setState({ sidebarVisible: !this.state.sidebarVisible })
   }
 
-  async stopSong(e){
+  async stopSong (e) {
     e.preventDefault()
-   
+
     const req = await fetch('/api/stop', {
       method: 'POST',
       headers: {
@@ -87,6 +88,9 @@ class App extends PureComponent {
                 <div>
                   <p><strong>Now Playing</strong></p>
                   <p>{nowPlaying}</p>
+                  <Card>
+                    <Button primary onClick={(e) => this.stopSong(e)}>Stop Song</Button>
+                  </Card>
                 </div>
               )}
               {queue.length > 0 && (
@@ -98,11 +102,6 @@ class App extends PureComponent {
             </Card>
             <Card>
               <Player preview={props.preview || {}} />
-            </Card>
-            <Card>
-              {playing && (
-                <Button primary onClick={(e) => this.stopSong(e)}>Stop Song</Button>
-              )}
             </Card>
           </Sidebar>
           <Wrapper>

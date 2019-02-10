@@ -7,12 +7,12 @@
     "get-stations": "node ./util/get-stations.js",
     "build": "npm-run-all --parallel build:*",
     "build:client": "cross-env BABEL_ENV=client parcel build --detailed-report  --cache-dir .cache/client --target browser ./client/index.js",
-    "build:server": "cross-env BABEL_ENV=server parcel build --detailed-report  --cache-dir .cache/server --target node  ./server/main.js ./server/mumble/mumble.tsx",
+    "build:server": "cross-env BABEL_ENV=server parcel build --detailed-report  --cache-dir .cache/server --target node  ./server/main.js ./server/mumble/index.ts",
     "dev": "npm-run-all --parallel client server start",
     "lint": "eslint . --fix",
     "start": "cross-env BABEL_ENV=server nodemon --ignore server/ --ignore stations.json --ignore client/ ./dist/main.js",
     "client": "cross-env BABEL_ENV=client parcel watch --cache-dir .cache/client --target browser client/index.js",
-    "server": "cross-env BABEL_ENV=server parcel watch --cache-dir .cache/server --target node ./server/main.js ./server/mumble/mumble.tsx"
+    "server": "cross-env BABEL_ENV=server parcel watch --cache-dir .cache/server --target node ./server/main.js ./server/mumble/index.ts"
   },
   "browserslist": ">1%, not ie 11, not op_mini all",
   "alias": {
