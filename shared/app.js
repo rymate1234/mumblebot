@@ -35,6 +35,7 @@ class App extends PureComponent {
   }
 
   componentWillUnmount () {
+    this.socket.off()
     window.removeEventListener('keydown', this.handleKey)
   }
 
