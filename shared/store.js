@@ -93,7 +93,6 @@ let actions = store => ({
 
   setPageData (state, data) {
     state.updates++
-    console.trace(state.updates)
     return { ...state, ...data, ...dataToReset }
   },
 

@@ -26,8 +26,6 @@ class App extends PureComponent {
     this.socket = getSocket()
 
     this.socket.on('stats', stats => {
-      console.log(stats)
-      console.trace()
       this.props.setPageData({ mumblebotData: stats, queueButtonsActive: !stats.status.voteHappening })
     })
 

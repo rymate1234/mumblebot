@@ -447,5 +447,4 @@ module.exports = function (input, done, send) {
   } else if (input.action === 'youtube') {
     mumbleClient.uploadYoutube(input.payload, false)
   }
-  done('Success')
 }
