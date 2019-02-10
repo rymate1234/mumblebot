@@ -297,6 +297,40 @@ export const FormWrap = styled.div`
   flex-direction: row;
 `
 
+export const ModalTitle = styled.h2`
+  margin: 0;
+  display: block;
+  margin-bottom: 5px;
+  padding: 5px;
+  text-align: center;
+`
+
+export const ModalPairCode = styled.h3`
+  margin: 0;
+  display: block;
+  padding: 5px;
+  text-align: center;
+  background-color:  ${props => props.theme.backgroundHover};
+`
+
+export const ModalParagraph = styled.p`
+  margin: 0;
+  display: block;
+  padding: 5px;
+  text-align: center;
+
+  input {
+    text-align: center;
+    font-family: Consolas, 'Courier New', Courier, monospace;
+    display: block;
+    padding: 5px;
+    width: 100%;
+    background: none;
+    border: none;
+    color: ${props => props.theme.foreground};
+  }
+`
+
 export const Themed = ({ darkTheme, children }) => {
   const theme = darkTheme ? {
     header: '#343a40',

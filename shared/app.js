@@ -10,6 +10,8 @@ import NotFound from './not-found'
 import routes from './routes'
 import { getSocket } from './api'
 import fetch from 'isomorphic-unfetch'
+import Modal from './Modal'
+import PairForm from './components/PairForm'
 
 class App extends PureComponent {
   constructor (props) {
@@ -22,7 +24,8 @@ class App extends PureComponent {
     this.handleKey = this.handleKey.bind(this)
   }
 
-  componentDidMount () {
+  componentWillMount () {
+    if (typeof window === 'undefined') return
     window.addEventListener('keydown', this.handleKey)
     this.socket = getSocket()
 
@@ -37,6 +40,7 @@ class App extends PureComponent {
 
   componentWillUnmount () {
     window.removeEventListener('keydown', this.handleKey)
+    this.socket.disconnect()
   }
 
   handleKey (e) {
@@ -71,6 +75,9 @@ class App extends PureComponent {
     return (
       <Themed darkTheme={props.settings.darkTheme}>
         <Wrapper tabIndex={0} row visible={state.sidebarVisible}>
+          <Modal visible>
+            <PairForm socket={this.socket} />
+          </Modal>
           <Sidebar>
             <Card>
               <label for='search'>

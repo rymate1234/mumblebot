@@ -12,38 +12,43 @@ import normaliseSong from '../shared/util/normalise-song'
 
 const config = require('../config.js')
 
-let songsDb = {}
-let playlistsDb = {}
-
-dbconn(function (err, data) {
-  if (err) {
-    console.log(err)
-    return
-  }
-
-  songsDb = data.collection('songs')
-  playlistsDb = data.collection('playlists')
-})
-
-export default io => {
+export default async io => {
+  const database = await dbconn()
+  const songsDb = database.collection('songs')
+  const playlistsDb = database.collection('playlists')
+  const codes = {}
   io.on('connection', (socket) => {
     console.log('a user connected')
+
+    socket.on('code', (code, fn) => {
+      console.log(code)
+      codes[socket.id] = code
+      console.log(codes)
+      fn('')
+    })
+
+    socket.on('disconnect', () => {
+      delete codes[socket.id]
+      console.log(codes)
+    })
+  
   })
 
   const thread = spawn('dist/mumble/index.js')
-  thread.send()
-    .on('progress', function (progress) {
-      let sent = false
-      if (progress.type === 'update-stats') {
-        thread.send({ action: 'status' }).on('message', (status) => {
-          if (!sent) {
-            io.emit('stats', { title: config.name, status })
-          }
-        })
-      } else if (progress.type === 'add-song') {
-        io.emit('addSong', progress.song)
-      }
-    })
+  thread.send().on('progress', progress => {
+    let sent = false
+    if (progress.type === 'update-stats') {
+      thread.send({ action: 'status' }).on('message', (status) => {
+        if (!sent) {
+          io.emit('stats', { title: config.name, status })
+        }
+      })
+    } else if (progress.type === 'add-song') {
+      io.emit('addSong', progress.song)
+    } else if (progress.type === 'attempt-pair') {
+      console.log(progress)
+    }
+  })
 
   const router = Router()
   schedule.scheduleJob('0 * * * *', getStations)

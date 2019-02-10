@@ -15,70 +15,95 @@ import path from 'path'
 import { ServerStyleSheet } from 'styled-components'
 
 import api from './api'
+import { url } from './database'
 import { json, text, urlencoded } from 'body-parser'
 import morgan from 'morgan'
+import session from 'express-session'
+import createMongoStore from 'connect-mongodb-session'
 
-// create "middleware"
-var logger = morgan('combined')
-const host = process.env.HOST || '0.0.0.0'
-const port = process.env.PORT || 3000
+async function start () {
+  // create "middleware"
+  const logger = morgan('combined')
+  const host = process.env.HOST || '0.0.0.0'
+  const port = process.env.PORT || 3000
 
-const app = express()
-
-app.use(compression())
-app.use(json())
-app.use(text())
-app.use(urlencoded({ extended: false }))
-app.use(express.static(path.resolve(__dirname, '../dist')))
-app.use(express.static(path.resolve(__dirname, '../static')))
-app.set('view engine', 'hbs')
-app.set('views', path.resolve(__dirname, '../views'))
-app.use(logger)
-const http = require('http').Server(app)
-const io = require('socket.io')(http)
-
-// Import API Routes
-app.use('/api', api(io))
-
-const init = async req => {
-  const current = routes[req.url]
-
-  let data = { mumblebotData: await getStats() }
-  if (current && current.getData) {
-    try {
-      data = await current.getData()
-    } catch (e) {
-      console.log(e)
-    }
-  }
-  const store = ServerStore({
-    children: <App route={req.url} />,
-    data,
-    req
+  const app = express()
+  const MongoDBStore = createMongoStore(session)
+  const store = new MongoDBStore({
+    uri: url,
+    collection: 'mySessions'
   })
 
-  return store
-}
+  store.on('error', console.log)
 
-// on each request, render and return a component:
-app.get('/*', async (req, res, next) => {
-  const store = await init(req)
-  if (!store) return next()
-  const sheet = new ServerStyleSheet()
-  const html = render(sheet.collectStyles(store.serverStore))
-  const styleTags = sheet.getStyleTags()
+  app.use(session({
+    secret: 'super cereal secret code of secretness',
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    },
+    store,
+    resave: true,
+    saveUninitialized: true
+  }))
 
-  const data = store.data
+  app.use(compression())
+  app.use(json())
+  app.use(text())
+  app.use(urlencoded({ extended: false }))
+  app.use(express.static(path.resolve(__dirname, '../dist')))
+  app.use(express.static(path.resolve(__dirname, '../static')))
+  app.set('view engine', 'hbs')
+  app.set('views', path.resolve(__dirname, '../views'))
+  app.use(logger)
 
-  if (data.pageData && data.pageData.list) {
-    data.pageData.list = data.pageData.list.slice(0, 100)
+  const http = require('http').Server(app)
+  const io = require('socket.io')(http)
+
+  // Import API Routes
+  app.use('/api', await api(io))
+
+  const init = async req => {
+    const current = routes[req.url]
+
+    let data = { mumblebotData: await getStats() }
+    if (current && current.getData) {
+      try {
+        data = await current.getData()
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    const store = ServerStore({
+      children: <App route={req.url} />,
+      data,
+      req
+    })
+
+    return store
   }
 
-  const storeData = JSON.stringify(data)
+  // on each request, render and return a component:
+  app.get('/*', async (req, res, next) => {
+    const store = await init(req)
+    if (!store) return next()
+    const sheet = new ServerStyleSheet()
+    const html = render(sheet.collectStyles(store.serverStore))
+    const styleTags = sheet.getStyleTags()
 
-  res.render('index', { html, styleTags, storeData })
-})
+    const data = store.data
 
-http.listen(port, host, function () {
-  console.log('listening on *:3000')
-})
+    if (data.pageData && data.pageData.list) {
+      data.pageData.list = data.pageData.list.slice(0, 100)
+    }
+
+    const storeData = JSON.stringify(data)
+
+    res.render('index', { html, styleTags, storeData })
+  })
+
+  http.listen(port, host, function () {
+    console.log('listening on *:3000')
+  })
+}
+
+start()

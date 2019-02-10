@@ -1,12 +1,14 @@
 import socketIOClient from 'socket.io-client'
 import fetch from 'isomorphic-unfetch'
+import config from '../config'
 
 const isClient = typeof window !== 'undefined'
 const port = process.env.PORT || 3000
 const prefix = isClient ? '' : 'http://127.0.0.1:' + port
+const url = config.site || 'http://127.0.0.1:' + port
 
 export const getSocket = () => {
-  return socketIOClient()
+  return socketIOClient(url)
 }
 
 export const getStats = async () => {

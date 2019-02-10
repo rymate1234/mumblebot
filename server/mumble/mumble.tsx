@@ -20,9 +20,10 @@ import StopCommand from './commands/StopCommand'
 import VolumeCommand from './commands/VolumeCommand'
 import YesCommand from './commands/YesCommand'
 import YoutubeCommand from './commands/YoutubeCommand'
-import BaseCommand from './commands/BaseCommand';
-import { Collection, MongoClient } from 'mongodb';
-import { ffprobe } from 'fluent-ffmpeg/lib/fluent-ffmpeg';
+import BaseCommand from './commands/BaseCommand'
+import PairCommand from './commands/PairCommand'
+import { Collection } from 'mongodb'
+import { ffprobe } from 'fluent-ffmpeg/lib/fluent-ffmpeg'
 
 const options = {
   key: readFileSync('key.pem').toString(),
@@ -64,19 +65,15 @@ export class Mumble {
     this.commands.push(new StopCommand(this))
     this.commands.push(new VolumeCommand(this))
     this.commands.push(new RandomSongCommand(this))
+    this.commands.push(new PairCommand(this))
 
     this.commands.push(new BbcCommand(this))
     this.commands.push(new MemeCommand(this))
   }
 
-  connect () {
-    dbconn((err: any, data: MongoClient) => {
-      if (err !== null) {
-        return
-      }
-
-      this.db = data.collection('songs')
-    })
+  async connect () {
+    const database = await dbconn()
+    this.db = database.collection('songs')
 
     console.log('Connecting')
 
@@ -139,7 +136,7 @@ export class Mumble {
   }
 
   setComment () {
-    var message
+    let message = <div />
     if (this.playingSong) {
       message = (
         <div>
