@@ -1,7 +1,7 @@
 import { Mumble } from './mumble'
 import StopCommand from './commands/StopCommand'
 
-let mumbleClient = null
+let mumbleClient: Mumble = null
 module.exports = function (input, done, send) {
   if (mumbleClient === null) {
     mumbleClient = new Mumble(send)
