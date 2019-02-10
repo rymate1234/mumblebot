@@ -50,8 +50,8 @@ class App extends PureComponent {
   }
 
   render (props, state) {
-    const { status, title } = props.mumblebotData
-    const { playing, queue, nowPlaying } = status
+    const { status = {}, title } = props.mumblebotData
+    const { playing = false, queue = [], nowPlaying = '' } = status
     return (
       <Themed darkTheme={props.settings.darkTheme}>
         <Wrapper tabIndex={0} row visible={state.sidebarVisible}>
@@ -74,7 +74,7 @@ class App extends PureComponent {
                   <p>{nowPlaying}</p>
                 </div>
               )}
-              {queue.length > 0 && (
+              {queue && queue.length > 0 && (
                 <div>
                   <p><strong>Queued</strong></p>
                   {queue.map(item => <p>{item.title || item.name}</p>)}
