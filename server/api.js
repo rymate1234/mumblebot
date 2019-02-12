@@ -9,27 +9,27 @@ import fs from 'fs'
 import schedule from 'node-schedule'
 import getStations from './get-stations'
 import normaliseSong from '../shared/util/normalise-song'
+import hat from 'hat'
+import { isWithStatement } from 'typescript';
 
 const config = require('../config.js')
 
 export default async io => {
   const database = await dbconn()
   const songsDb = database.collection('songs')
+  const usersDb = database.collection('users')
   const playlistsDb = database.collection('playlists')
-  const codes = {}
+  let codes = []
   io.on('connection', (socket) => {
     console.log('a user connected')
 
     socket.on('code', (code, fn) => {
-      console.log(code)
-      codes[socket.id] = code
-      console.log(codes)
+      codes.push({ socket, code })
       fn('')
     })
 
     socket.on('disconnect', () => {
-      delete codes[socket.id]
-      console.log(codes)
+      codes = codes.filter(item => item.socket.id !== socket.id)
     })
   
   })
@@ -46,7 +46,19 @@ export default async io => {
     } else if (progress.type === 'add-song') {
       io.emit('addSong', progress.song)
     } else if (progress.type === 'attempt-pair') {
-      console.log(progress)
+      const authCode = hat(60, 36)
+      
+      const item = {
+        code: progress.code,
+        user: progress.user,
+        authCode
+      }
+      
+      const pair = codes.find(item => item.code === progress.code)
+      if (!pair) return
+      usersDb.insertOne(item, () => {
+        pair.socket.emit('didPair', item.authCode)
+      })
     }
   })
 
