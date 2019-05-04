@@ -350,7 +350,6 @@ export class Mumble {
   }
 
   uploadYoutube = (url, request) => {
-    console.log(url)
     if (!url.startsWith('http')) return
     try {
       var youtube = ytdl(url)

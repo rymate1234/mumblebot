@@ -14,12 +14,15 @@ class List extends Component {
   }
 
   componentWillReceiveProps (props) {
-    this.setState({ channels: props.filtered.length > 0 ? props.filtered : props.pageData.list })
+    this.setState({ channels: props.filter ? props.filtered : props.pageData.list })
     this.forceUpdate() // argh
   }
 
   render (props, state) {
-    console.log('rendering')
+    if (props.filter && props.filtered.length === 0) {
+      return <h1>No songs found rip</h1>
+    }
+
     let viewAll = props.path.includes('all')
     return !viewAll ? (
       <VirtualList overscanCount={12} class='list' data={state.channels} rowHeight={56} renderRow={this.renderRow} sync />
@@ -31,4 +34,4 @@ class List extends Component {
   }
 }
 
-export default connect('pageData,filtered', actions)(List)
+export default connect('pageData,filtered,filter', actions)(List)
