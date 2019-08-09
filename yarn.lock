@@ -1460,6 +1460,11 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.1.tgz#ae2d5a729477f289d60dd7f96a6314a22dd6c22a"
   integrity sha1-ri1acpR38onWDdf5amMUoi3Wwio=
 
+audio-metadata@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/audio-metadata/-/audio-metadata-0.3.0.tgz#7d554031f0c244ee296231a1a55e00ff788d6ceb"
+  integrity sha1-fVVAMfDCRO4pYjGhpV4A/3iNbOs=
+
 "audio-mixer@https://github.com/notthetup/audio-mixer.git":
   version "0.0.1"
   resolved "https://github.com/notthetup/audio-mixer.git#9fce47058338de3e6634b4069e4cd77cd8e3480d"
@@ -5195,6 +5200,11 @@ miniget@^1.4.0:
   resolved "https://registry.yarnpkg.com/miniget/-/miniget-1.5.1.tgz#4f93840d5aaed21634cd12fd07d22f7d64e9d570"
   integrity sha512-KJ3AyIVZ76QuWAq43BWjkK+jLdhxhy3s4tsdg9Je91+cIFkeOSW2VEj2lSeKw50CPu1eCCkSbiQEBKL36mpA5w==
 
+miniget@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/miniget/-/miniget-1.5.3.tgz#d796c7291970d1dfa28b646d9aba3fa6b377c5e8"
+  integrity sha512-6xiJs3ZGBdrNMlPNlEWirHhY53hSW33nG1Ytub9Cg5+jLhFPn9PGe4FmPZK9WlmDE1N7/8DEL7PGr7r9kbxwgw==
+
 minimalistic-assert@^1.0.0, minimalistic-assert@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz#2e194de044626d4a10e7f7fbc00ce73e83e4d5c7"
@@ -5391,12 +5401,12 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-navaid@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/navaid/-/navaid-1.0.0.tgz#1d274c1f76be05b7cb2c22d86434d1d768fa4a4a"
-  integrity sha512-K+gfVdiO36xjlv0dDDscX2zN2x+lsxHGgfQqAvKJ11uMxCFVA9MgSVXbAqW1AIq0OXVtPRTUmEHCysSFOa83rA==
+navaid@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/navaid/-/navaid-1.0.5.tgz#97227cdb9981c71010c33b71074d8ed217e96d3e"
+  integrity sha512-JDCBZlDhKHDIGbrojmpRXgDHAfTigHzFtT5MCnj7HX+IVvaNcatX+IOSqTUKpLkenQBnDZIGzbZyzz5Gwli4sw==
   dependencies:
-    regexparam "^0.0.1"
+    regexparam "^1.0.2"
 
 needle@^2.2.1:
   version "2.2.2"
@@ -6719,16 +6729,22 @@ posthtml@^0.11.2, posthtml@^0.11.3:
     posthtml-parser "^0.3.3"
     posthtml-render "^1.1.0"
 
-preact-compat@^3.18.2:
-  version "3.18.4"
-  resolved "https://registry.yarnpkg.com/preact-compat/-/preact-compat-3.18.4.tgz#fbe76ddd30356c68e3ccde608107104946f2cf8d"
-  integrity sha512-aR5CvCIDerE2Y201ERVkWQdTAQKhKGNYujEk4tbyfQDInFTrnCCa3KCeGtULZrwy0PNRBjdQa2/Za7qv7ALNFg==
+preact-compat@^3.19.0:
+  version "3.19.0"
+  resolved "https://registry.yarnpkg.com/preact-compat/-/preact-compat-3.19.0.tgz#a71457b6a3bf051690a4411603bc2085aa061c2f"
+  integrity sha512-f83A4hIhH8Uzhb9GbIcGk8SM19ffWlwP9mDaYwQdRnMdekZwcCA7eIAbeV4EMQaV9C0Yuy8iKgBAtyTKPZQt/Q==
   dependencies:
     immutability-helper "^2.7.1"
+    preact-context "^1.1.3"
     preact-render-to-string "^3.8.2"
     preact-transition-group "^1.1.1"
     prop-types "^15.6.2"
     standalone-react-addons-pure-render-mixin "^0.1.1"
+
+preact-context@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/preact-context/-/preact-context-1.1.3.tgz#26d06db0f39d8d9c890df5ada9a99a943586ec68"
+  integrity sha512-2LcpjZG6JUhBgqziVH+nJtmu9PS5KzWoFx6wX2svXw0oBHhU6e8tQZhEkKLMOAxdmj7gVzApfS/B6V+fjJ/llA==
 
 preact-render-to-string@^3.8.2:
   version "3.8.2"
@@ -6754,10 +6770,10 @@ preact-virtual-list@^0.3.1:
   resolved "https://registry.yarnpkg.com/preact-virtual-list/-/preact-virtual-list-0.3.1.tgz#90977c1d81cebe10b38817c103a8fb3fc8279297"
   integrity sha1-kJd8HYHOvhCziBfBA6j7P8gnkpc=
 
-preact@^8.4.2:
-  version "8.4.2"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-8.4.2.tgz#1263b974a17d1ea80b66590e41ef786ced5d6a23"
-  integrity sha512-TsINETWiisfB6RTk0wh3/mvxbGRvx+ljeBccZ4Z6MPFKgu/KFGyf2Bmw3Z/jlXhL5JlNKY6QAbA9PVyzIy9//A==
+preact@^8.5.1:
+  version "8.5.1"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-8.5.1.tgz#3a86cf5f3d4f6eb3349fa1f106ad59756c2af0e3"
+  integrity sha512-YVnCgcboxGrorFVIPjViqkEPOtfYVDxn5GOJuXHQZiOty+JOw7A+1xJytv/mb1O2QIIRC0SyT+kapA7Wj3jdZA==
 
 prelude-ls@~1.1.2:
   version "1.1.2"
@@ -7104,10 +7120,10 @@ regex-not@^1.0.0, regex-not@^1.0.2:
     extend-shallow "^3.0.2"
     safe-regex "^1.1.0"
 
-regexparam@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/regexparam/-/regexparam-0.0.1.tgz#bb1ee6ba527043d689cbe057089db71f025a902e"
-  integrity sha512-ZAWSvAXXL3WaoF9wVCo+PWzIaiQ81jk87OaFOJ2CQ0ld/seonv9kbCmWdEEA4fEY0SQNiSBV0zidWUAw77cryw==
+regexparam@^1.0.2:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/regexparam/-/regexparam-1.3.0.tgz#2fe42c93e32a40eff6235d635e0ffa344b92965f"
+  integrity sha512-6IQpFBv6e5vz1QAqI+V4k8P2e/3gRrqfCJ9FI+O1FLQTO+Uz6RXZEZOPmTJ6hlGj7gkERzY5BRCv09whKP96/g==
 
 regexpp@^1.0.1:
   version "1.1.0"
@@ -8268,10 +8284,10 @@ unique-string@^1.0.0:
   dependencies:
     crypto-random-string "^1.0.0"
 
-unistore@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/unistore/-/unistore-3.2.1.tgz#26e316c834e39b83b2a301a65f78138f43975a0b"
-  integrity sha512-102VTsu5dcoADsz+NdBE55JeFh1YYLvrEzLenwE+nu3lFWSVZj2MpvXLkBqrx/YTk+L3kzMG5UwHkHoj/9VcaQ==
+unistore@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/unistore/-/unistore-3.4.1.tgz#effdee7d9f2e00fdc6cecad5ab598ccd54344d38"
+  integrity sha512-p2Ej8qqrqcD10Ah0ZUKUU/mhRB8pM4q6gzjxq9kZpgxa8dks7oHT8jDP4CqLhoRof3RXOZLKB9EBV1DTzHiJRw==
 
 universal-cookie@^3.0.7:
   version "3.0.7"
@@ -8627,12 +8643,12 @@ yeast@0.1.2:
   resolved "https://registry.yarnpkg.com/yeast/-/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
   integrity sha1-AI4G2AlDIMNy28L47XagymyKxBk=
 
-ytdl-core@^0.29.1:
-  version "0.29.1"
-  resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-0.29.1.tgz#2d7a1505d47a34a02551639a8d4092af959c4902"
-  integrity sha512-J/TW3rupqE6y+TczHTTFjuwf23tweA9fasmnbU/5yYH0O2IRFLcwgHbbvEPt3t8mtXWGX207+TWH7uuJpB1FKQ==
+ytdl-core@^0.29.5:
+  version "0.29.5"
+  resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-0.29.5.tgz#278052a1a5a1a75c5931c229b804c0798f18858c"
+  integrity sha512-6WOoLQCeovo/aFYeMKeEXjvS/L+0j/vq85AYF86KSmkSA3lMzUzMdtmlo0GjsrOUN79S03MDkSgXEWOZBWL1Rg==
   dependencies:
     html-entities "^1.1.3"
     m3u8stream "^0.6.2"
-    miniget "^1.4.0"
+    miniget "^1.5.3"
     sax "^1.1.3"
