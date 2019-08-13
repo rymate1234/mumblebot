@@ -39,6 +39,7 @@ class App extends PureComponent {
   }
 
   componentWillUnmount () {
+    this.socket.off()
     window.removeEventListener('keydown', this.handleKey)
     this.socket.disconnect()
   }
@@ -70,8 +71,8 @@ class App extends PureComponent {
   }
 
   render (props, state) {
-    const { status, title } = props.mumblebotData
-    const { playing, queue, nowPlaying } = status
+    const { status = {}, title } = props.mumblebotData
+    const { playing = false, queue = [], nowPlaying = '' } = status
     return (
       <Themed darkTheme={props.settings.darkTheme}>
         <Wrapper tabIndex={0} row visible={state.sidebarVisible}>
@@ -100,7 +101,7 @@ class App extends PureComponent {
                   </Card>
                 </div>
               )}
-              {queue.length > 0 && (
+              {queue && queue.length > 0 && (
                 <div>
                   <p><strong>Queued</strong></p>
                   {queue.map(item => <p>{item.title || item.name}</p>)}

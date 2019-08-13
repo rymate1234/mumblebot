@@ -28,5 +28,4 @@ module.exports = function (input, done, send) {
   
     stoppy = null;
   }
-  done('Success')
 }
