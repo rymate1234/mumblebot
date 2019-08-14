@@ -6,18 +6,18 @@
   "scripts": {
     "get-stations": "node ./util/get-stations.js",
     "build": "npm-run-all --parallel build:*",
-    "build:client": "cross-env BABEL_ENV=client parcel build --detailed-report  --cache-dir .cache/client --target browser ./client/index.js",
-    "build:server": "cross-env BABEL_ENV=server parcel build --detailed-report  --cache-dir .cache/server --target node  ./server/main.js ./server/mumble/index.ts",
+    "build:client": "cross-env BABEL_ENV=client parcel build --detailed-report  --cache-dir .cache/client --target browser ./client/index.tsx",
+    "build:server": "cross-env BABEL_ENV=server parcel build --detailed-report  --cache-dir .cache/server --target node  ./server/main.tsx ./server/mumble/index.ts",
     "dev": "npm-run-all --parallel client server start",
     "lint": "eslint . --fix",
     "start": "cross-env BABEL_ENV=server nodemon --ignore server/ --ignore stations.json --ignore client/ ./dist/main.js",
-    "client": "cross-env BABEL_ENV=client parcel watch --cache-dir .cache/client --target browser client/index.js",
+    "client": "cross-env BABEL_ENV=client parcel watch --cache-dir .cache/client --target browser client/index.tsx",
     "server": "cross-env BABEL_ENV=server parcel watch --cache-dir .cache/server --target node ./server/main.tsx ./server/mumble/index.ts"
   },
   "browserslist": ">1%, not ie 11, not op_mini all",
   "alias": {
-    "react": "preact-compat",
-    "react-dom": "preact-compat"
+    "react": "preact/compat",
+    "react-dom": "preact/compat"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
@@ -44,16 +44,17 @@
     "music-metadata": "^4.3.0",
     "navaid": "^1.0.5",
     "node-schedule": "^1.3.2",
-    "preact": "^8.5.1",
-    "preact-compat": "^3.19.0",
+    "preact": "^10.0.0-rc.1",
     "preact-virtual-list": "^0.3.1",
     "promise-memoize": "^1.2.1",
     "react-keydown": "^1.9.11",
+    "react-virtual-list": "^2.3.0",
+    "react-virtualized": "^9.21.1",
     "regenerator-runtime": "^0.13.3",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
     "source-map-support": "^0.5.13",
-    "styled-components": "^3.4.2",
+    "styled-components": "^4.3.2",
     "threads": "^0.12.0",
     "underscore": "^1.9.1",
     "unistore": "^3.4.1",
@@ -72,6 +73,8 @@
     "@types/express-session": "^1.15.13",
     "@types/morgan": "^1.7.36",
     "@types/socket.io": "^2.1.2",
+    "@types/socket.io-client": "^1.4.32",
+    "@types/styled-components": "^4.1.18",
     "babel-node-modules": "^0.0.1",
     "babel-plugin-module-resolver": "^3.2.0",
     "babel-preset-preact": "https://github.com/tomasdev/babel-preset-preact.git#patch-1",
@@ -88,7 +91,7 @@
     "npm-run-all": "^4.1.5",
     "parcel": "^1.12.3",
     "parcel-plugin-bundle-visualiser": "^1.2.0",
-    "preact-render-to-string": "^4.1.0",
+    "preact-render-to-string": "^5.0.6",
     "typescript": "^3.5.3"
   }
 }

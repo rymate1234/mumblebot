@@ -20,7 +20,7 @@ const defaultState = Object.assign({
   queueButtonsActive: true
 }, isClient ? window.__backend_data__ : {})
 
-let cookies = {}
+let cookies: Cookies
 
 const dataToReset = {
   filter: '',
@@ -46,6 +46,7 @@ const ClientStore = ({ children }) => {
     ? createStore(state)
     : devtools(createStore(state))
 
+  
   return (
     <Provider store={store}>
       {children}

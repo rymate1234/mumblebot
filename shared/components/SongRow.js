@@ -1,5 +1,5 @@
 import { h } from 'preact'
-import { Station, Button, Link, Cell } from '../components'
+import { Station, Button, Link, Cell } from '../styles'
 import { connect } from 'unistore/preact'
 import { actions } from '../store'
 import QueueButton from './QueueButton'

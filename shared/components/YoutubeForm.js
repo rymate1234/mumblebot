@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { FormWrap, Input } from '../components'
+import { FormWrap, Input } from '../styles'
 
 export default class YoutubeForm extends Component {
   async addYoutube (e) {

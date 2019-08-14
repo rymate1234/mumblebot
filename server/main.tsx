@@ -2,7 +2,7 @@ import 'source-map-support/register' // map that source!
 import './preact-patch'
 import 'isomorphic-unfetch'
 
-import express from 'express'
+import express, { Request } from 'express'
 import compression from 'compression'
 import { ServerStore } from '../shared/store'
 import App from '../shared/app'
@@ -63,7 +63,7 @@ async function start () {
   // Import API Routes
   app.use('/api', await api(io))
 
-  const init = async req => {
+  const init = async (req: Request) => {
     const current = routes[req.url]
 
     let data = { mumblebotData: await getStats() }
@@ -74,8 +74,11 @@ async function start () {
         console.log(e)
       }
     }
+
+    const children = <App route={req.url} />
+
     const store = ServerStore({
-      children: <App route={req.url} />,
+      children,
       data,
       req
     })
@@ -88,7 +91,7 @@ async function start () {
     const store = await init(req)
     if (!store) return next()
     const sheet = new ServerStyleSheet()
-    const html = render.render(sheet.collectStyles(store.serverStore))
+    const html = render(sheet.collectStyles(store.serverStore))
     const styleTags = sheet.getStyleTags()
 
     const data = store.data

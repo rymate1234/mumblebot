@@ -1,7 +1,8 @@
 import { h, Component } from 'preact'
 
 import Navaid from 'navaid'
-import { Container, Center } from './components'
+import { Container, Center } from './styles'
+const isClient = typeof window !== 'undefined'
 
 class Router extends Component {
   state = {
@@ -10,44 +11,52 @@ class Router extends Component {
     currentComponent: 'div'
   }
 
-  componentWillMount () {
+  constructor (props) {
+    super(props)
+
     const base = this.props.base || '/'
+
+    const route = props.routes[base]
+
+    if (!isClient) {
+      this.state.currentComponent = route.component
+      this.state.path = base
+    }
+  }
+
+  componentWillMount () {
     this.router = new Navaid('/', () => {
       this.setState({ currentComponent: this.props.notFound, loadedInitial: true })
     })
 
-    const isClient = typeof window !== 'undefined'
-
-    Object.entries(this.props.routes).forEach(([ route, info ]) => {
-      this.router.on(route, async params => {
-        if (this.state.path === route) {
-          return
-        }
-
-        const state = { path: route, params, currentComponent: info.component }
-
-        if (!this.state.loadedInitial) {
-          this.setState(state)
-        }
-
-        if (info.getData && isClient) {
-          this.setState({ loading: this.state.loadedInitial })
-          const data = await info.getData()
-          this.props.setPageData({ ...data, router: { path: route, name: info.name } })
-          this.setState({ ...state, loadedInitial: true, loading: false })
-        }
-      })
-    })
-
     if (isClient) {
+      Object.entries(this.props.routes).forEach(([route, info]) => {
+        this.router.on(route, async params => {
+          if (this.state.path === route) {
+            return
+          }
+
+          const state = { path: route, params, currentComponent: info.component }
+
+          if (!this.state.loadedInitial) {
+            this.setState(state)
+          }
+
+          if (info.getData && isClient) {
+            this.setState({ loading: this.state.loadedInitial })
+            const data = await info.getData()
+            this.props.setPageData({ ...data, router: { path: route, name: info.name } })
+            this.setState({ ...state, loadedInitial: true, loading: false })
+          }
+        })
+      })
+
       this.router.listen()
-    } else {
-      this.router.run(base)
     }
   }
 
   render (props, state) {
-    let Current = state.currentComponent
+    const Current = state.currentComponent
     return (
       <Container preview={props.preview}>
         {state.loading &&

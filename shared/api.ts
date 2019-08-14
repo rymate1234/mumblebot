@@ -1,5 +1,4 @@
 import socketIOClient from 'socket.io-client'
-import fetch from 'isomorphic-unfetch'
 import config from '../config'
 
 const isClient = typeof window !== 'undefined'

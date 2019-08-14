@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { Link } from '../components'
+import { Link } from '../styles'
 import YoutubeForm from './YoutubeForm'
 import UploadForm from './UploadForm'
 
@@ -7,6 +7,7 @@ export default class Forms extends Component {
   state = {
     form: 'upload'
   }
+
   render (props, state) {
     return (
       <div>

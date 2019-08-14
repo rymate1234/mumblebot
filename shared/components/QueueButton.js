@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { FormButton } from '../components'
+import { FormButton } from '../styles'
 import { connect } from 'unistore/preact'
 import { actions } from '../store'
 
@@ -11,7 +11,7 @@ class QueueButton extends Component {
     const req = await fetch('/api/request', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(this.props.data)

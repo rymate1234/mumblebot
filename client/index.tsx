@@ -1,13 +1,9 @@
-import fetch from 'isomorphic-unfetch'
-
 import App from '../shared/app'
 import { ClientStore } from '../shared/store'
 import { h, render } from 'preact'
+import 'react-virtualized/styles.css'
 
 import 'preact/debug'
-
-// this is garbage
-window.fetch = fetch.bind(window)
 
 const mountNode = document.getElementById('app')
 
@@ -17,4 +13,4 @@ const app = (
   </ClientStore>
 )
 
-render(app, mountNode, mountNode.lastChild)
+render(app, mountNode)

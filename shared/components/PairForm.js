@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { ModalTitle, ModalPairCode, ModalParagraph, Button } from '../components'
+import { ModalTitle, ModalPairCode, ModalParagraph, Button } from '../styles'
 import { connect } from 'unistore/preact'
 import { actions } from '../store'
 import hat from 'hat'
@@ -10,6 +10,7 @@ class PairForm extends Component {
     pairing: false,
     paired: false
   }
+
   componentDidMount () {
     const { socket } = this.props
     const code = hat(30, 36)

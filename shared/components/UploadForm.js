@@ -1,7 +1,11 @@
 import { h, Component } from 'preact'
-import { FormWrap, Input, Label } from '../components'
+import { FormWrap, Input, Label } from '../styles'
 
 export default class UploadForm extends Component {
+  state = {
+    state: ''
+  }
+
   constructor () {
     super()
 

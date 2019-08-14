@@ -1,7 +1,11 @@
 import { h } from 'preact'
 import styled, { css, ThemeProvider } from 'styled-components'
+interface WrapperProps {
+  row?: boolean
+  visible?: boolean
+}
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<WrapperProps>`
   transition: all 0.2s ease-in-out;
   max-height: 100vh;
   background: ${state => state.theme.background};
@@ -16,7 +20,7 @@ export const Wrapper = styled.div`
       position: absolute;
       width: calc(100vw + 300px);
       left: -300px;
-      ${props => props.visible && css`
+      ${(props: WrapperProps) => props.visible && css`
         left: 0;
       `}
       overflow: hidden;
@@ -27,7 +31,12 @@ export const Wrapper = styled.div`
   flex: 1 1 auto;
 `
 
-export const Link = styled.a`
+interface LinkProps {
+  padding?: boolean
+  selected?: boolean
+}
+
+export const Link = styled.a<LinkProps>`
   color: ${state => state.theme.link};
   ${props => props.padding && css`
     display: inline-block;
@@ -86,7 +95,11 @@ export const HeaderTitle = styled.a`
   color: #fff;
 `
 
-export const HeaderLink = styled.a`
+interface HeaderLinkProps {
+  sidebarLink?: boolean
+}
+
+export const HeaderLink = styled.a<HeaderLinkProps>`
   line-height: 48px;
   padding: 0 2rem;
   flex: 1 1 50px;
@@ -100,7 +113,11 @@ export const HeaderLink = styled.a`
   `}
 `
 
-export const Container = styled.main`
+interface ContainerProps {
+  preview?: boolean
+}
+
+export const Container = styled.main<ContainerProps>`
   height: calc(100vh - ${props => props.preview ? '86px' : '48px'});
   padding: 10px;
   display: flex;
@@ -118,7 +135,13 @@ export const Center = styled.div`
 const gap = ({ gap = '8px' }) => gap
 const frGetter = value => typeof value === 'number' ? `repeat(${value}, 1fr)` : value
 
-export const Grid = styled.div`
+interface GridProps {
+  rows?: Number
+  columns?: Number
+  gap?: any
+}
+
+export const Grid = styled.div<GridProps>`
   display: grid;
   grid-auto-flow: row;
   ${({ rows }) => rows && `grid-template-rows: ${frGetter(rows)}`};
@@ -126,7 +149,15 @@ export const Grid = styled.div`
   grid-gap: ${gap};
 `
 
-export const Cell = styled.div`
+interface CellProps {
+  left?: Number
+  top?: Number
+  width?: Number
+  height?: Number
+  center?: Boolean
+}
+
+export const Cell = styled.div<CellProps>`
   flex: 1 1 auto;
   height: 100%;
   min-width: 0;
@@ -137,7 +168,12 @@ export const Cell = styled.div`
   ${({ center }) => center && `text-align: center`};
 `
 
-export const Station = styled(Grid)`
+interface StationProps {
+  highlighted: Boolean
+  saved: Boolean
+}
+
+export const Station = styled(Grid)<StationProps>`
   max-height: 56px;
   min-height: 56px;
   margin: 0 auto;
@@ -197,7 +233,11 @@ export const Station = styled(Grid)`
   }
 `
 
-export const Button = styled.a`
+interface ButtonProps {
+  primary?: Boolean
+}
+
+export const Button = styled.a<ButtonProps>`
   transition: all 0.2s ease; 
   color: ${props => props.theme.button.text};
   background-color: ${props => props.primary ? props.theme.button.default : props.theme.button.secondary};
@@ -222,7 +262,11 @@ export const Button = styled.a`
 
 export const FormButton = Button.withComponent('button')
 
-export const Card = styled.div`
+interface CardProps {
+  expand?: boolean
+}
+
+export const Card = styled.div<CardProps>`
   padding: 5px 20px;
   color: #fff !important;
   z-index: 2;
@@ -269,7 +313,11 @@ export const Label = styled.label`
   border: 1px solid ${props => props.theme.selected};
 `
 
-export const Input = styled.input`
+interface InputProps {
+  newline?: Boolean
+}
+
+export const Input = styled.input<InputProps>`
   padding: 5px;
   height: 31px;
   display: ${props => props.newline ? 'block' : 'inline'};

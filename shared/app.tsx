@@ -1,7 +1,6 @@
-import { h } from 'preact'
-import { PureComponent } from 'react'
+import { Component, h } from 'preact'
 
-import { Wrapper, Header, Card, HeaderTitle, HeaderLink, Input, Sidebar, Themed, Button } from './components'
+import { Wrapper, Header, Card, HeaderTitle, HeaderLink, Input, Sidebar, Themed, Button } from './styles'
 import { connect } from 'unistore/preact'
 import { actions } from './store'
 import Player from './player'
@@ -13,12 +12,22 @@ import fetch from 'isomorphic-unfetch'
 import Modal from './Modal'
 import PairForm from './components/PairForm'
 
-class App extends PureComponent {
+export interface AppProps {
+  setPageData(pageData: any): void
+  addSong(song: any): void
+  route: string
+}
+
+class App extends Component<AppProps, any> {
+  socket: SocketIOClient.Socket
+  state = {
+    sidebarVisible: false,
+    pairVisible: false
+  }
+  search: any
+
   constructor (props) {
     super(props)
-    this.state = {
-      sidebarVisible: false
-    }
 
     this.toggleSidebar = this.toggleSidebar.bind(this)
     this.handleKey = this.handleKey.bind(this)
@@ -39,7 +48,7 @@ class App extends PureComponent {
   }
 
   componentWillUnmount () {
-    this.socket.off()
+    this.socket.removeAllListeners()
     window.removeEventListener('keydown', this.handleKey)
     this.socket.disconnect()
   }
@@ -128,4 +137,4 @@ class App extends PureComponent {
   }
 }
 
-export default connect('filter,settings,mumblebotData,preview', actions)(App)
+export default connect<AppProps, any, any, any>('filter,settings,mumblebotData,preview', actions)(App)

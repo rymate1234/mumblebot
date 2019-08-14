@@ -1,6 +1,6 @@
 /* global Windows */
 import { h, Component } from 'preact'
-import { Grid, Cell } from './components'
+import { Grid, Cell } from './styles'
 
 class Player extends Component {
   state = {

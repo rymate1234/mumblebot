@@ -1,6 +1,6 @@
 import { h } from 'preact'
 import styled, { css } from 'styled-components'
-import { Wrapper } from './components'
+import { Wrapper } from './styles'
 
 const Mask = styled.div`
   position: fixed;
