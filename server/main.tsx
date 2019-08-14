@@ -1,5 +1,5 @@
 import 'source-map-support/register' // map that source!
-import './preactPatch'
+import './preact-patch'
 import 'isomorphic-unfetch'
 
 import express from 'express'
@@ -20,6 +20,7 @@ import { json, text, urlencoded } from 'body-parser'
 import morgan from 'morgan'
 import session from 'express-session'
 import createMongoStore from 'connect-mongodb-session'
+import createSocket from 'socket.io'
 
 async function start () {
   // create "middleware"
@@ -57,7 +58,7 @@ async function start () {
   app.use(logger)
 
   const http = require('http').Server(app)
-  const io = require('socket.io')(http)
+  const io = createSocket(http)
 
   // Import API Routes
   app.use('/api', await api(io))
@@ -87,7 +88,7 @@ async function start () {
     const store = await init(req)
     if (!store) return next()
     const sheet = new ServerStyleSheet()
-    const html = render(sheet.collectStyles(store.serverStore))
+    const html = render.render(sheet.collectStyles(store.serverStore))
     const styleTags = sheet.getStyleTags()
 
     const data = store.data

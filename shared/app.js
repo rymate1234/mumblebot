@@ -76,7 +76,7 @@ class App extends PureComponent {
     return (
       <Themed darkTheme={props.settings.darkTheme}>
         <Wrapper tabIndex={0} row visible={state.sidebarVisible}>
-          <Modal visible>
+          <Modal visible={false}>
             <PairForm socket={this.socket} />
           </Modal>
           <Sidebar>

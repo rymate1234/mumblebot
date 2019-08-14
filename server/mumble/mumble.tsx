@@ -49,7 +49,7 @@ export class Mumble {
   queue = new Queue()
   voteHappening = false
   currentVolume = DEFAULT_VOL
-  db: Collection = {}
+  db: Collection
   commands: BaseCommand[] = []
   client: Connection
   connected: boolean;

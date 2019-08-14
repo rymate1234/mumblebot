@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import { FormButton, ModalTitle, ModalPairCode, ModalParagraph, Button, Center } from '../components'
+import { ModalTitle, ModalPairCode, ModalParagraph, Button } from '../components'
 import { connect } from 'unistore/preact'
 import { actions } from '../store'
 import hat from 'hat'
@@ -10,7 +10,7 @@ class PairForm extends Component {
     pairing: false,
     paired: false
   }
-  componentDidMount() {
+  componentDidMount () {
     const { socket } = this.props
     const code = hat(30, 36)
     if (socket) {
@@ -18,7 +18,7 @@ class PairForm extends Component {
       if (socket.connected) {
         emit()
       } else {
-        socket.on('connect', emit)  
+        socket.on('connect', emit)
       }
 
       socket.on('didPair', () => {
@@ -27,12 +27,12 @@ class PairForm extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     const { socket } = this.props
     socket.off('didPair')
   }
 
-  render(props, state) {
+  render (props, state) {
     if (!state.pairing && !state.paired) {
       return (
         <div>
@@ -40,12 +40,12 @@ class PairForm extends Component {
           <ModalPairCode>{state.code}</ModalPairCode>
           <ModalParagraph>
             To pair with your mumble user, type
-            <input readOnly value={`pair ${state.code}`}></input>
+            <input readOnly value={`pair ${state.code}`} />
             in your mumble client
           </ModalParagraph>
           <Button>Copy Command to Clipboard</Button>
         </div>
-      )  
+      )
     } else if (state.pairing) {
       return (
         <div>
@@ -54,7 +54,7 @@ class PairForm extends Component {
             <img src='https://images.rymate.co.uk/images/3SddFB8.gif' />
           </ModalParagraph>
         </div>
-      )  
+      )
     }
   }
 }

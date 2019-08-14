@@ -14,7 +14,7 @@ import { isWithStatement } from 'typescript';
 
 const config = require('../config.js')
 
-export default async io => {
+export default async (io: SocketIO.Server) => {
   const database = await dbconn()
   const songsDb = database.collection('songs')
   const usersDb = database.collection('users')
@@ -150,8 +150,7 @@ export default async io => {
   })
 
   router.post('/upload', multer({ dest: './uploads/' }).single('fileInput'), async (req, res, next) => {
-    var details = req.file
-    details.date = new Date()
+    var details = { ...req.file, date: new Date(), metadata: {} }
 
     var data = fs.readFileSync(details.path)
     var metadata = await parseBuffer(data)
