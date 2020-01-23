@@ -1,6 +1,7 @@
 import { MongoClient as Mongo } from 'mongodb'
 
-export const url = 'mongodb://localhost:27017/mumblebot'
+import config from '../config'
+export const url = config.database
 
 const connect = async () => {
   const client = await Mongo.connect(url, {})
