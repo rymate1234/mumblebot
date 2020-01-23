@@ -126,6 +126,7 @@ export class Mumble {
 
   getStatus () {
     var status: any = {}
+    
     status.playing = this.playing
     status.nowPlaying = this.playingSong.name || this.playingSong.title
     status.queue = this.queue.getArray()
@@ -217,7 +218,6 @@ export class Mumble {
         }
 
         file.name = file.title
-        file.name = escapeHtml(file.name)
 
         resolve(file)
       }))

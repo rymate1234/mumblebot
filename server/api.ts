@@ -106,7 +106,7 @@ export default async (io: SocketIO.Server) => {
     thread.send({ action: 'status' })
       .on('message', (status) => {
         if (!sent) {
-          res.json({ 'title': config.name, 'status': status })
+          res.json({ title: config.name, status })
           sent = true
         }
       })
