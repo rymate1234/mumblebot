@@ -24,5 +24,5 @@ This was largely made for my own personal mumble server, so some of the features
  * Site can be found at localhost:3000
 
 ## Roadmap
-
  - Finish pairing feature (will allow voting from the web app)
+ - Finish TypeScript migration
