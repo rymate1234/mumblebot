@@ -63,6 +63,8 @@
     "@babel/plugin-proposal-class-properties": "^7.2.3",
     "@babel/preset-env": "^7.2.3",
     "@babel/register": "^7.0.0",
+    "@types/fluent-ffmpeg": "^2.1.13",
+    "@types/mongodb": "^3.3.14",
     "babel-node-modules": "^0.0.1",
     "babel-plugin-module-resolver": "^3.1.3",
     "babel-preset-preact": "https://github.com/tomasdev/babel-preset-preact.git#patch-1",

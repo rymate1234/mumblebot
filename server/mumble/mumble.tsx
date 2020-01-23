@@ -21,7 +21,7 @@ import VolumeCommand from './commands/VolumeCommand'
 import YesCommand from './commands/YesCommand'
 import YoutubeCommand from './commands/YoutubeCommand'
 import BaseCommand from './commands/BaseCommand';
-import { Collection, MongoClient } from 'mongodb';
+import { Collection, Db } from 'mongodb';
 import { ffprobe } from 'fluent-ffmpeg/lib/fluent-ffmpeg';
 
 const options = {
@@ -34,7 +34,7 @@ const DEFAULT_VOL = 0.125
 type InfoCallback = (n: any) => void;
 
 export class Mumble {
-  currentFile: ffmpeg
+  currentFile: ffmpeg.FfmpegCommand
   inputStream: InputStream
 
   mixer: any = new Mixer({
@@ -48,7 +48,7 @@ export class Mumble {
   queue = new Queue()
   voteHappening = false
   currentVolume = DEFAULT_VOL
-  db: Collection = {}
+  db: Collection = null
   commands: BaseCommand[] = []
   client: Connection
   connected: boolean;
@@ -70,7 +70,7 @@ export class Mumble {
   }
 
   connect () {
-    dbconn((err: any, data: MongoClient) => {
+    dbconn((err: any, data: Db) => {
       if (err !== null) {
         return
       }
@@ -191,8 +191,8 @@ export class Mumble {
     this.playingSong.input.destroy()
     this.setComment()
 
-    this.currentFile.kill()
-    this.currentFile = {}
+    this.currentFile.kill('')
+    this.currentFile = null
 
     setTimeout(() => {
       if (this.queue.getLength() !== 0) this.play(this.queue.dequeue())
@@ -324,7 +324,7 @@ export class Mumble {
     }
   }
 
-  getFfmpegInstance (filename, callback): ffmpeg {
+  getFfmpegInstance (filename, callback): ffmpeg.FfmpegCommand {
     return ffmpeg(filename)
       .audioChannels(2)
       .renice(5)
