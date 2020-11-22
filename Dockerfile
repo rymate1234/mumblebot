@@ -1,11 +1,10 @@
 FROM node:10-alpine as base
 RUN apk add git python alpine-sdk 
 WORKDIR /app
-COPY package.json yarn.lock /app/
+COPY . /app/
 RUN yarn install
-COPY . .
 RUN yarn build
-COPY ./report.html ./static/
+RUN cp ./dist/report.html ./static/
 
 FROM node:10-alpine as runtime
 WORKDIR /app
