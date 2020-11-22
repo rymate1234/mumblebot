@@ -11,5 +11,5 @@ FROM node:10-alpine as runtime
 WORKDIR /app
 ENV NODE_ENV="production"
 COPY --from=base /app .
-EXPOSE 2048
+EXPOSE 3000
 CMD ["node", "./dist/main.js"]
