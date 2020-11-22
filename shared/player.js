@@ -60,7 +60,7 @@ class Player extends Component {
         <Cell className='title' width={2}>{props.preview.title}</Cell>
         <Cell className='location' top={2} width={2}>{props.preview.info}</Cell>
 
-        <audio id='audio' src={props.preview.src} ref={audio => { this.audio = audio }} autoPlay volume={state.volume}
+        <audio id='audio' src={props.preview.src} ref={audio => { this.audio = audio }} autoPlay volume={state.volume / 100}
           onPlay={() => this.setPlaying()} onPause={() => this.setPaused()} controls />
       </Grid>
     ) : (
