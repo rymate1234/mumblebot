@@ -4,7 +4,7 @@ import Queue from "./queue";
 import { readFileSync } from "fs";
 import Mixer from "audio-mixer";
 import dbconn from "../database";
-import { server, username, password } from "../../config.js";
+import config from "../../config-loader";
 import { h } from "preact";
 import { render } from "preact-render-to-string";
 
@@ -33,6 +33,8 @@ const options = {
 };
 
 const DEFAULT_VOL = 0.125;
+
+const { server, username, password } = config;
 
 export class Mumble {
   currentFile: ffmpeg.FfmpegCommand;

@@ -1,9 +1,9 @@
 import assert from 'assert'
 
 import { MongoClient as Mongo } from 'mongodb'
-import config from '../config'
+import config from '../config-loader'
 
-const url = config.database
+const url = config.database || process.env.MONGO_URL
 
 const connect = callback => {
   Mongo.connect(url, (err, db) => {

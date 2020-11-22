@@ -1,0 +1,5 @@
+There's two possible directories:
+
+./assets/ -- sound effect via command
+./bbc/ -- randomly play a sound effect, made for a collection of all bbc sound effects which is not included in this repo
+
