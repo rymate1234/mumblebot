@@ -20,10 +20,9 @@ This was largely made for my own personal mumble server, so some of the features
  * Change to the repo's directory and get dependencies `yarn`
  * Copy `config.example.js` to `config.js` and edit it according to your needs
  * Build `yarn build`
- * Create some certificates `openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out cert.pem`
+ * Create some certificates `openssl req -x509 -newkey rsa:2048 -nodes -keyout data/key.pem -out data/cert.pem`
  * Run MumbleBot 3 `yarn dev`
  * Site can be found at localhost:3000
 
 ## Roadmap
-
  - Finish pairing feature (will allow voting from the web app)

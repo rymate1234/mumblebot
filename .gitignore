@@ -5,6 +5,7 @@ yarn-error.log
 stations.json
 /.vs/Miniradio/v15/.suo
 uploads
+data/*/
 *.pem
 assets
 bbc

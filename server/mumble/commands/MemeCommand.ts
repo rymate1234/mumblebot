@@ -4,7 +4,7 @@ import fs from 'fs'
 
 class MemeCommand extends BaseCommand {
   private memePlaying = false
-  private assetsFolder = './assets/'
+  private assetsFolder = './data/assets/'
   private currentFile: string
   private memeFile: any;
 

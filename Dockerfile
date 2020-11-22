@@ -1,14 +1,15 @@
-FROM mhart/alpine-node:10 as base
-WORKDIR /usr/src
-COPY package.json yarn.lock /usr/src/
+FROM node:10-alpine as base
+RUN apk add git python alpine-sdk 
+WORKDIR /app
+COPY package.json yarn.lock /app/
 RUN yarn install
 COPY . .
 RUN yarn build
 COPY ./report.html ./static/
 
-FROM mhart/alpine-node:base-10
-WORKDIR /usr/src
+FROM node:10-alpine as runtime
+WORKDIR /app
 ENV NODE_ENV="production"
-COPY --from=base /usr/src .
+COPY --from=base /app .
 EXPOSE 2048
 CMD ["node", "./dist/main.js"]

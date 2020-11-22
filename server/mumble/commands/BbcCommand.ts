@@ -12,7 +12,7 @@ class BbcCommand extends BaseCommand {
   }
 
   execute(message: string[], user: User): void {
-    this.randomFile('bbc/', (err, file) => {
+    this.randomFile('data/bbc/', (err, file) => {
       if (err) return
 
       var memeFile = this.mumble.getFfmpegInstance('bbc/' + file, () => {

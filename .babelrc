@@ -4,7 +4,6 @@
     "preact"
   ],
   "plugins": [
-    "@babel/plugin-proposal-class-properties",
     [
       "module-resolver",
       {
@@ -12,8 +11,8 @@
           "."
         ],
         "alias": {
-          "react": "preact-compat",
-          "react-dom": "preact-compat"
+          "react": "preact/compat",
+          "react-dom": "preact/compat"
         }
       }
     ]
