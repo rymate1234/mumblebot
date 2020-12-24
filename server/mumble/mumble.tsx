@@ -355,7 +355,7 @@ export class Mumble {
         this.currentFile.pipe(this.playingSong.input, { end: false });
       });
     } else {
-      this.currentFile = this.getFfmpegInstance(filename.path, () => {
+      this.currentFile = this.getFfmpegInstance("data/uploads/" + filename.filename, () => {
         this.playing = false;
         if (this.queue.getLength() !== 0) {
           console.log("ended");
