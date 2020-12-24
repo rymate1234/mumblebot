@@ -58,7 +58,7 @@
     "underscore": "^1.11.0",
     "unistore": "^3.5.2",
     "universal-cookie": "^4.0.4",
-    "ytdl-core": "^4.0.5"
+    "ytdl-core": "^4.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",

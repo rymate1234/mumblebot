@@ -7,6 +7,7 @@ RUN yarn build
 RUN cp ./dist/report.html ./static/
 
 FROM node:10-alpine as runtime
+RUN apk add ffmpeg
 WORKDIR /app
 ENV NODE_ENV="production"
 COPY --from=base /app .
