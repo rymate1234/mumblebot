@@ -1,15 +1,36 @@
 {
-  "presets": ["@babel/preset-env", "preact"],
-  "plugins": [
-    [
-      "module-resolver",
-      {
-        "root": ["."],
-        "alias": {
-          "react": "preact/compat",
-          "react-dom": "preact/compat"
-        }
-      }
-    ]
-  ]
+  "env": {
+    "server": {
+      "presets": ["@babel/preset-env", "@babel/preset-typescript", "preact"],
+      "plugins": [
+        "@babel/plugin-proposal-class-properties",
+
+        [
+          "module-resolver",
+          {
+            "root": ["."],
+            "alias": {
+              "react": "preact/compat",
+              "react-dom": "preact/compat"
+            }
+          }
+        ]
+      ]
+    },
+    "client": {
+      "presets": ["@babel/preset-env", "preact"],
+      "plugins": [
+        [
+          "module-resolver",
+          {
+            "root": ["."],
+            "alias": {
+              "react": "preact/compat",
+              "react-dom": "preact/compat"
+            }
+          }
+        ]
+      ]
+    }
+  }
 }

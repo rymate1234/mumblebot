@@ -24,9 +24,6 @@ import BaseCommand from './commands/BaseCommand'
 import { Collection, Db } from 'mongodb'
 import { ffprobe } from 'fluent-ffmpeg/lib/fluent-ffmpeg'
 
-import { expose } from 'threads/worker'
-import { Observable } from 'observable-fns'
-
 const options = {
   key: readFileSync('./data/key.pem').toString(),
   cert: readFileSync('./data/cert.pem').toString(),
@@ -478,41 +475,3 @@ function escapeHtml(string) {
     return entityMap[s]
   })
 }
-
-let mumbleClient = null
-
-const object = {
-  initialise() {
-    if (mumbleClient === null) {
-      try {
-        mumbleClient = new Mumble()
-        mumbleClient.connect()
-      } catch (e) {
-        throw e
-      }
-    }
-
-    return new Observable((observer) => {
-      mumbleClient.setObserver(observer)
-    })
-  },
-  status() {
-    return mumbleClient.getStatus()
-  },
-  request(payload) {
-    if (mumbleClient.voteHappening) {
-      return
-    }
-
-    mumbleClient.callVote(payload)
-  },
-  youtube(payload) {
-    if (mumbleClient.voteHappening) {
-      return
-    }
-
-    mumbleClient.uploadYoutube(payload, false)
-  },
-}
-
-expose(object)

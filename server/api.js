@@ -32,9 +32,8 @@ export default (io) => {
 
   let thread = null
 
-  spawn(new Worker(`./mumble/mumble.js`)).then((t) => {
+  spawn(new Worker(`./mumble/index.js`)).then((t) => {
     thread = t
-
     thread.initialise().subscribe(async (info) => {
       if (info.type === 'update-stats') {
         const status = await thread.status()
