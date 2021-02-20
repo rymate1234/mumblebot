@@ -2,7 +2,7 @@ import { h, Component } from 'preact'
 import { FormWrap, Input } from '../components'
 
 export default class YoutubeForm extends Component {
-  async addYoutube (e) {
+  async addYoutube(e) {
     e.preventDefault()
     this.setState({ state: 'Loading...' })
     // eslint-disable-next-line no-undef
@@ -10,30 +10,31 @@ export default class YoutubeForm extends Component {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(this.state)
+      body: JSON.stringify(this.state),
     })
     const content = await req.text()
     this.setState({ state: content })
   }
 
-  render (props, { state }) {
+  render(props, { state }) {
     return (
       <form
-        method='post'
-        action='api/youtube'
-        onSubmit={e => this.addYoutube(e)}
+        method="post"
+        action="api/youtube"
+        onSubmit={(e) => this.addYoutube(e)}
       >
         <FormWrap>
           <Input
-            name='song'
-            onChange={e => this.setState({ song: e.target.value })}
-            id='yturl'
-            type='url' disabled={state === 'Loading...'}
-            placeholder='Paste a youtube URL'
+            name="song"
+            onChange={(e) => this.setState({ song: e.target.value })}
+            id="yturl"
+            type="url"
+            disabled={state === 'Loading...'}
+            placeholder="Paste a youtube URL"
           />
-          <Input type='submit' value={state || 'Add'} />
+          <Input type="submit" value={state || 'Add'} />
         </FormWrap>
       </form>
     )

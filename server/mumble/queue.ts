@@ -21,7 +21,7 @@ class Queue<T> {
     this.queue.push(item)
   }
 
-  dequeue(): T { 
+  dequeue(): T {
     // if the queue is empty, return immediately
     if (this.queue.length === 0) return undefined
 

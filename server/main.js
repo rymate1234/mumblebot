@@ -40,7 +40,7 @@ const io = require('socket.io')(http)
 // Import API Routes
 app.use('/api', api(io))
 
-const init = async req => {
+const init = async (req) => {
   const current = routes[req.url]
 
   let data = { mumblebotData: await getStats() }
@@ -54,7 +54,7 @@ const init = async req => {
   const store = ServerStore({
     children: <App route={req.url} />,
     data,
-    req
+    req,
   })
 
   return store

@@ -20,12 +20,13 @@ export const getStats = async () => {
   }
   return {}
 }
-const format = date => date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+const format = (date) =>
+  date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
 
-export const mapSong = song => ({
+export const mapSong = (song) => ({
   ...song,
   src: '/api/file/' + song.filename,
-  info: `Uploaded on ${format(new Date(song.date))}`
+  info: `Uploaded on ${format(new Date(song.date))}`,
 })
 
 export const getSongs = async () => {
@@ -38,7 +39,7 @@ export const getSongs = async () => {
 
     return {
       pageData: { list },
-      mumblebotData: stats
+      mumblebotData: stats,
     }
   } catch (e) {
     console.log('Failed making request')
@@ -54,8 +55,8 @@ export const getStations = async () => {
     const stats = await getStats()
 
     const channels = []
-    data.places.forEach(element => {
-      element.channels.forEach(channelIndex => {
+    data.places.forEach((element) => {
+      element.channels.forEach((channelIndex) => {
         const channel = data.channels[channelIndex]
         const location = element
         const country = data.countries[element.countryIndex]
@@ -64,17 +65,19 @@ export const getStations = async () => {
       })
     })
 
-    let list = channels.map(channel => ({
+    let list = channels.map((channel) => ({
       ...channel,
       title: channel.name,
-      radio: true
+      radio: true,
     }))
 
-    list = list.sort((a, b) => a.title !== b.title ? a.title < b.title ? -1 : 1 : 0)
+    list = list.sort((a, b) =>
+      a.title !== b.title ? (a.title < b.title ? -1 : 1) : 0
+    )
 
     return {
       pageData: { list },
-      mumblebotData: stats
+      mumblebotData: stats,
     }
   } catch (e) {
     console.log('Failed making request')

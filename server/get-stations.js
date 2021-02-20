@@ -10,5 +10,6 @@ export default async () => {
   } catch (e) {
     console.log(e)
   }
-  if (radioJson) await promisify(fs.writeFile)('./stations.json', JSON.stringify(radioJson))
+  if (radioJson)
+    await promisify(fs.writeFile)('./stations.json', JSON.stringify(radioJson))
 }

@@ -1,10 +1,10 @@
-import BaseCommand from "./BaseCommand";
+import BaseCommand from './BaseCommand'
 import { User } from 'mumble'
 import fs from 'fs'
 import { join } from 'path'
 
 class BbcCommand extends BaseCommand {
-  private bbc: boolean;
+  private bbc: boolean
   private commands = ['beeb', 'bbc']
 
   shouldExecute(message: string[]): boolean {
@@ -22,18 +22,18 @@ class BbcCommand extends BaseCommand {
 
       var memeInput = this.mumble.mixer.input({
         channels: 2,
-        sampleRate: 44100
+        sampleRate: 44100,
       })
 
       memeFile.stream(memeInput)
     })
   }
 
-  randomFile (dir: string, callback: { (err: any, file: any): void; }) {
+  randomFile(dir: string, callback: { (err: any, file: any): void }) {
     fs.readdir(dir, (err, files) => {
       if (err) return callback(err, null)
 
-      function checkRandom () {
+      function checkRandom() {
         if (!files.length) {
           // callback with an empty string to indicate there are no files
           return callback(null, null)

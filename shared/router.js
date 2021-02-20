@@ -7,19 +7,22 @@ class Router extends Component {
   state = {
     params: {},
     loadedInitial: false,
-    currentComponent: 'div'
+    currentComponent: 'div',
   }
 
-  componentWillMount () {
+  componentWillMount() {
     const base = this.props.base || '/'
     this.router = new Navaid('/', () => {
-      this.setState({ currentComponent: this.props.notFound, loadedInitial: true })
+      this.setState({
+        currentComponent: this.props.notFound,
+        loadedInitial: true,
+      })
     })
 
     const isClient = typeof window !== 'undefined'
 
-    Object.entries(this.props.routes).forEach(([ route, info ]) => {
-      this.router.on(route, async params => {
+    Object.entries(this.props.routes).forEach(([route, info]) => {
+      this.router.on(route, async (params) => {
         if (this.state.path === route) {
           return
         }
@@ -33,7 +36,10 @@ class Router extends Component {
         if (info.getData && isClient) {
           this.setState({ loading: this.state.loadedInitial })
           const data = await info.getData()
-          this.props.setPageData({ ...data, router: { path: route, name: info.name } })
+          this.props.setPageData({
+            ...data,
+            router: { path: route, name: info.name },
+          })
           this.setState({ ...state, loadedInitial: true, loading: false })
         }
       })
@@ -46,15 +52,15 @@ class Router extends Component {
     }
   }
 
-  render (props, state) {
+  render(props, state) {
     let Current = state.currentComponent
     return (
       <Container preview={props.preview}>
-        {state.loading &&
+        {state.loading && (
           <Center>
-            <img src='https://images.rymate.co.uk/images/3SddFB8.gif' />
+            <img src="https://images.rymate.co.uk/images/3SddFB8.gif" />
           </Center>
-        }
+        )}
         <Current params={state.params} path={state.path} router={this.router} />
       </Container>
     )

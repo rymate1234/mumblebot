@@ -7,21 +7,21 @@ export default {
   '/': {
     name: 'Home',
     component: Songs,
-    getData: getSongs
+    getData: getSongs,
   },
   '/all': {
     name: 'Home',
     component: Songs,
-    getData: getSongs
+    getData: getSongs,
   },
   '/radio': {
     name: 'Radio',
     component: list,
-    getData: getStations
+    getData: getStations,
   },
   '/radio/all': {
     name: 'Radio',
     component: list,
-    getData: getStations
-  }
+    getData: getStations,
+  },
 }

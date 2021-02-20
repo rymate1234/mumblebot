@@ -8,23 +8,26 @@ import { mapSong } from './api'
 const isClient = typeof window !== 'undefined'
 
 // Default values except migration
-const defaultState = Object.assign({
-  pageData: {},
-  mumblebotData: {},
-  preview: {},
-  filtered: [],
-  settings: {
-    darkTheme: true
+const defaultState = Object.assign(
+  {
+    pageData: {},
+    mumblebotData: {},
+    preview: {},
+    filtered: [],
+    settings: {
+      darkTheme: true,
+    },
+    updates: 0,
+    queueButtonsActive: true,
   },
-  updates: 0,
-  queueButtonsActive: true
-}, isClient ? window.__backend_data__ : {})
+  isClient ? window.__backend_data__ : {}
+)
 
 let cookies = {}
 
 const dataToReset = {
   filter: '',
-  filtered: []
+  filtered: [],
 }
 
 const getSettings = () => {
@@ -42,15 +45,12 @@ const ClientStore = ({ children }) => {
   const settings = getSettings()
   const state = { ...defaultState, settings }
 
-  const store = process.env.NODE_ENV === 'production'
-    ? createStore(state)
-    : devtools(createStore(state))
+  const store =
+    process.env.NODE_ENV === 'production'
+      ? createStore(state)
+      : devtools(createStore(state))
 
-  return (
-    <Provider store={store}>
-      {children}
-    </Provider>
-  )
+  return <Provider store={store}>{children}</Provider>
 }
 
 const ServerStore = ({ children, data, req }) => {
@@ -59,15 +59,12 @@ const ServerStore = ({ children, data, req }) => {
   const settings = getSettings()
   const store = createStore({ ...defaultState, ...data, settings })
 
-  const serverStore = (
-    <Provider store={store}>
-      {children}
-    </Provider>
-  )
+  const serverStore = <Provider store={store}>{children}</Provider>
   return { data: store.getState(), serverStore }
 }
 
-const filterChannels = (channels, filter) => channels.filter(item => !filter || filterItem(item, filter.toLowerCase()))
+const filterChannels = (channels, filter) =>
+  channels.filter((item) => !filter || filterItem(item, filter.toLowerCase()))
 
 const filterItem = (item, filter) => {
   let matched = false
@@ -85,18 +82,18 @@ const filterItem = (item, filter) => {
   return matched
 }
 
-let actions = store => ({
-  setPreview (state, { e, item }) {
+let actions = (store) => ({
+  setPreview(state, { e, item }) {
     if (e) e.preventDefault()
     return Object.assign(state, { preview: item })
   },
 
-  setPageData (state, data) {
+  setPageData(state, data) {
     state.updates++
     return { ...state, ...data, ...dataToReset }
   },
 
-  addSong (state, data) {
+  addSong(state, data) {
     if (state.router.name === 'Stations') return
     state.pageData.list.unshift(mapSong(data))
     state.updates++
@@ -105,29 +102,32 @@ let actions = store => ({
     return Object.assign(state, { filtered })
   },
 
-  toggleTheme (state) {
+  toggleTheme(state) {
     const settings = {
-      darkTheme: !state.settings.darkTheme
+      darkTheme: !state.settings.darkTheme,
     }
     cookies.set('settings', settings)
     console.log('toggled it')
     store.setState({ settings })
   },
 
-  setFilter (state, e) {
-    const { target: { value } } = e
+  setFilter(state, e) {
+    const {
+      target: { value },
+    } = e
     const filtered = filterChannels(state.pageData.list, value)
 
     store.setState({
-      filtered: (value && filtered.length) ? filtered : [],
-      filter: value
+      filtered: value && filtered.length ? filtered : [],
+      filter: value,
     })
   },
-  setQueueActive (state, data) {
+
+  setQueueActive(state, data) {
     store.setState({
-      queueButtonsActive: data
+      queueButtonsActive: data,
     })
-  }
+  },
 })
 
 export { actions, ClientStore, ServerStore }

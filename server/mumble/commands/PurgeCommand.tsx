@@ -1,6 +1,6 @@
-import BaseCommand from "./BaseCommand"
-import { User } from "mumble";
-import { render } from "preact-render-to-string";
+import BaseCommand from './BaseCommand'
+import { User } from 'mumble'
+import { render } from 'preact-render-to-string'
 import { h } from 'preact'
 
 class PurgeCommand extends BaseCommand {
@@ -9,11 +9,12 @@ class PurgeCommand extends BaseCommand {
   shouldExecute(message: string[]): boolean {
     return !this.mumble.voteHappening && this.commands.includes(message[0])
   }
-  
+
   execute(message: string[], user: User): void {
     const purgeMessage = render(
       <p>
-        Calling a vote to purge the queue of songs<br />
+        Calling a vote to purge the queue of songs
+        <br />
         Use voteyes and voteno to vote! 10 Seconds to vote...
       </p>
     )

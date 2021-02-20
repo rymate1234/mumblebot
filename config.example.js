@@ -4,5 +4,5 @@ module.exports = {
   password: '',
   name: 'MumbleBot',
   site: 'http://localhost:3000/',
-  database: 'mongodb://localhost:27017/'
+  database: 'mongodb://localhost:27017/',
 }

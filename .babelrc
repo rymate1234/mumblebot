@@ -1,15 +1,10 @@
 {
-  "presets": [
-    "@babel/preset-env",
-    "preact"
-  ],
+  "presets": ["@babel/preset-env", "preact"],
   "plugins": [
     [
       "module-resolver",
       {
-        "root": [
-          "."
-        ],
+        "root": ["."],
         "alias": {
           "react": "preact/compat",
           "react-dom": "preact/compat"

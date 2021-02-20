@@ -2,14 +2,14 @@ import { h, Component } from 'preact'
 import { FormWrap, Input, Label } from '../components'
 
 export default class UploadForm extends Component {
-  constructor () {
+  constructor() {
     super()
 
     this.handleFile = this.handleFile.bind(this)
     this.uploadSong = this.uploadSong.bind(this)
   }
 
-  async uploadSong (e) {
+  async uploadSong(e) {
     e.preventDefault()
     this.setState({ state: 'Loading...' })
 
@@ -20,37 +20,37 @@ export default class UploadForm extends Component {
     // eslint-disable-next-line no-undef
     const req = await fetch('/api/upload', {
       method: 'POST',
-      body: formData
+      body: formData,
     })
     this.setState({ state: req.ok ? 'Success' : 'Failed' })
   }
 
-  handleFile (event) {
+  handleFile(event) {
     this.setState({
       selectedFilename: event.target.files[0].filename,
-      file: event.target.files[0]
+      file: event.target.files[0],
     })
   }
 
-  render (props, { state, selectedFilename }) {
+  render(props, { state, selectedFilename }) {
     return (
       <form
-        method='post'
-        action='api/upload'
+        method="post"
+        action="api/upload"
         onSubmit={this.uploadSong}
-        enctype='multipart/form-data'
+        enctype="multipart/form-data"
       >
         <FormWrap>
           <Label>
             <span>{selectedFilename || 'Click to choose file'}</span>
             <Input
-              name='fileInput'
-              id='fileInput'
-              type='file'
+              name="fileInput"
+              id="fileInput"
+              type="file"
               onChange={this.handleFile}
             />
           </Label>
-          <Input type='submit' value={state || 'Add'} />
+          <Input type="submit" value={state || 'Add'} />
         </FormWrap>
       </form>
     )

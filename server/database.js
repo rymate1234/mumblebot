@@ -5,7 +5,7 @@ import config from '../config-loader'
 
 const url = config.database || process.env.MONGO_URL
 
-const connect = callback => {
+const connect = (callback) => {
   Mongo.connect(url, (err, db) => {
     assert.ifError(err)
     const database = db.db('mumblebot')

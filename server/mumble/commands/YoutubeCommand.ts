@@ -1,5 +1,5 @@
-import BaseCommand from "./BaseCommand"
-import { User } from "mumble";
+import BaseCommand from './BaseCommand'
+import { User } from 'mumble'
 
 class YoutubeCommand extends BaseCommand {
   private commands = ['yt', 'pyt', 'youtube', 'playyoutube']
@@ -7,14 +7,14 @@ class YoutubeCommand extends BaseCommand {
   shouldExecute(message: string[]): boolean {
     return !this.mumble.voteHappening && this.commands.includes(message[0])
   }
-  
+
   execute(message: string[], user: User): void {
     const request = message[0].startsWith('p')
     if (message.length < 2) {
       this.sendMessage('Invalid ' + message[0] + ' command!')
     } else {
       message.shift()
-      var result = message.join(' ').replace(/(<([^>]+)>)/ig, '')
+      var result = message.join(' ').replace(/(<([^>]+)>)/gi, '')
 
       this.sendMessage(`Adding ${result} from ${user.name}`)
       this.mumble.uploadYoutube(result, request)

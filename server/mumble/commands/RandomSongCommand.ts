@@ -1,4 +1,4 @@
-import BaseCommand from "./BaseCommand"
+import BaseCommand from './BaseCommand'
 import { User } from 'mumble'
 
 class RandomSongCommand extends BaseCommand {
@@ -9,16 +9,19 @@ class RandomSongCommand extends BaseCommand {
   }
 
   execute(message: string[], user: User): void {
-    this.mumble.db.find().sort({ date: -1 }).toArray((err, docs) => {
-      if (err) {
-        console.log(err)
-        return
-      }
-      const picked = Math.floor(Math.random() * docs.length) + 1
-      const songs = docs[picked]
-      const request = { 'path': songs.path }
-      this.mumble.callVote(request)
-    })
+    this.mumble.db
+      .find()
+      .sort({ date: -1 })
+      .toArray((err, docs) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        const picked = Math.floor(Math.random() * docs.length) + 1
+        const songs = docs[picked]
+        const request = { path: songs.path }
+        this.mumble.callVote(request)
+      })
   }
 }
 

@@ -1,6 +1,6 @@
-import BaseCommand from "./BaseCommand";
-import { User } from "mumble";
-import { render } from "preact-render-to-string";
+import BaseCommand from './BaseCommand'
+import { User } from 'mumble'
+import { render } from 'preact-render-to-string'
 import { h } from 'preact'
 
 class VolumeCommand extends BaseCommand {
@@ -29,11 +29,11 @@ class VolumeCommand extends BaseCommand {
 
       const voteMessage = (
         <p>
-          Calling a vote to change volume to {message[1]}<br />
+          Calling a vote to change volume to {message[1]}
+          <br />
           Use voteyes and voteno to vote! 10 Seconds to vote...
         </p>
       )
-
 
       this.sendMessage(render(voteMessage))
       this.mumble.handleVote(() => {
@@ -41,9 +41,7 @@ class VolumeCommand extends BaseCommand {
         this.mumble.currentVolume = volume
       })
     }
-
   }
-
 }
 
 export default VolumeCommand
