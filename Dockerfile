@@ -12,4 +12,4 @@ WORKDIR /app
 ENV NODE_ENV="production"
 COPY --from=base /app .
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "prod"]
