@@ -7,3 +7,4 @@ stations.json
 uploads
 data/*/
 *.pem
+.git
