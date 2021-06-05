@@ -1,7 +1,14 @@
 {
   "env": {
     "server": {
-      "presets": ["@babel/preset-env", "@babel/preset-typescript", "preact"],
+      "presets": [
+        "@babel/preset-env",
+        [
+          "@babel/preset-typescript",
+          { "jsxPragma": "h" }
+        ],
+        "preact"
+      ],
       "plugins": [
         "@babel/plugin-proposal-class-properties",
 
