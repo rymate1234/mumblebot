@@ -12,3 +12,4 @@ bbc
 config.js
 data/config.yml
 .vscode
+package-lock.json
