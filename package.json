@@ -20,7 +20,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "audio-metadata": "^0.3.0",
-    "audio-mixer": "https://github.com/notthetup/audio-mixer.git",
+    "audio-mixer": "^2.1.4",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "express": "^4.17.1",

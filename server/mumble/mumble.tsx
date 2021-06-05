@@ -2,7 +2,7 @@
 import { connect as _connect, Connection, InputStream } from 'mumble'
 import Queue from './queue'
 import { readFileSync } from 'fs'
-import Mixer  from 'audio-mixer'
+import { InterleavedMixer as Mixer } from 'audio-mixer'
 import dbconn from '../database'
 import config from '../../config-loader'
 import { h } from 'preact'
@@ -37,7 +37,7 @@ export class Mumble {
   currentFile: ffmpeg.FfmpegCommand
   inputStream: InputStream
 
-  mixer: any = new Mixer({
+  mixer = new Mixer({
     channels: 2,
     sampleRate: 44100,
   })
@@ -221,11 +221,12 @@ export class Mumble {
 
     this.playing = false
     this.playingSong.name = ''
+    this.mixer.removeInput(this.playingSong.input)
     this.playingSong.input.destroy()
     this.setComment()
 
-    this.currentFile.kill('')
-    this.currentFile = null
+    this.currentFile.kill('SIGKILL')
+    // this.currentFile = null
 
     setTimeout(() => {
       if (this.queue.getLength() !== 0) this.play(this.queue.dequeue())
@@ -339,14 +340,6 @@ export class Mumble {
           console.log(err)
           return
         }
-        this.currentFile = this.getFfmpegInstance(
-          filename.src.replace(';', ''),
-          () => {
-            console.log('Finished')
-            this.playingSong.name = ''
-            this.sendToMaster.next({ type: 'update-stats' })
-          }
-        )
 
         this.playingSong.name = filename.name || filename.title
         this.setPlaying()
@@ -356,9 +349,22 @@ export class Mumble {
           sampleRate: 44100,
         })
 
+        this.currentFile = this.getFfmpegInstance(
+          filename.src.replace(';', ''),
+          () => {
+            console.log('Finished')
+            this.playingSong.name = ''
+            this.sendToMaster.next({ type: 'update-stats' })
+          }
+        )
         this.currentFile.pipe(this.playingSong.input, { end: false })
       })
     } else {
+      this.playingSong.input = this.mixer.input({
+        channels: 2,
+        sampleRate: 44100,
+      })
+
       this.currentFile = this.getFfmpegInstance(
         'data/uploads/' + filename.filename,
         () => {
@@ -371,11 +377,6 @@ export class Mumble {
           }
         }
       )
-      
-      this.playingSong.input = this.mixer.input({
-        channels: 2,
-        sampleRate: 44100,
-      })
 
       this.currentFile.pipe(this.playingSong.input, { end: true })
       this.playingSong.name = filename.name || filename.title
@@ -384,7 +385,8 @@ export class Mumble {
   }
 
   getFfmpegInstance(filename, callback): ffmpeg.FfmpegCommand {
-    return ffmpeg(filename)
+    let ff = ffmpeg(filename)
+      .native()
       .audioChannels(2)
       .renice(5)
       .audioBitrate(128)
@@ -394,6 +396,7 @@ export class Mumble {
         console.log(err)
       })
       .on('end', () => callback())
+    return ff
   }
 
   setPlaying() {

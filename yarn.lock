@@ -1412,11 +1412,12 @@
   "resolved" "https://registry.npmjs.org/audio-metadata/-/audio-metadata-0.3.0.tgz"
   "version" "0.3.0"
 
-"audio-mixer@https://github.com/notthetup/audio-mixer.git":
-  "resolved" "git+ssh://git@github.com/notthetup/audio-mixer.git#9fce47058338de3e6634b4069e4cd77cd8e3480d"
-  "version" "0.0.1"
+"audio-mixer@^2.1.4":
+  "integrity" "sha512-dASZNUDmv4sfeICWUhBKExiNt2JeebNfCX1kzXvsA0eLdcEkV8zNTdM3wBklbaK8Ky7AQxRRT91oTB6IV8HVNw=="
+  "resolved" "https://registry.npmjs.org/audio-mixer/-/audio-mixer-2.1.4.tgz"
+  "version" "2.1.4"
   dependencies:
-    "int24" "*"
+    "underscore" "^1.8.3"
 
 "aws-sign2@~0.7.0":
   "integrity" "sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg="
@@ -4487,11 +4488,6 @@
     "string-width" "^2.1.0"
     "strip-ansi" "^4.0.0"
     "through" "^2.3.6"
-
-"int24@*":
-  "integrity" "sha1-ls/xQwpGVXNS7bQGzYezCCs2nYQ="
-  "resolved" "https://registry.npmjs.org/int24/-/int24-0.0.1.tgz"
-  "version" "0.0.1"
 
 "internal-slot@^1.0.2":
   "integrity" "sha512-O0DB1JC/sPyZl7cIo78n5dR7eUSwwpYPiXRhTzNxZVAMUuB8vlnRFyLxdrVToks6XPLVnFfbzaVd5WLjhgg+vA=="
@@ -8449,7 +8445,7 @@
   dependencies:
     "debug" "^2.2.0"
 
-"underscore@^1.11.0":
+"underscore@^1.11.0", "underscore@^1.8.3":
   "integrity" "sha512-21rQzss/XPMjolTiIezSu3JAjgagXKROtNrYFEOWK109qY1Uv2tVjPTZ1ci2HgvQDA16gHYSthQIJfB+XId/rQ=="
   "resolved" "https://registry.npmjs.org/underscore/-/underscore-1.12.0.tgz"
   "version" "1.12.0"
