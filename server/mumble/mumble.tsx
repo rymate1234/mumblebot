@@ -2,7 +2,7 @@
 import { connect as _connect, Connection, InputStream } from 'mumble'
 import Queue from './queue'
 import { readFileSync } from 'fs'
-import Mixer from 'audio-mixer'
+import Mixer  from 'audio-mixer'
 import dbconn from '../database'
 import config from '../../config-loader'
 import { h } from 'preact'
@@ -107,8 +107,8 @@ export class Mumble {
               <h1>Welcome to MumbleBot</h1>
               <p>
                 To request a song, head to{' '}
-                <a href="http://rymate.co.uk/mumble/">
-                  http://rymate.co.uk/mumble/
+                <a href="https://mumble.rymate.co.uk/">
+                  https://mumble.rymate.co.uk/
                 </a>
               </p>
             </div>
@@ -163,8 +163,8 @@ export class Mumble {
           <p>{this.playingSong.name || this.playingSong.title}</p>
           <p>
             To request a song, head to{' '}
-            <a href="http://rymate.co.uk/mumble/">
-              http://rymate.co.uk/mumble/
+            <a href="https://mumble.rymate.co.uk/">
+              https://mumble.rymate.co.uk/
             </a>
           </p>
         </div>
@@ -175,8 +175,8 @@ export class Mumble {
           <h1>No songs currently playing</h1>
           <p>
             To request a song, head to{' '}
-            <a href="http://rymate.co.uk/mumble/">
-              http://rymate.co.uk/mumble/
+            <a href="https://mumble.rymate.co.uk/">
+              https://mumble.rymate.co.uk/
             </a>
           </p>
         </div>
@@ -204,6 +204,13 @@ export class Mumble {
 
     if (command) {
       command.execute(message, user)
+    }
+  }
+
+  callVoteStopSong = () => {
+    const command = this.commands.find((c) => c.shouldExecute(['stop']))
+    if(command){
+      command.execute(['stop'], null)
     }
   }
 
@@ -364,7 +371,7 @@ export class Mumble {
           }
         }
       )
-
+      
       this.playingSong.input = this.mixer.input({
         channels: 2,
         sampleRate: 44100,

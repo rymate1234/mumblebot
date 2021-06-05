@@ -10,6 +10,7 @@ import {
   Input,
   Sidebar,
   Themed,
+  Button
 } from './components'
 import { connect } from 'unistore/preact'
 import { actions } from './store'
@@ -62,6 +63,21 @@ class App extends PureComponent {
     this.setState({ sidebarVisible: !this.state.sidebarVisible })
   }
 
+  async stopSong (e) {
+    e.preventDefault()
+
+    const req = await fetch('/api/stop', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: ''
+    })
+    const content = await req.text()
+    console.log(content)
+  }
+
   render(props, state) {
     const { status = {}, title } = props.mumblebotData
     const { playing = false, queue = [], nowPlaying = '' } = status
@@ -100,6 +116,9 @@ class App extends PureComponent {
                     <strong>Now Playing</strong>
                   </p>
                   <p>{nowPlaying}</p>
+                  <Card>
+                    <Button primary onClick={(e) => this.stopSong(e)}>Stop Song</Button>
+                  </Card>
                 </div>
               )}
               {queue && queue.length > 0 && (

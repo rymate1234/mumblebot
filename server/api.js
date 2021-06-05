@@ -180,5 +180,10 @@ export default (io) => {
     res.send('Success')
   })
 
+  router.post('/stop',function(req,res,next){
+    thread.stopsong()
+    res.send('Success')
+  })
+
   return router
 }

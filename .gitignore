@@ -11,3 +11,4 @@ assets
 bbc
 config.js
 data/config.yml
+.vscode
