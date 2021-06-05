@@ -1439,11 +1439,12 @@ audio-metadata@^0.3.0:
   resolved "https://registry.yarnpkg.com/audio-metadata/-/audio-metadata-0.3.0.tgz#7d554031f0c244ee296231a1a55e00ff788d6ceb"
   integrity sha1-fVVAMfDCRO4pYjGhpV4A/3iNbOs=
 
-"audio-mixer@https://github.com/notthetup/audio-mixer.git":
-  version "0.0.1"
-  resolved "https://github.com/notthetup/audio-mixer.git#9fce47058338de3e6634b4069e4cd77cd8e3480d"
+audio-mixer@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/audio-mixer/-/audio-mixer-2.1.4.tgz#4f37db226ca698684685d8da342792cc61a25b9c"
+  integrity sha512-dASZNUDmv4sfeICWUhBKExiNt2JeebNfCX1kzXvsA0eLdcEkV8zNTdM3wBklbaK8Ky7AQxRRT91oTB6IV8HVNw==
   dependencies:
-    int24 "*"
+    underscore "^1.8.3"
 
 aws-sign2@~0.7.0:
   version "0.7.0"
@@ -4482,11 +4483,6 @@ inquirer@^3.0.6:
     string-width "^2.1.0"
     strip-ansi "^4.0.0"
     through "^2.3.6"
-
-int24@*:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/int24/-/int24-0.0.1.tgz#96cff1430a46557352edb406cd87b3082b369d84"
-  integrity sha1-ls/xQwpGVXNS7bQGzYezCCs2nYQ=
 
 internal-slot@^1.0.2:
   version "1.0.3"
@@ -8407,6 +8403,11 @@ underscore@^1.11.0:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.12.0.tgz#4814940551fc80587cef7840d1ebb0f16453be97"
   integrity sha512-21rQzss/XPMjolTiIezSu3JAjgagXKROtNrYFEOWK109qY1Uv2tVjPTZ1ci2HgvQDA16gHYSthQIJfB+XId/rQ==
+
+underscore@^1.8.3:
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.13.1.tgz#0c1c6bd2df54b6b69f2314066d65b6cde6fcf9d1"
+  integrity sha512-hzSoAVtJF+3ZtiFX0VgfFPHEDRm7Y/QPjGyNo4TVdnDTdft3tr8hEkD25a1jC+TjTuE7tkHGKkhwCgs9dgBB2g==
 
 unfetch@^4.2.0:
   version "4.2.0"
