@@ -39,6 +39,13 @@ const object = {
 
     mumbleClient.uploadYoutube(payload, false)
   },
+  stopsong(){
+    if (mumbleClient.voteHappening){
+      return
+    }
+    console.log('stop before vote call')
+    mumbleClient.callVoteStopSong()
+  }
 }
 
 expose(object)
