@@ -10,7 +10,8 @@ import {
   Input,
   Sidebar,
   Themed,
-  Button
+  Button,
+  Grid
 } from './components'
 import { connect } from 'unistore/preact'
 import { actions } from './store'
@@ -78,6 +79,22 @@ class App extends PureComponent {
     console.log(content)
   }
 
+  async removeSong (e, index){
+    e.preventDefault()
+
+    const req = await fetch('/api/removesong/' + index, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: ''
+    })
+
+    const content = await req.text()
+    console.log(content)
+  }
+
   render(props, state) {
     const { status = {}, title } = props.mumblebotData
     const { playing = false, queue = [], nowPlaying = '' } = status
@@ -116,18 +133,25 @@ class App extends PureComponent {
                     <strong>Now Playing</strong>
                   </p>
                   <p>{nowPlaying}</p>
-                  <Card>
-                    <Button primary onClick={(e) => this.stopSong(e)}>Stop Song</Button>
-                  </Card>
+                  <Button primary onClick={(e) => this.stopSong(e)}>Stop Song</Button>
                 </div>
               )}
               {queue && queue.length > 0 && (
                 <div>
                   <p>
-                    <strong>Queued</strong>
+                    <strong>Queue</strong>
                   </p>
-                  {queue.map((item) => (
-                    <p>{item.title || item.name}</p>
+                  {queue.map((item, index) => (
+                    <Grid rows={'auto'} columns={'2fr 60px'} gap="2px" center>
+                      <div>
+                        <p> {item.title || item.name}</p> 
+                      </div>
+                      <div>
+                        <Button icon danger onClick={(e) => this.removeSong(e, index)}>
+                            X
+                        </Button>
+                      </div>
+                    </Grid>
                   ))}
                 </div>
               )}

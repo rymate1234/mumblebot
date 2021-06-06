@@ -207,6 +207,11 @@ export class Mumble {
     }
   }
 
+  removeSong = (index) => {
+    this.queue.removeAtIndex(index)
+    this.sendToMaster.next({ type: 'update-stats' })
+  }
+
   callVoteStopSong = () => {
     const command = this.commands.find((c) => c.shouldExecute(['stop']))
     if (command) {
@@ -226,7 +231,6 @@ export class Mumble {
     this.setComment()
 
     this.currentFile.kill('SIGKILL')
-    // this.currentFile = null
 
     setTimeout(() => {
       if (this.queue.getLength() !== 0) this.play(this.queue.dequeue())

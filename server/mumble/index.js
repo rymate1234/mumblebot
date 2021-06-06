@@ -43,8 +43,15 @@ const object = {
     if (mumbleClient.voteHappening){
       return
     }
-    console.log('stop before vote call')
+
     mumbleClient.callVoteStopSong()
+  },
+  removesong(index){
+    if(mumbleClient.voteHappening){
+      return
+    }
+    
+    mumbleClient.removeSong(index)
   }
 }
 

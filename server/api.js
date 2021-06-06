@@ -90,7 +90,7 @@ export default (io) => {
   })
 
   router.get('/stats', async function (req, res, next) {
-    const status = await thread.status()
+    const status = thread ? await thread.status() : {}
     res.json({ title: config.name, status: status })
   })
 
@@ -184,6 +184,14 @@ export default (io) => {
     thread.stopsong()
     res.send('Success')
   })
+
+  router.post('/removesong/:index',function(req, res, next){
+    const index = req.params.index
+    console.log('removesong ::', index)
+    thread.removesong(index)
+    res.send('Success')
+  })
+
 
   return router
 }
