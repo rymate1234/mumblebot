@@ -137,6 +137,13 @@ export const Grid = styled.div`
   ${({ rows }) => rows && `grid-template-rows: ${frGetter(rows)}`};
   grid-template-columns: ${({ columns = 12 }) => frGetter(columns)};
   grid-gap: ${gap};
+  ${(props) =>
+    props.center
+      ? `
+      display: flex;
+      justify-content: center;
+      align-items: center;  `
+      : ''}
 `
 
 export const Cell = styled.div`
@@ -148,6 +155,13 @@ export const Cell = styled.div`
   grid-column-end: ${({ width = 1 }) => `span ${width}`};
   grid-row-end: ${({ height = 1 }) => `span ${height}`};
   ${({ center }) => center && `text-align: center`};
+  ${(props) =>
+    props.center
+      ? `
+    justify-items: center;
+    align-items: center;
+  `
+      : ''}
 `
 
 export const Station = styled(Grid)`
@@ -219,8 +233,14 @@ export const Station = styled(Grid)`
 export const Button = styled.a`
   transition: all 0.2s ease;
   color: ${(props) => props.theme.button.text};
-  background-color: ${(props) =>
-    props.primary ? props.theme.button.default : props.theme.button.secondary};
+  background-color: ${(props) => {
+    if (props.primary) {
+      return props.theme.button.default
+    } else if (props.danger) {
+      return props.theme.button.danger
+    }
+    return props.theme.button.secondary
+  }};
   border: none;
   border-radius: 45px;
   padding: 16px;
@@ -229,6 +249,12 @@ export const Button = styled.a`
   font-size: 12px;
   text-decoration: none;
   text-align: center;
+  width: auto;
+  ${(props) => {
+    if (props.icon) {
+      return `padding: 4px;   border-radius: 4px;`
+    }
+  }}
 
   &:hover {
     background-color: ${(props) => props.theme.button.hover};
@@ -332,6 +358,7 @@ export const Themed = ({ darkTheme, children }) => {
           text: '#fff',
           secondary: '#343a40',
           hover: '#ffffff77',
+          danger: '#d61313',
         },
         selected: '#4b4d64',
         link: 'hotpink',
@@ -348,6 +375,7 @@ export const Themed = ({ darkTheme, children }) => {
           text: '#fff',
           secondary: '#343a40',
           hover: '#00000044',
+          danger: '#d61313',
         },
         selected: '#C5CAE9',
         link: '#3F51B5',

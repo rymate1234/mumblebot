@@ -42,6 +42,15 @@ class Queue<T> {
     return this.queue.slice(this.offset)
   }
 
+  removeAtIndex(index: number): void {
+      let currentArray = this.getArray()
+      currentArray.splice(index,1)
+      
+      this.offset = 0
+      this.queue = []
+      this.queue = currentArray
+  }
+
   peek(): T {
     return this.queue.length > 0 ? this.queue[this.offset] : undefined
   }
