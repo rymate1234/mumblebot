@@ -15,9 +15,6 @@ class BbcCommand extends BaseCommand {
     this.randomFile('data/bbc/', (err, file) => {
       if (err) return
 
-      var memeFile = this.mumble.getFfmpegInstance('bbc/' + file, () => {
-        this.bbc = false
-      })
       this.bbc = true
 
       var memeInput = this.mumble.mixer.input({
@@ -25,7 +22,12 @@ class BbcCommand extends BaseCommand {
         sampleRate: 44100,
       })
 
-      memeFile.stream(memeInput)
+      var memeFile = this.mumble.getFfmpegInstance('data/bbc/' + file, () => {
+        this.bbc = false
+        this.mumble.mixer.removeInput(memeInput)
+      })
+
+      memeFile.pipe(memeInput, { end: true })
     })
   }
 

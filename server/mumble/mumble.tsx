@@ -209,7 +209,7 @@ export class Mumble {
 
   callVoteStopSong = () => {
     const command = this.commands.find((c) => c.shouldExecute(['stop']))
-    if(command){
+    if (command) {
       command.execute(['stop'], null)
     }
   }
@@ -353,8 +353,14 @@ export class Mumble {
           filename.src.replace(';', ''),
           () => {
             console.log('Finished')
+            this.mixer.removeInput(this.playingSong.input)
+
             this.playingSong.name = ''
             this.sendToMaster.next({ type: 'update-stats' })
+
+            if (this.queue.getLength() !== 0) {
+              this.play(this.queue.dequeue())
+            }
           }
         )
         this.currentFile.pipe(this.playingSong.input, { end: false })
@@ -369,6 +375,8 @@ export class Mumble {
         'data/uploads/' + filename.filename,
         () => {
           this.playing = false
+          this.mixer.removeInput(this.playingSong.input)
+
           if (this.queue.getLength() !== 0) {
             console.log('ended')
             this.playingSong.name = ''

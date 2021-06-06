@@ -24,13 +24,6 @@ class MemeCommand extends BaseCommand {
   execute(message: string[], user: User): void {
     if (!this.currentFile) return
 
-    this.memeFile = this.mumble.getFfmpegInstance(
-      this.assetsFolder + this.currentFile,
-      () => {
-        this.memePlaying = false
-      }
-    )
-
     this.memePlaying = true
 
     const memeInput = this.mumble.mixer.input({
@@ -38,7 +31,15 @@ class MemeCommand extends BaseCommand {
       sampleRate: 44100,
     })
 
-    this.memeFile.stream(memeInput)
+    this.memeFile = this.mumble.getFfmpegInstance(
+      this.assetsFolder + this.currentFile,
+      () => {
+        this.memePlaying = false
+        this.mumble.mixer.removeInput(memeInput)
+      }
+    )
+
+    this.memeFile.pipe(memeInput, { end: true })
   }
 }
 
