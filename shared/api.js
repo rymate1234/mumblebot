@@ -51,18 +51,13 @@ export const getSongs = async () => {
 export const getStations = async () => {
   try {
     const stationsReq = await fetch(prefix + '/api/radio')
-    const data = await stationsReq.json()
+    const { stations } = await stationsReq.json()
     const stats = await getStats()
 
-    const channels = []
-    data.places.forEach((element) => {
-      element.channels.forEach((channelIndex) => {
-        const channel = data.channels[channelIndex]
-        const location = element
-        const country = data.countries[element.countryIndex]
-        channel.info = `${location.name}, ${country}`
-        channels.push(channel)
-      })
+    const channels = stations.map(station => {
+      station.info = `${station.location.name}, ${station.location.country}`
+
+      return station
     })
 
     let list = channels.map((channel) => ({
