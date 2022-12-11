@@ -23,7 +23,7 @@
     "audio-mixer": "^2.1.4",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fast-sort": "^2.2.0",
     "fluent-ffmpeg": "^2.1.2",
     "hbs": "^4.1.1",
